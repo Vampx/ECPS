@@ -8,4 +8,3 @@
 <c:set var="system" value="/ecps/console"/>
 <c:set var="upload" value="http://127.0.0.1:8088/pic_server/upload/"/>
 <c:set var="datePattern"><fmt:message key="date.format"/></c:set>
-  
