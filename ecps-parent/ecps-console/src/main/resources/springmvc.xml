@@ -19,14 +19,12 @@
 	<context:component-scan base-package="cn.tf.ecps.controller"/>
 	
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/shop/"></property>
+		<property name="prefix" value="/WEB-INF/shop/"></property>
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 	
-	<!-- 
-		id不能随便写，使用multipartResolver
-	 -->
-<!-- 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="maxUploadSize" value="1024000"></property>
-	</bean> -->
+	
+ 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="102400"></property>
+	</bean>
 </beans>
