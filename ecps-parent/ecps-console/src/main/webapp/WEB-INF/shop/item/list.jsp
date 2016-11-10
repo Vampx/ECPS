@@ -148,7 +148,7 @@
         <span class="l">
         </span>
         <span class="r inb_a">
-            <a href="${path}/shop/item/addItem.jsp" class="btn80x20" title="添加商品">添加商品</a>
+            <a href="${path}/item/toAddItem.do" class="btn80x20" title="添加商品">添加商品</a>
         </span>
     </div>
 
@@ -200,12 +200,10 @@
                 </td>
                
 				<td>
-							<a href="/ecps-console/shop/item/viewItem.jsp" title="查看">查看</a>
-					  			<a href="/ecps-console/ecps/console/item/editItem.do?type=1&itemId=2384">编辑</a>
-					  			<a href="javascript:void(0);" onclick="singleDel('2384')">删除</a>
-					  			<a href="javascript:void(0);" group="2384,0" itemId=3184 showStatus="0">上架</a>
-					  				
-					  			
+							<a href="${path}/item/viewItem.do?id=${item.itemNo }" title="查看">查看</a>
+					  		<a href="/ecps-console/ecps/console/item/editItem.do?type=1&itemId=2384">编辑</a>
+					  		<a href="javascript:void(0);" onclick="singleDel('${item.itemNo }')">删除</a>
+					  		<a href="javascript:void(0);" group="2384,0" itemId=3184 showStatus="0">上架</a>			
 				</td>
 			</tr>
 			</c:forEach>
@@ -241,5 +239,31 @@
         </span>
     </div>
 </form>
+
+<script type="text/javascript">
+	
+	function singleDel(id){
+			var option = {
+			url:"${path}/item/deleteGoods.do",
+			type:"get",
+			async:false,//修改ajax成同步，程序按顺序执行
+			data:{
+				id:id
+			},
+			success:function(){
+				location.href="${path}/item/listItem.do";
+			},
+			error:function(){
+				alert("系统错误");
+			}
+	}
+	$.ajax(option);
+	
+	
+	}
+	
+	
+	</script>
+
 </div></div>
 </body>

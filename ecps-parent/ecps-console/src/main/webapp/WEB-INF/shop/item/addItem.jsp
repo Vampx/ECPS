@@ -14,9 +14,9 @@ $(document).ready(function(){
    
 		var fck = new FCKeditor("itemDesc");
 		fck.BasePath = "${path}/ecps/console/res/plugins/fckeditor/";
-		fck.Config["ImageUploadURL"] = "${path}/upload/uploadForFck.do?typeStr=Image";
+		//修改上传的url
+		fck.Config["ImageUploadURL"] = "${path}/upload/uploadForFck.do";
 		fck.Height = 400;
-		fck.ToolbarSet = "Basic";
 		fck.ReplaceTextarea();
       
 
@@ -118,26 +118,31 @@ $(function(){
 		});
 	//实现页面规格的自动增加和删除
 	$("#button2").click(function(){
-		//alert(divNum);
-		var d=(++divNum);
-		var a=$(".sp_0:first").html();
+		//把div编号++
+		divNum++;
+		//获得sp_0的div的内部代码
+		var htmlDiv = $("#sp_0").html();
+		//拼接div本身
+		htmlDiv = "<div id='sp_"+divNum+"'>"+htmlDiv+"</div>";
 		
-		a = a.replace(/specradio1/g,"specradio"+d);
-		a = a.replace(/skuType1/g,"skuType"+d);
-		a = a.replace(/marketPrice1/g,"marketPrice"+d);
-		a = a.replace(/skuPrice1/g,"skuPrice"+d);
-		a = a.replace(/stockInventory1/g,"stockInventory"+d);
-		a = a.replace(/skuUpperLimit1/g,"skuUpperLimit"+d);
-		a = a.replace(/location1/g,"location"+d);
-		a = a.replace(/sku1/g,"sku"+d);
-		a = a.replace(/sort1/g,"sort"+d);
-		a = a.replace(/showStatus1/g,"showStatus"+d);
-		alert(a);
-		var b=a.replace(/clickRemove\('#sp\_\d+'\)/g,"clickRemove('#sp_"+d+"')");
+		htmlDiv = htmlDiv.replace(/specradio1/g, "specradio"+divNum);
+		//sort1     skuType1      showStatus1    skuPrice1   marketPrice1  stockInventory1 skuUpperLimit1 sku1   location1                        
+		htmlDiv = htmlDiv.replace(/sort1/g, "sort"+divNum);
+		htmlDiv = htmlDiv.replace(/skuType1/g, "skuType"+divNum);
+		htmlDiv = htmlDiv.replace(/showStatus1/g, "showStatus"+divNum);
+		htmlDiv = htmlDiv.replace(/skuPrice1/g, "skuPrice"+divNum);
+		htmlDiv = htmlDiv.replace(/marketPrice1/g, "marketPrice"+divNum);
+		htmlDiv = htmlDiv.replace(/stockInventory1/g, "stockInventory"+divNum);
+		htmlDiv = htmlDiv.replace(/skuUpperLimit1/g, "skuUpperLimit"+divNum);
+		htmlDiv = htmlDiv.replace(/sku1/g, "sku"+divNum);
+		htmlDiv = htmlDiv.replace(/location1/g, "location"+divNum);
+		htmlDiv = htmlDiv.replace(/#sp_0/g, "#sp_"+divNum);
+		//把获得到的html的代码追加到最后一个div的前面
+		$(".page_c").before(htmlDiv);
+		$("#divNum").val(divNum);
 		
-		$("#button2").parent().parent().before("<div class='sp_0' id='sp_"+d+"'>"+b+"</div>");
-		$("#divNum").val(d);
-		});
+		//alert(htmlDiv)
+	});
 
 	$("#showStatus3").click(function(){
 			var a=$("#auditStatus1").attr("checked");
@@ -194,15 +199,9 @@ function changePri(obj){
 	}
 }
 function clickRemove(id){
-	var b=$(id+" #showStatus1").val();
-	var a=$(".sp_0").length;
-	if(a == 1){
-	alert("默认规格不可删除");
+	if(id == "#sp_0"){
+		alert("默认的最小销售单元不能删除");
 		return;
-	}
-	if(b == 0){
-    alert("规格必须是下架状态才能删除");
-    return;
 	}
 	$(id).remove();
 }
@@ -210,8 +209,23 @@ function clickRemove(id){
 
 
 
-function submitImgSize1Upload() {
-
+function submitUpload(){
+	var option = {
+		url:"${path}/upload/uploadPic.do",//如果不写url就是默认使用要提交的表单中的url，如果有url就是使用该url
+		dataType:"text",
+		success:function(responseText){
+			//把json格式字符串转换成json对象
+			var jsonObj = $.parseJSON(responseText);
+			$("#imgsImgSrc").attr("src", jsonObj.realPath);
+			$("#imgs").val(jsonObj.relativePath);
+			$("#lastPath").val(jsonObj.realPath);
+		},
+		error:function(){
+			alert("系统错误");
+		}
+	};
+	//ajax方式提交表单，页面不会跳转（由jQuery-form提供）
+	$("#myForm").ajaxSubmit(option);
 }
 </script>
 </head>
@@ -223,7 +237,7 @@ function submitImgSize1Upload() {
 
 <div class="frameR"><div class="content">
 
-<div class="loc icon"><samp class="t12"></samp>当前位置:商品管理&nbsp;&raquo;&nbsp;<a href="<c:url value="/${system }/item/listEntity.do"/>" title="实体商品">实体商品</a>&nbsp;&raquo;&nbsp;<a href="<c:url value="/${system }/item/addCatItem.do"/>" title="商品分类">商品分类</a>&nbsp;&raquo;&nbsp;<span class="gray">添加商品</span><a href="<c:url value="/${system }/item/addCatItem.do"/>" title="返回商品分类" class="inb btn80x20">返回商品分类</a></div>
+<div class="loc icon"><samp class="t12"></samp>当前位置:商品管理&nbsp;&raquo;&nbsp;<a href="<c:url value="/item/listItem.do"/>" title="实体商品">实体商品</a>&nbsp;&raquo;&nbsp;<a href="<c:url value="/item/listItem.do"/>" title="商品分类">商品分类</a>&nbsp;&raquo;&nbsp;<span class="gray">添加商品</span><a href="<c:url value='/item/listItem.do'  />" title="返回商品分类" class="inb btn80x20">返回商品分类</a></div>
 <form action="${path}/item/addItem.do" name="myForm" id="myForm" method="post">
 <h2 class="h2_ch"><span id="tabs" class="l">
 <a href="javascript:void(0);" ref="#tab_1" title="基本信息" class="here">基本信息</a>
@@ -232,15 +246,9 @@ function submitImgSize1Upload() {
 <a href="javascript:void(0);" ref="#tab_4" title="商品规格" class="nor">商品规格</a>
 </span></h2>
 <div id="tab_1" class="edit set">
-    <c:if test="${message!= null}">
-    <div id="errorName" name="errorName" align="Center">
-                <img src="${path}/images/iconWarning.gif" alt="<fmt:message key='icon.warning'/>" class="icon"/>
-              <font size="4" color="red">输入的内容包含敏感词,请重新输入</font>
-    <script>if('${message}'!=null){$('#errorName').fadeOut(4000)}</script>
-    </div>
-    </c:if>
-    <input type="hidden" name="itemId" id="itemId" value="${ebItem.itemId}"/>
-	<p><label><samp>*</samp>商品名称：</label><input type="text" reg1="^(.{1,100})$" desc="100以内任意字符" id="itemName" name="itemName" class="text state" value="${ebItem.itemName}"  maxlength="100"/></p>
+    
+	<p><label><samp>*</samp>商品名称：</label>
+	<input type="text" reg1="^(.{1,100})$" desc="100以内任意字符" id="itemName" name="itemName" class="text state" value="${ebItem.itemName}"  maxlength="100"/></p>
 	<input type="hidden" id="catId" name="catId" value="1" />
 	<p><label>商品品牌：</label>
 	<select id="brandId" name="brandId">
@@ -254,7 +262,7 @@ function submitImgSize1Upload() {
 	
 
 	<div id="tagId" class="up_box" style="display:none">
-	
+	<input type="hidden" id="lastPath" name="lastPath">
 		
 		
 	</div>
@@ -262,18 +270,28 @@ function submitImgSize1Upload() {
    		<input type="text" id="promotion" name="promotion" reg1="^(.{0,100})$" desc="100以内任意字符" class="text state"  value="${ebItem.promotion}" maxlength="100"/>
    		<span class="pos"></span>
    	</p>
-    <p><label>状态：</label>
-    	<input  name="isNew" type="checkbox" value="1" />新品&nbsp;&nbsp;
-    	<input  name="isGood" type="checkbox" value="1" />推荐&nbsp;&nbsp;
-    	<input  name="isHot" type="checkbox" value="1" />热卖
+   	<p>
+    	<label>是否新品：</label>
+    	<input  name="isNew" type="radio" value="1" checked="checked"/>是&nbsp;&nbsp;
+    	<input  name="isNew" type="radio" value="0" />否&nbsp;&nbsp;
     </p>
+    <p>
+    	<label>是否热卖：</label>
+    	<input  name="isGood" type="radio" value="1" />是&nbsp;&nbsp;
+    	<input  name="isGood" type="radio" value="0" checked="checked"/>否&nbsp;&nbsp;
+    </p>
+    <p>
+    	<label>是否推荐：</label>
+    	<input  name="isHot" type="radio" value="1" />是&nbsp;&nbsp;
+    	<input  name="isHot" type="radio" value="0" checked="checked"/>否&nbsp;&nbsp;
+    </p>
+    
     <a name="uploadImgs" id="uploadImgs"></a>
     <p><label><samp>*</samp>上传商品图片(90x150尺寸)：</label><span id="uploadImgTip1" class="orange">注:该尺寸图片必须为90x150。</span></p>
     <p><label></label>
-		<img id='imgSize1ImgSrc' src='${path}/ecps/console/images/logo266x64.png'  height="100" width="100" />
-		<input type='file' id='imgSize1File' name='imgSize1File' class="file" onchange='submitImgSize1Upload()' /><span class="pos" id="imgSize1FileSpan">请上传图片的大小不超过3MB</span>
-		<input type='hidden' id='imgSize1Action' name='imgSize1Action' value='${path}/uploads/upload_pic.do' />
-        <input type='hidden' id='imgSize1' name='imgSize1' value='' reg="^.+$" tip="亲！您忘记上传图片了。" />
+		<img id='imgsImgSrc' src='${path}/ecps/console/images/logo266x64.png'  height="100" width="100" />
+		<input type='file' id='imgsImgSrc1' name='imgSize1File' class="file" onchange='submitUpload()' /><span class="pos" id="imgSize1FileSpan">请上传图片的大小不超过3MB</span>
+        <input type='hidden' id='imgs' name='imgs' value='' reg="^.+$" tip="亲！您忘记上传图片了。" />
 	</p>
 	
 	
@@ -284,8 +302,6 @@ function submitImgSize1Upload() {
 	</p>
 	<p><label class="alg_t">页面描述：</label><textarea  id="pageDesc" reg1="^(.|\n){0,130}$" desc="130个以内的任意字符" name="pageDesc" class="are" rows="6" cols="45">${ebItem.pageDesc}</textarea>
 	</p>
-    <input type="hidden" name="auditStatus" value="0" />
-    <input type="hidden" name="showStatus" value="1" />
 </div>
 
 <div id="tab_2" class="edit" style="display: none">
@@ -294,37 +310,32 @@ function submitImgSize1Upload() {
 </div>
 
 <div id="tab_3" class="edit set" style="display: none">
-    <c:if test="${fn:length(paraList) == 0}">
-    <p><label></label>无属性</p>
+    <c:if test="${fn:length(commList) == 0}">
+    	<p><label></label>无属性</p>
     </c:if>
-	    <c:forEach items="${paraList }" var="para">
-	    	<p><label>${para.featureName}：</label>
-		    	<c:if test="${para.inputType == 1 }">
-		    		<select name="${para.featureId }">
-		    			<option value="">请选择</option>
-		    			<c:forEach items="${para.selectValues }" var="val">
-		    				<option value="${val }">${val }</option>
-		    			</c:forEach>
-		    		</select>
-		    	</c:if>
-		    	<c:if test="${para.inputType == 2 }">
-		    		<input type="radio" name="${para.featureId }" value="" checked="checked">无&nbsp;
-		    		<c:forEach items="${para.selectValues }" var="val">
-		    			<input type="radio" name="${para.featureId }" value="${val }">${val }&nbsp;
-		    		</c:forEach>
-		    		
-		    	</c:if>
-		    	<c:if test="${para.inputType == 3 }">
-		    		<c:forEach items="${para.selectValues }" var="val">
-		    			<input type="checkbox" name="${para.featureId }" value="${val }">${val }&nbsp;
-		    		</c:forEach>
-		    	</c:if>
-		    	<c:if test="${para.inputType == 4 }">
-		    		<input type="text" name="${para.featureId }" value="">
-		    	</c:if>
-		    	
-	    	</p>
-	    </c:forEach>
+	<c:forEach items="${commList }" var="feature">
+		<p>
+			<label>${feature.featureName }:</label>
+			<c:if test="${feature.inputType == 1 }">
+				<select name="${feature.featureId }">
+					<option value="">请选择</option>
+					<c:forEach items="${feature.selectValues }" var="val">
+						<option value="${val }">${val }</option>
+					</c:forEach>
+				</select>
+			</c:if>
+			<c:if test="${feature.inputType == 2 }">
+					<c:forEach items="${feature.selectValues }" var="val">
+						<input type="radio" name="${feature.featureId }" value="${val }">${val }&nbsp;
+					</c:forEach>
+			</c:if>
+			<c:if test="${feature.inputType == 3 }">
+					<c:forEach items="${feature.selectValues }" var="val">
+						<input type="checkbox" name="${feature.featureId }" value="${val }">${val }&nbsp;
+					</c:forEach>
+			</c:if>
+		</p>
+	</c:forEach>   
 	    
 	    
 </div>
@@ -337,21 +348,17 @@ function submitImgSize1Upload() {
             <c:if test="${fn:length(specList) == 0}">
             <tr><th colspan="2" class="gray b">&nbsp;&nbsp;<b>默认</b></th></tr>
             </c:if>
-            
-           <c:forEach items="${specList }" var="spec">
-           		<tr>
-           			<td>${spec.featureName }:</td>
-           			<td>
-           				<c:if test="${spec.inputType == 2 }">
-           					<input type="radio" name="${spec.featureId }specradio1" value="" class="specValue1" checked>无&nbsp;
-	           				<c:forEach items="${spec.selectValues}" var="val">
-	           					<input type="radio" name="${spec.featureId }specradio1" class="specValue1" value="${val }">${val }&nbsp;
-	           				</c:forEach>				  
-           				</c:if>
-           				
-           			</td>
-           		</tr>
-           </c:forEach>
+            <c:forEach items="${specList }" var="feature">
+            	<tr>
+            		<td>${feature.featureName }</td>
+            		<td>
+            			<c:forEach items="${feature.selectValues }" var="val">
+            				<input type="radio" name="${feature.featureId }specradio1" value="${val }">${val }&nbsp;
+            			</c:forEach>
+            		</td>
+            	</tr>
+            </c:forEach>
+         
             <tr><td colspan="2">
                  <table cellspacing="0">
                     <tr>
@@ -366,7 +373,7 @@ function submitImgSize1Upload() {
                         <th>类型</th>
                         <th>操作</th>
                     </tr>
-                    <tr>                                                                                         
+                    <tr>                        
                         <td width="10%" class="nwp"><input type="text" reg1="^[0-9]{0,2}$" desc="2个字符以内" id="sort" class="text20" name="sort1" maxlength="2"  size="5" /></td>
                         <td width="12%" class="nwp"><samp class="red">*</samp> <input reg1="^[0-9]{1,7}\.{0,1}[0-9]{0,2}$" desc="保留2位小数，最多允许9位有效数字" type="text" id="skuPrice" name="skuPrice1"class="text20" size="5" onblur="changePri(this)"/></td>
                         <td width="12%" class="nwp"><input type="text" id="marketPrice" name="marketPrice1" class="text20" reg1="^[0-9]{0,7}\.{0,1}[0-9]{0,2}$" desc="保留2位小数，最多允许9位有效数字" size="5" onblur="changePri(this)"/></td>
@@ -380,7 +387,7 @@ function submitImgSize1Upload() {
                         <option value="1" >下架</option>
                         </select>
                         </td>
-                        <td>
+                        <td> 
                          <select id="skuType" name="skuType1">
                         	<!--  option value="0">赠品</option-->
                         	<option value="1" selected>普通</option>

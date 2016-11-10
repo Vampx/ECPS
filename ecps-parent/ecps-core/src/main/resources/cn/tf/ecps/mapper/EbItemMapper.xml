@@ -79,8 +79,8 @@
     values (#{itemId,jdbcType=DECIMAL}, #{itemName,jdbcType=VARCHAR}, #{itemNo,jdbcType=VARCHAR}, 
       #{brandId,jdbcType=DECIMAL}, #{catId,jdbcType=DECIMAL}, #{tagImgId,jdbcType=DECIMAL}, 
       #{tagImg,jdbcType=DECIMAL}, #{isNew,jdbcType=DECIMAL}, #{isGood,jdbcType=DECIMAL}, 
-      #{isHot,jdbcType=DECIMAL}, #{promotion,jdbcType=VARCHAR}, #{auditStatus,jdbcType=DECIMAL}, 
-      #{showStatus,jdbcType=DECIMAL}, #{imgs,jdbcType=VARCHAR}, #{keywords,jdbcType=VARCHAR}, 
+      #{isHot,jdbcType=DECIMAL}, #{promotion,jdbcType=VARCHAR}, 0, 
+      1, #{imgs,jdbcType=VARCHAR}, #{keywords,jdbcType=VARCHAR}, 
       #{pageDesc,jdbcType=VARCHAR}, #{itemRecycle,jdbcType=DECIMAL}, #{onSaleTime,jdbcType=TIMESTAMP}, 
       #{checkTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUserId,jdbcType=DECIMAL}, 
       #{createTime,jdbcType=TIMESTAMP}, #{checkerUserId,jdbcType=DECIMAL}, #{fullPathDeploy,jdbcType=VARCHAR}, 
@@ -516,4 +516,18 @@
          </where>
 		          
   </select>
+  <!-- 通过商品编号删除商品 -->
+    <delete id="deleteByItemNO" parameterType="java.lang.Long">
+
+    delete from EB_ITEM
+    where ITEM_NO = #{id,jdbcType=DECIMAL}
+  </delete>
+  
+  <select id="selectByNO" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from EB_ITEM
+    where ITEM_NO = #{id,jdbcType=DECIMAL}
+  </select>
+  
 </mapper>

@@ -10,7 +10,7 @@ public class Page {
 	/**
 	 * 每页记录数
 	 */
-	private int pageSize = 5;
+	private int pageSize = 10;
 	
 	
 	/**

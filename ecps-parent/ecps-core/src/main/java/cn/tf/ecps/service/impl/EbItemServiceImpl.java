@@ -41,4 +41,14 @@ public class EbItemServiceImpl implements EbItemService {
 		return page;
 	}
 
+	public int deleteGoods(String id) {
+		
+		return itemDao.deleteGoods(id);
+	}
+
+	public EbItem selectItemByNo(String id) {
+		
+		return itemDao.selectItemByNo(id);
+	}
+
 }

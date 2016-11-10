@@ -124,7 +124,7 @@ $(function(){
         if(s){
                  //敏感词
         var sensitivity=true;
-       var content = FCKeditorAPI.GetInstance("itemDesc").GetXHTML(true);
+        var content = FCKeditorAPI.GetInstance("itemDesc").GetXHTML(true);
           $.ajax({
              type:"POST",
              async: false,
@@ -139,7 +139,7 @@ $(function(){
                  sensitivity=true;
                }
             }
-            });
+            }); 
         if(!sensitivity){
           return;
        }
@@ -389,7 +389,7 @@ function delPic(imgsIndex) {
 </div>
 
 <div id="tab_2" class="edit" style="display: none">
-${ebItem.itemDesc}
+${ebItem.pageDesc}
 </div>
 
 <div id="tab_3" class="edit set" style="display: none">
@@ -517,7 +517,7 @@ ${ebItem.itemDesc}
 </c:forEach>
 </div>
 <div id="tab_5" class="edit" style="display: none">
-${ebItem.packingList}
+<%-- ${ebItem.packingList} --%>
 </div>
 
 <%-- <div id="submitDis">

@@ -10,4 +10,8 @@ public interface EbItemDao {
 	
 	public Integer selectItemByConditionCount(QueryCondition qc);
 
+	public int deleteGoods(String id);
+
+	public EbItem selectItemByNo(String id);
+
 }
