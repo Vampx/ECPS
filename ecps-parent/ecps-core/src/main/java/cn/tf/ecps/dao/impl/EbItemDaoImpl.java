@@ -29,7 +29,9 @@ public class EbItemDaoImpl extends SqlSessionDaoSupport implements EbItemDao {
 	public EbItem selectItemByNo(String id) {
 		return this.getSqlSession().selectOne(ns+"selectByNO", id);
 	}
-	
+	public void saveItem(EbItem item) {
+		this.getSqlSession().insert(ns+"insert", item);
+	}
 	
 }
 

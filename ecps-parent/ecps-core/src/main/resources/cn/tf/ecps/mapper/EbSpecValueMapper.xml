@@ -20,10 +20,11 @@
     delete from EB_SPEC_VALUE
     where SPEC_ID = #{specId,jdbcType=DECIMAL}
   </delete>
-  <insert id="insert" parameterType="cn.tf.ecps.po.EbSpecValue" >
+ <insert id="insert" parameterType="cn.tf.ecps.po.EbSpecValue">
+    
     insert into EB_SPEC_VALUE (SPEC_ID, SKU_ID, FEATURE_ID, 
       SPEC_VALUE)
-    values (#{specId,jdbcType=DECIMAL}, #{skuId,jdbcType=DECIMAL}, #{featureId,jdbcType=DECIMAL}, 
+    values (seqspecvalueid.nextval, #{skuId,jdbcType=DECIMAL}, #{featureId,jdbcType=DECIMAL}, 
       #{specValue,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.tf.ecps.po.EbSpecValue" >

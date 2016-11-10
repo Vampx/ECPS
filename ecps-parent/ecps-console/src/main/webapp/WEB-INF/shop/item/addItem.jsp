@@ -355,6 +355,7 @@ function submitUpload(){
             			<c:forEach items="${feature.selectValues }" var="val">
             				<input type="radio" name="${feature.featureId }specradio1" value="${val }">${val }&nbsp;
             			</c:forEach>
+            			<samp class="red">*不能为空</samp>
             		</td>
             	</tr>
             </c:forEach>

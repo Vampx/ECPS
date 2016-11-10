@@ -2,7 +2,9 @@ package cn.tf.ecps.controller;
 
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -153,48 +155,47 @@ public class EbItemController {
 	
 	//添加商品
 	@RequestMapping("/addItem.do")
-	public String addItem(EbItem item,EbItemClob itemClob,HttpServletRequest request,Integer divNum){
+	public String addItem(EbItem item, EbItemClob itemClob, HttpServletRequest request, Integer divNum){
+		item.setItemNo(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+		//查询普通的属性
 		List<EbFeature> commList = featureService.selectCommFeature();
-		List<EbParaValue> paraList=new ArrayList<EbParaValue>();
-		
-		
-		for (EbFeature ebFeature : commList) {
-			Long featureId = ebFeature.getFeatureId();
-			if(ebFeature.getInputType()==3){
+		List<EbParaValue> paraList = new ArrayList<EbParaValue>();
+		for(EbFeature feature : commList){
+			//获得属性id也就是前台页面上的input的name
+			Long featureId = feature.getFeatureId();
+			//多选情况
+			if(feature.getInputType() == 3){
 				String[] paraArr = request.getParameterValues(featureId+"");
-				
-				//多选情况使用逗号连接起来
-				if(paraArr!=null && paraArr.length>0){
-					String paraValString="";
-					for(String para:paraArr){
-						paraValString=paraValString+para+",";
+				//多选情况多个值使用逗号连接起来
+				if(paraArr != null && paraArr.length > 0){
+					String paraVals = "";
+					for(String para : paraArr){
+						paraVals = paraVals + para + ",";
 					}
-					paraValString=paraValString.substring(0,paraValString.length());
-					EbParaValue ev=new EbParaValue();
+					paraVals = paraVals.substring(0, paraVals.length() - 1);
+					//创建EbParaValue对象
+					EbParaValue ev = new EbParaValue();
 					ev.setFeatureId(featureId);
-					ev.setParaValue(paraValString);
+					ev.setParaValue(paraVals);
 					paraList.add(ev);
 				}
-				
-			
-			
 			}else{
-				String para=request.getParameter(featureId+"");
+				//获得单选和下拉框的值
+				String para = request.getParameter(featureId+"");
 				if(StringUtils.isNotBlank(para) && !StringUtils.equals(para, "")){
 					EbParaValue ev = new EbParaValue();
 					ev.setFeatureId(featureId);
 					ev.setParaValue(para);
 					paraList.add(ev);
 				}
-
 			}
 			
 		}
 		List<EbSku> skuList = new ArrayList<EbSku>();
 		List<EbFeature> specList = featureService.selectSpecFeature();
-		
-		//循环div的个数，在循环中获取每个最小单元的值
-		for(int i=1;i<=divNum;i++){
+		//在循环中获得每一个最小销售单元的值
+		//sort1  skuType1   showStatus1  skuPrice1 marketPrice1  stockInventory1 skuUpperLimit1 sku1  location1 
+		for(int i = 1; i <= divNum; i++){
 			String skuPrice = request.getParameter("skuPrice"+i);
 			String stockInventory = request.getParameter("stockInventory"+i);
 			//判断divNum编号没有断档的情况，因为skuPrice和stockInventory是必填字段
@@ -243,10 +244,13 @@ public class EbItemController {
 				skuList.add(skuObj);
 			}
 		}
-		
-		//itemService.saveItem(item, itemClob, paraList, skuList);
+		System.out.println(item);
+		System.out.println(itemClob);
+		System.out.println(paraList);
+		System.out.println(skuList);
+		itemService.saveItem(item, itemClob, paraList, skuList);
 		return "redirect:listItem.do?showStatus=1";
 	}
-
+	
 
 }

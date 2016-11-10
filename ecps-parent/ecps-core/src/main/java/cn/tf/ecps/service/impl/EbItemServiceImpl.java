@@ -5,10 +5,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import cn.tf.ecps.dao.EbItemClobDao;
 import cn.tf.ecps.dao.EbItemDao;
+import cn.tf.ecps.dao.EbParaValueDao;
+import cn.tf.ecps.dao.EbSkuDao;
 
 import cn.tf.ecps.po.EbItem;
+import cn.tf.ecps.po.EbItemClob;
+import cn.tf.ecps.po.EbParaValue;
+import cn.tf.ecps.po.EbSku;
 import cn.tf.ecps.service.EbItemService;
 import cn.tf.ecps.utils.Page;
 import cn.tf.ecps.utils.QueryCondition;
@@ -18,6 +23,12 @@ public class EbItemServiceImpl implements EbItemService {
 
 	@Autowired
 	private EbItemDao itemDao;
+	@Autowired
+	private EbItemClobDao itemClobDao;
+	@Autowired
+	private EbParaValueDao paraValueDao;
+	@Autowired
+	private EbSkuDao skuDao;
 
 	public Page selectItemByCondition(QueryCondition qc) {
 		// 获得页码
@@ -42,13 +53,26 @@ public class EbItemServiceImpl implements EbItemService {
 	}
 
 	public int deleteGoods(String id) {
-		
+
 		return itemDao.deleteGoods(id);
 	}
 
 	public EbItem selectItemByNo(String id) {
-		
+
 		return itemDao.selectItemByNo(id);
+	}
+
+	// 保存
+	public void saveItem(EbItem item, EbItemClob itemClob,
+			List<EbParaValue> paraList, List<EbSku> skuList) {
+		// 保存商品并且返回主键
+		itemDao.saveItem(item);
+		// 给大字段表设置外键
+		itemClob.setItemId(item.getItemId());
+		itemClobDao.saveItemClob(itemClob);
+		paraValueDao.saveParaValue(paraList, item.getItemId());
+		skuDao.saveSku(skuList, item.getItemId());
+
 	}
 
 }

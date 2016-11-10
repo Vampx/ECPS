@@ -27,6 +27,7 @@
     where ITEM_ID = #{itemId,jdbcType=DECIMAL}
   </delete>
   <insert id="insert" parameterType="cn.tf.ecps.po.EbItemClob" >
+
     insert into EB_ITEM_CLOB (ITEM_ID, ITEM_DESC, PACKING_LIST
       )
     values (#{itemId,jdbcType=DECIMAL}, #{itemDesc,jdbcType=CLOB}, #{packingList,jdbcType=CLOB}

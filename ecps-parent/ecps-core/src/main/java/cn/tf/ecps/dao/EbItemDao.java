@@ -13,5 +13,7 @@ public interface EbItemDao {
 	public int deleteGoods(String id);
 
 	public EbItem selectItemByNo(String id);
+	
+	public void saveItem(EbItem item);
 
 }
