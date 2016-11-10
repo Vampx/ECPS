@@ -21,5 +21,8 @@ public interface EbBrandService {
 	public List<EbBrand> selectBrandAll();
 	
 	public List<EbBrand> validBrandName(String brandName);
+
+	//删除
+	public int deleteBrand(String id);
  
 }

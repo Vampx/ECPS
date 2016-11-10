@@ -31,6 +31,12 @@ public class EbBrandServiceImpl implements EbBrandService {
 
 	public List<EbBrand> validBrandName(String brandName) {
 		return brandDao.validBrandName(brandName);
+	}
+
+	//删除
+	public int deleteBrand(String id) {
+		return brandDao.deleteBrand(id);
+		
 	}   
 
 	/*@Autowired

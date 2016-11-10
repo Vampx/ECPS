@@ -48,7 +48,7 @@
 				<td>${brand.brandSort }</td>
 				<td>
 					<a href="${path }/shop/item/editbrand.jsp?brandId=3185">编辑</a>
-                    <a href="#" onclick="singleDel(3185)">删除</a>
+                       <a href="javascript:void(0)" onclick="singleDel(${brand.brandId })">删除</a>
 				</td>
 			</tr>
 			</c:forEach>
@@ -62,6 +62,31 @@
 			
 		</tbody>
 	</table>
+	
+	<script type="text/javascript">
+	
+	function singleDel(id){
+			var option = {
+			url:"${path}/item/delete.do",
+			type:"get",
+			async:false,//修改ajax成同步，程序按顺序执行
+			data:{
+				id:id
+			},
+			success:function(){
+				location.href="${path}/item/selectBrandAll.do";
+			},
+			error:function(){
+				alert("系统错误");
+			}
+	}
+	$.ajax(option);
+	
+	
+	}
+	
+	
+	</script>
 
 </form>
 </div></div>

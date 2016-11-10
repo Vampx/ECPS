@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	
 	<mappers>
 		<mapper resource="cn/tf/ecps/mapper/EbBrandMapper.xml"/>
+		<mapper resource="cn/tf/ecps/mapper/EbItemMapper.xml"/>
 	</mappers>
 
 </configuration>

@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import cn.tf.ecps.po.EbBrand;
 import cn.tf.ecps.service.EbBrandService;
+import cn.tf.ecps.service.EbItemService;
+import cn.tf.ecps.utils.Page;
+import cn.tf.ecps.utils.QueryCondition;
 
 @Controller
 @RequestMapping("/item")
@@ -17,6 +20,10 @@ public class EbItemController {
 	
 	@Autowired
 	private EbBrandService brandService;
+	
+	@Autowired
+	private EbItemService itemService;
+	
 	
 	@RequestMapping("/toIndex.do")
 	public String toIndex(){
@@ -67,6 +74,28 @@ public class EbItemController {
 		return "redirect:selectBrandAll.do";
 	}
 	
+	//删除
+	@RequestMapping("/delete.do")
+	public String delete(String id){
+		int i = brandService.deleteBrand(id);
+		if(i>0){
+			return "yes";
+		}
+		return null;	
+	}
 	
+	@RequestMapping("/listItem.do")
+	public String listItem(QueryCondition qc,Model model){
+		List<EbBrand> bList = brandService.selectBrandAll();
+		model.addAttribute("bList", bList);
+		if(qc.getPageNo()==null){
+			qc.setPageNo(1);
+		}
+		
+		Page page = itemService.selectItemByCondition(qc);
+		model.addAttribute("page",page);
+		model.addAttribute("qc",qc);  //把查询条件回显
+		return "item/list";
+	}
 
 }

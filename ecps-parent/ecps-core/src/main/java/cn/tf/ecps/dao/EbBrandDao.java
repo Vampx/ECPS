@@ -15,4 +15,6 @@ public interface EbBrandDao {
 	
 
 	public List<EbBrand> validBrandName(String brandName);
+
+	public int deleteBrand(String id);
 }
