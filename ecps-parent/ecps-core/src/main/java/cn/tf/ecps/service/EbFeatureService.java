@@ -11,4 +11,6 @@ public interface EbFeatureService {
 		//查询特殊属性
 		public List<EbFeature>  selectSpecFeature();
 
+		public List<EbFeature> selectIsSelectFeature();
+
 }

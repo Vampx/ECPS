@@ -30,4 +30,9 @@ public class EbFeatureServiceImpl implements EbFeatureService {
 		return featureDao.selectSpecFeature();
 	}
 
+	public List<EbFeature> selectIsSelectFeature() {
+		
+		return featureDao.selectIsSelectFeature();
+	}
+
 }

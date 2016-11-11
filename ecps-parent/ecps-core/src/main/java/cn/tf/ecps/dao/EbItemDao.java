@@ -15,5 +15,7 @@ public interface EbItemDao {
 	public EbItem selectItemByNo(String id);
 	
 	public void saveItem(EbItem item);
+	
+	public void updateItem(EbItem item);
 
 }

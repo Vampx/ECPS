@@ -101,11 +101,36 @@
 			$("#form1").submit();    		
     	});
     	$("#selectPage").val(pageNo);
+    	
+    	$("#addItemNoteConfirm").click(function(){
+    		//获得审核意见
+    		var notes = $("#itemNote").val();
+    		//给表单中的审核意见文本域赋值
+    		$("#notes").val(notes);
+    		//获得都表单
+    		$("#showForm").submit();
+    	});
+    	
+    	
+    	
     })
 	
+function isShow(itemId, showStatus){
+	$("#itemNote").val("");
+	//给表单中的itemId和auditStatus赋值
+	$("#itemId").val(itemId);
+	$("#myShowStatus").val(showStatus);
+	tipShow("#addItemNote");
+} 
 </script>
 </head>
 <body id="main">
+
+<form id="showForm" action="${path }/item/showItem.do" method="post">
+	<input type="hidden" name="itemId" id="itemId">
+	<input type="hidden" name="showStatus" id="myShowStatus">
+	<input type="hidden" name="notes" id="notes">
+</form>
 
 <div class="frameL"><div class="menu icon">
     <jsp:include page="/${system}/common/itemmenu.jsp"/>
@@ -117,9 +142,9 @@
 
     <h2 class="h2_ch"><span id="tabs" class="l">
         <!--  <a id="label3" href="${base}/item/listEntity.do?showStatus=2"   title="待上架实体商品" class="nor">待上架</a>  -->
-        <a id="label6" href="${path}/item/listItem.do"   title="全部实体商品" class="nor">全部</a>
-        <a id="label4" href="${path}/item/listItem.do?showStatus=1"   title="未上架实体商品" class="nor">未上架</a>
-        <a id="label5" href="${path}/item/listItem.do?showStatus=0"  title="已上架实体商品" class="nor">已上架</a>
+        <a id="label6" href="${path}/item/listItem.do?auditStatus=1"   title="全部实体商品" class="nor">全部</a>
+        <a id="label4" href="${path}/item/listItem.do?showStatus=1&auditStatus=1"   title="未上架实体商品" class="nor">未上架</a>
+        <a id="label5" href="${path}/item/listItem.do?showStatus=0&auditStatus=1"  title="已上架实体商品" class="nor">已上架</a>
     </span></h2>
 
 <form id="form1" name="form1" action="${path}/item/listItem.do" method="post">
@@ -171,7 +196,7 @@
 			<tr>
 				<td>${item.itemNo }</td>
                 <td >${item.itemName }</td>
-                <td><img alt="" src="" width="50" height="50"></td>
+                <td><img alt="" src="${FILE_PATH }${item.imgs }" width="50" height="50"></td>
 				
 				<td>
 					<c:if test="${item.isNew == 1 }"><span class="is" ></span></c:if>
@@ -201,9 +226,16 @@
                
 				<td>
 							<a href="${path}/item/viewItem.do?id=${item.itemNo }" title="查看">查看</a>
-					  		<a href="/ecps-console/ecps/console/item/editItem.do?type=1&itemId=2384">编辑</a>
-					  		<a href="javascript:void(0);" onclick="singleDel('${item.itemNo }')">删除</a>
-					  		<a href="javascript:void(0);" group="2384,0" itemId=3184 showStatus="0">上架</a>			
+					  		<c:if test="${item.showStatus == 1 }">
+						  		<a href="/ecps-console/ecps/console/item/editItem.do?type=1&itemId=2384">编辑</a>
+						  		<a href="javascript:void(0);" onclick="singleDel('${item.itemNo }')">删除</a>
+					  			<a href="javascript:void(0);" onclick="isShow(${item.itemId}, 0)">上架</a>
+					  		</c:if>
+					  		<c:if test="${item.showStatus == 0 }">
+					  			<a href="javascript:void(0);" onclick="isShow(${item.itemId}, 1)">下架</a>
+					  			<a href="javascript:void(0);" >发布</a>
+					  		</c:if>
+					  		
 				</td>
 			</tr>
 			</c:forEach>

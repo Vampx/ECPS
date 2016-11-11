@@ -11,5 +11,8 @@ public interface EbFeatureDao {
 	//查询特殊属性
 	public List<EbFeature>  selectSpecFeature();
 	
+	//查询筛选属性
+	public List<EbFeature>  selectIsSelectFeature();
+	
 
 }

@@ -32,6 +32,11 @@ public class EbItemDaoImpl extends SqlSessionDaoSupport implements EbItemDao {
 	public void saveItem(EbItem item) {
 		this.getSqlSession().insert(ns+"insert", item);
 	}
+
+	public void updateItem(EbItem item) {
+		this.getSqlSession().update(ns+"updateByPrimaryKeySelective", item);
+		
+	}
 	
 }
 

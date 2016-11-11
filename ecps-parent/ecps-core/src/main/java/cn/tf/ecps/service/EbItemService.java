@@ -18,14 +18,17 @@ public interface EbItemService {
 	
 	public Page selectItemByCondition(QueryCondition qc);
 
+	//删除商品
 	public int deleteGoods(String id);
 
 	//通过itm_no查询
 	public EbItem selectItemByNo(String id);
-	
+	//保存商品信息
 	public void saveItem(EbItem item,EbItemClob  itemClob,
 			List<EbParaValue> paraList,List<EbSku> skuList);
-	
-	
+	//商品审核
+	public void auditItem(Long itemId,Short auditStatus,String notes);
+
+	public void showItem(Long itemId, Short showStatus, String notes);
  
 }

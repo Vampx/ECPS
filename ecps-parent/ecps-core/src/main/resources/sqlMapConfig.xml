@@ -12,6 +12,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="cn/tf/ecps/mapper/EbSkuMapper.xml"/>
 		<mapper resource="cn/tf/ecps/mapper/EbParaValueMapper.xml"/>
 		<mapper resource="cn/tf/ecps/mapper/EbSpecValueMapper.xml"/>
+		<mapper resource="cn/tf/ecps/mapper/EbConsoleLogMapper.xml"/>
 	</mappers>
 
 </configuration>

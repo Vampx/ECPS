@@ -1,20 +1,24 @@
 package cn.tf.ecps.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.tf.ecps.dao.EbConsoleLogDao;
 import cn.tf.ecps.dao.EbItemClobDao;
 import cn.tf.ecps.dao.EbItemDao;
 import cn.tf.ecps.dao.EbParaValueDao;
 import cn.tf.ecps.dao.EbSkuDao;
 
+import cn.tf.ecps.po.EbConsoleLog;
 import cn.tf.ecps.po.EbItem;
 import cn.tf.ecps.po.EbItemClob;
 import cn.tf.ecps.po.EbParaValue;
 import cn.tf.ecps.po.EbSku;
 import cn.tf.ecps.service.EbItemService;
+import cn.tf.ecps.utils.ECPSUtil;
 import cn.tf.ecps.utils.Page;
 import cn.tf.ecps.utils.QueryCondition;
 
@@ -29,6 +33,9 @@ public class EbItemServiceImpl implements EbItemService {
 	private EbParaValueDao paraValueDao;
 	@Autowired
 	private EbSkuDao skuDao;
+	
+	@Autowired
+	private EbConsoleLogDao consoleLogDao;
 
 	public Page selectItemByCondition(QueryCondition qc) {
 		// 获得页码
@@ -73,6 +80,44 @@ public class EbItemServiceImpl implements EbItemService {
 		paraValueDao.saveParaValue(paraList, item.getItemId());
 		skuDao.saveSku(skuList, item.getItemId());
 
+	}
+
+	public void auditItem(Long itemId, Short auditStatus, String notes) {
+		//变更审核字段
+		EbItem item = new EbItem();
+		item.setAuditStatus(auditStatus);
+		item.setItemId(itemId);
+		itemDao.updateItem(item);
+		
+		//插入操作日志
+		EbConsoleLog log = new EbConsoleLog();
+		log.setEntityId(itemId);
+		log.setEntityName("商品表");
+		log.setNotes(notes);
+		log.setOpTime(new Date());
+		log.setOpType(ECPSUtil.readProp("AUDIT_ITEM_TYPE"));
+		log.setTableName("EB_ITEM");
+		log.setUserId(1l);  //未实现
+		consoleLogDao.saveLog(log);
+	}
+	
+	public void showItem(Long itemId, Short showStatus, String notes) {
+		//变更审核字段
+		EbItem item = new EbItem();
+		item.setShowStatus(showStatus);
+		item.setItemId(itemId);
+		itemDao.updateItem(item);
+		
+		//插入操作日志
+		EbConsoleLog log = new EbConsoleLog();
+		log.setEntityId(itemId);
+		log.setEntityName("商品表");
+		log.setNotes(notes);
+		log.setOpTime(new Date());
+		log.setOpType(ECPSUtil.readProp("show_item_type"));
+		log.setTableName("EB_ITEM");
+		log.setUserId(1l);   //未实现
+		consoleLogDao.saveLog(log);
 	}
 
 }

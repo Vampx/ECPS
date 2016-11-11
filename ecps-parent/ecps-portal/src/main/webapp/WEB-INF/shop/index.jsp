@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@include file="taglibs.jsp" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -47,13 +48,13 @@ $(function(){
             $(this).attr('title','收缩↑');
             $(this).attr('class','btn80x22 close');
             var len = $('.filter li').length;
-            $('.filter li').slice(6,len-2).show();
+            $('.filter li').slice(2,len-2).show();
         },
         function () {
             $(this).attr('title','展开↓');
             $(this).attr('class','btn80x22 open');
             var len = $('.filter li').length;
-            $('.filter li').slice(7,len-2).hide();
+            $('.filter li').slice(2,len-2).hide();
         }
     );
 
@@ -75,6 +76,34 @@ $(function(){
 		}
 		obj.removeClass('here');
 		$(this).addClass('here');
+		
+		var price = "";
+		var brandId = "";
+		var paraList = "";
+		//每当点击一个筛选条件的选项时就要遍历整个筛选条件来获取到所有被选中的a链接的值
+		$('.filter li a').each(function(){
+			//如果a链接上有class="here"说明是被选中的
+			var clazz = $(this).attr("class");
+			if(clazz == "here"){
+				//在筛选条件中每一个a链接都加上两个自定义的属性，一个是fType用于区分筛选条件的类型，一个是fValue用于存储筛选条件的值
+				var fType = $(this).attr("fType");
+				var fValue = $(this).attr("fValue");
+				//判断当前的a链接的类型
+				if(fType == "price"){
+					//把fValue赋值给price
+					price = fValue;
+				}else if(fType == "brand"){
+					//把FValue赋值给brandId
+					brandId = fValue;
+				}else if(fType == "feature" && fValue != ""){
+					paraList = paraList + fValue +",";
+				}
+			}
+		})
+		//alert(price + "*********"+ brandId+"*********"+paraList);
+		//让iframe请求重置iframe的src
+		var iPath = "${path}/item/listItem.do?price="+price+"&brandId="+brandId+"&paraList="+paraList+"&date="+new Date();
+		$("#itemListIframe").attr("src",iPath);
     });
 
 	$("#filterRest").click(function(){
@@ -165,48 +194,7 @@ $(function(){
 	<li class="dev"><a href="#" title="在线客服">在线客服</a></li>
 	<li class="dev"><a href="#" title="关于中国移动">关于中国移动</a></li>
 	<li class="dev after"><a href="#" title="English">English</a></li>
-	<!--
-		<li class="dev"><a href="#" title="购物车2件" class="icon_car">购物车<var>2</var>件</a></li>
-		<li class="dev"><a href="javascript:void(0)" id="addFavorite">加入收藏夹</a></li>
-		<li class="dev"><a href="javascript:void(0)" id="setHome">设为首页</a></li>
-
-		<li class="sit"><a href="javascript:void(0);" title="网站群链接" class="sel">网站群链接<cite class="inb"></cite></a>
-		<ul class="ul bx_bottom" style="display:none">
-		<li><a href="http://www.ah.10086.cn" title="安徽公司">安徽公司</a></li>
-		<li><a href="http://www.bj.10086.cn" title="北京公司">北京公司</a></li>
-		<li><a href="http://www.cq.10086.cn" title="重庆公司">重庆公司</a></li>
-		<li><a href="http://www.fj.10086.cn" title="福建公司">福建公司</a></li>
-		<li><a href="http://www.gs.10086.cn" title="甘肃公司">甘肃公司</a></li>
-		<li><a href="http://www.gd.10086.cn" title="广东公司">广东公司</a></li>
-		<li><a href="http://www.gx.10086.cn" title="广西公司">广西公司</a></li>
-		<li><a href="http://www.gz.10086.cn" title="贵州公司">贵州公司</a></li>
-		<li><a href="http://www.hi.10086.cn" title="海南公司">海南公司</a></li>
-		<li><a href="http://www.he.10086.cn" title="河北公司">河北公司</a></li>
-		<li><a href="http://www.ha.10086.cn" title="河南公司">河南公司</a></li>
-		<li><a href="http://www.hl.10086.cn" title="黑龙江公司">黑龙江公司</a></li>
-		<li><a href="http://www.hb.10086.cn" title="湖北公司">湖北公司</a></li>
-		<li><a href="http://www.hn.10086.cn" title="湖南公司">湖南公司</a></li>
-		<li><a href="http://www.js.10086.cn" title="江苏公司">江苏公司</a></li>
-		<li><a href="http://www.jx.10086.cn" title="江西公司">江西公司</a></li>
-		<li><a href="http://www.jl.10086.cn" title="吉林公司">吉林公司</a></li>
-		<li><a href="http://www.ln.10086.cn" title="辽宁公司">辽宁公司</a></li>
-		<li><a href="http://www.nm.10086.cn" title="内蒙古公司">内蒙古公司</a></li>
-		<li><a href="http://www.nx.10086.cn" title="宁夏公司">宁夏公司</a></li>
-		<li><a href="http://www.qh.10086.cn" title="青海公司">青海公司</a></li>
-		<li><a href="http://www.sd.10086.cn" title="山东公司">山东公司</a></li>
-		<li><a href="http://www.sn.10086.cn" title="陕西公司">陕西公司</a></li>
-		<li><a href="http://www.sx.10086.cn" title="山西公司">山西公司</a></li>
-		<li><a href="http://www.sh.10086.cn" title="上海公司">上海公司</a></li>
-		<li><a href="http://www.sc.10086.cn" title="四川公司">四川公司</a></li>
-		<li><a href="http://www.tj.10086.cn" title="天津公司">天津公司</a></li>
-		<li><a href="http://www.xj.10086.cn" title="新疆公司">新疆公司</a></li>
-		<li><a href="http://www.xz.10086.cn" title="西藏公司">西藏公司</a></li>
-		<li><a href="http://www.yn.10086.cn" title="云南公司">云南公司</a></li>
-		<li><a href="http://www.zj.10086.cn" title="浙江公司">浙江公司</a></li>
-		<li class="clr"><a href="http://www.chinamobileltd.com" title="chinamobileltd">chinamobileltd</a></li>
-		<li class="clr"><a href="http://www.cmdi.10086.cn" title="中国移动设计院">中国移动设计院</a></li>
-		<li class="clr"><a href="http://labs.10086.cn" title="中国移动研究院">中国移动研究院</a></li>
-		</ul>-->
+	
 	</li>
 	</ul>
 </div></div>
@@ -559,91 +547,46 @@ $(function(){
 		
 			
 			<ul class="uls filter">
-				<li><label>您已选择：</label><p class="sel">
-					<a href="javascript:void(0);"><em>归属地：</em>贵阳<cite title="关闭此筛选条件">X</cite></a>
-					<a href="javascript:void(0);"><em>品牌：</em>动感地带<cite title="关闭此筛选条件">X</cite></a>
-				</p></li>
-				<li><b>活动类型：</b><p>
-					<a href="javascript:void(0);" title="不限" class="here">不限</a>
-					<a href="javascript:void(0);" title="0元购机">0元购机</a>
-					<a href="javascript:void(0);" title="优化购机">优化购机</a>
-					<a href="javascript:void(0);" title="赠送话费">赠送话费</a>
-				</p></li>
+				
 				<li><b>价格：</b><p>
-					<a href="javascript:void(0);" title="不限" class="here">不限</a>
-					<a href="javascript:void(0);" title="1-99">1-499</a>
-					<a href="javascript:void(0);" title="100-199">500-999</a>
-					<a href="javascript:void(0);" title="200-499">1000-1999</a>
-					<a href="javascript:void(0);" title="200-499">2000-2999</a>
-					<a href="javascript:void(0);" title="200-499">3000-3999</a>
-					<a href="javascript:void(0);" title="200-499">4000-4999</a>
-					<a href="javascript:void(0);" title="500以上">5000以上</a>
+					<a href="javascript:void(0);" fType="price" fValue="" title="不限" class="here">不限</a>
+					<a href="javascript:void(0);" fType="price" fValue="1-499">1-499</a>
+					<a href="javascript:void(0);" fType="price" fValue="500-999">500-999</a>
+					<a href="javascript:void(0);" fType="price" fValue="1000-1999">1000-1999</a>
+					<a href="javascript:void(0);" fType="price" fValue="2000-2999">2000-2999</a>
+					<a href="javascript:void(0);" fType="price" fValue="3000-3999">3000-3999</a>
+					<a href="javascript:void(0);" fType="price" fValue="4000-4999">4000-4999</a>
+					<a href="javascript:void(0);" fType="price" fValue="5000-100000">5000以上</a>
 				</p></li>
-				<li><b>操作系统：</b><p>
-					<a href="javascript:void(0);" title="不限" class="here">不限</a>
-					<a href="javascript:void(0);" title="Android">Android</a>
-					<a href="javascript:void(0);" title="IOS">IOS</a>
-					<a href="javascript:void(0);" title="Windows">Windows</a>
-					<a href="javascript:void(0);" title="Mobile">Mobile</a>
-					<a href="javascript:void(0);" title="Symbian(S60及以上)">Symbian(S60及以上)</a>
-					<a href="javascript:void(0);" title="其它智能系统">其它智能系统</a>
-					<a href="javascript:void(0);" title="非智能手机">非智能手机</a>
-				</p></li>
-				<li><b>归属地：</b><p>
-					<span><a href="javascript:void(0);" title="不限" class="here">不限</a></span>
-					<span><a href="javascript:void(0);" title="贵阳">贵阳</a></span>
-					<span><a href="javascript:void(0);" title="都匀">都匀</a></span>
-					<span><a href="javascript:void(0);" title="毕节">毕节</a></span>
-					<span><a href="javascript:void(0);" title="六盘水">六盘水</a></span>
-					<span><a href="javascript:void(0);" title="凯里">凯里</a></span>
-					<span><a href="javascript:void(0);" title="遵义">遵义</a></span>
-					<span><a href="javascript:void(0);" title="LG">兴义</a></span>
-					<span><a href="javascript:void(0);" title="铜仁">铜仁</a></span>
-					<span><a href="javascript:void(0);" title="安顺">安顺</a></span>
-				</p></li>
+				
+				
 				<li><b>品牌：</b><p>
-					<a href="javascript:void(0);" title="不限" class="here">不限</a>
-					<a href="javascript:void(0);" title="诺基亚">诺基亚</a>
-					<a href="javascript:void(0);" title="摩托罗拉">摩托罗拉</a>
-					<a href="javascript:void(0);" title="三星">三星</a>
-					<a href="javascript:void(0);" title="索爱">索爱</a>
-					<a href="javascript:void(0);" title="天语">天语</a>
-					<a href="javascript:void(0);" title="联想">联想</a>
-					<a href="javascript:void(0);" title="LG">LG</a>
-					<a href="javascript:void(0);" title="海尔">海尔</a>
-					<a href="javascript:void(0);" title="中兴">中兴</a>
-					<a href="javascript:void(0);" title="BlackBerry">BlackBerry</a>
-					<a href="javascript:void(0);" title="酷派">酷派</a>
-					<a href="javascript:void(0);" title="华为">华为</a>
-					<a href="javascript:void(0);" title="海信">海信</a>
-					<a href="javascript:void(0);" title="HTC">HTC</a>
-					<a href="javascript:void(0);" title="华硕">华硕</a>
-					<a href="javascript:void(0);" title="TCL">TCL</a>
+					<a href="javascript:void(0);" fType="brand" fValue="" class="here">不限</a>
+					<c:forEach items="${bList }" var="brand">
+						<a href="javascript:void(0);" fType="brand" fValue="${brand.brandId }" >${brand.brandName }</a>
+					</c:forEach>
+					
+					
 				</p></li>
-				<li><b>商品搜索：</b><p>
-					<input type="text" class="txt_sch gray" id="" name="" onfocus="if(this.value=='请输入商品名称关键字'){this.value='';this.className='txt_sch'}" onblur="if(this.value==''){this.value='请输入商品名称关键字';this.className='txt_sch gray'}" value="请输入商品名称关键字" /><input type="submit" value="搜索" class="hand btn60x26" />
-				</p></li>
-
-				<li style="display:none"><b>外观：</b><p>
-					<a href="javascript:void(0);" title="不限" class="here">不限</a>
-					<a href="javascript:void(0);" title="直板">直板</a>
-					<a href="javascript:void(0);" title="滑盖">滑盖</a>
-					<a href="javascript:void(0);" title="翻盖">翻盖</a>
-					<a href="javascript:void(0);" title="旋盖">旋盖</a>
-				</p></li>
-				<li style="display:none"><b>操控：</b><p>
-					<a href="javascript:void(0);" title="不限" class="here">不限</a>
-					<a href="javascript:void(0);" title="标准键盘">标准键盘</a>
-					<a href="javascript:void(0);" title="全键盘">全键盘</a>
-					<a href="javascript:void(0);" title="电阻屏触屏">电阻屏触屏</a>
-					<a href="javascript:void(0);" title="电容屏触屏">电容屏触屏</a>
-				</p></li>
+				
+				<c:forEach items="${fList }" var="feature">
+					<li style="display:none"><b>${feature.featureName }：</b>
+						<p>
+							<a href="javascript:void(0);" fType="feature" fValue="" title="不限" class="here">不限</a>
+							<c:forEach items="${feature.selectValues }" var="val">
+								<a href="javascript:void(0);" fType="feature" fValue="${val }">${val }</a>
+							</c:forEach>
+						</p>
+					</li>
+				</c:forEach>
+				
+				
 
 				<li class="line"></li>
 				<li class="alg_c after"><a href="javascript:void(0);" title="高级搜索" class="btn80x22 open">高级搜索</a></li>
 			</ul>
 			
-		<iframe id="itemListIframe" src="phoneClassification.jsp" frameBorder=0 scrolling=no width="100%" height="200%"  ></iframe>
+		<iframe id="itemListIframe" src="${path }/item/listItem.do" frameBorder=0 scrolling=no width="100%" height="200%"  ></iframe>
 		
 			
 	</div>

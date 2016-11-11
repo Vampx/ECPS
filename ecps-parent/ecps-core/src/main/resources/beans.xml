@@ -36,6 +36,8 @@
 			<tx:method name="add*" propagation="REQUIRED"/>
 			<tx:method name="update*" propagation="REQUIRED"/>
 			<tx:method name="modify*" propagation="REQUIRED"/>
+			<tx:method name="audit*" propagation="REQUIRED"/>
+			<tx:method name="show*" propagation="REQUIRED"/>
 			<tx:method name="delete*" propagation="REQUIRED"/>
 			<tx:method name="remove*" propagation="REQUIRED"/>
 			<tx:method name="select*" read-only="true"/>
