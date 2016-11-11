@@ -1,8 +1,11 @@
 package cn.tf.ecps.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -118,6 +121,23 @@ public class EbItemServiceImpl implements EbItemService {
 		log.setTableName("EB_ITEM");
 		log.setUserId(1l);   //未实现
 		consoleLogDao.saveLog(log);
+	}
+	
+	public List<EbItem> selectItemFont(String price, Long brandId, String paraList) {
+		
+		Map<String, Object> map=new HashMap<String,Object>();
+		if(StringUtils.isNotBlank(price)){
+			String[] prices=price.split("-");
+			map.put("minPrice", prices[0]);
+			map.put("maxPrice", prices[1]);
+		}
+		map.put("brandId", brandId);
+		if(StringUtils.isNotBlank(paraList)){
+			String[] paraArr=paraList.split(",");
+			map.put("paraList", paraArr);
+		}
+		return itemDao.listItem(map);
+		
 	}
 
 }

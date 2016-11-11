@@ -1,5 +1,6 @@
 package cn.tf.ecps.po;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class EbItem {
@@ -74,6 +75,20 @@ public class EbItem {
     private String giftShowType;
 
     private String imgSize1;
+    
+    private BigDecimal skuPrice;
+	
+	
+
+	public BigDecimal getSkuPrice() {
+		return skuPrice;
+	}
+
+	public void setSkuPrice(BigDecimal skuPrice) {
+		this.skuPrice = skuPrice;
+	}
+    
+    
 
     public Long getItemId() {
         return itemId;

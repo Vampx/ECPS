@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import cn.tf.ecps.po.EbBrand;
 import cn.tf.ecps.po.EbFeature;
+import cn.tf.ecps.po.EbItem;
 import cn.tf.ecps.service.EbBrandService;
 import cn.tf.ecps.service.EbFeatureService;
 import cn.tf.ecps.service.EbItemService;
@@ -17,6 +18,8 @@ import cn.tf.ecps.service.EbItemService;
 @RequestMapping("/item")
 public class EbItemController {
 
+	@Autowired
+	private EbItemService itemService;
 	@Autowired
 	private EbBrandService brandService;
 
@@ -38,7 +41,9 @@ public class EbItemController {
 
 	// 商品列表查询
 	@RequestMapping("/listItem.do")
-	public String listItem() {
+	public String listItem(String price, Long brandId, String paraList, Model model){
+		List<EbItem> itemList = itemService.selectItemFont(price, brandId, paraList);
+		model.addAttribute("itemList", itemList);
 		return "phoneClassification";
 	}
 

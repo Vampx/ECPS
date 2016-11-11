@@ -30,5 +30,8 @@ public interface EbItemService {
 	public void auditItem(Long itemId,Short auditStatus,String notes);
 
 	public void showItem(Long itemId, Short showStatus, String notes);
+
+	public List<EbItem> selectItemFont(String price, Long brandId,
+			String paraList);
  
 }
