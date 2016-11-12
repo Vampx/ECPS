@@ -23,5 +23,17 @@
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 	
+	
+	<!-- 拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/user/login/**"/>
+			<bean class="cn.tf.ecps.interceptor.LoginInterceptor"></bean>
+		</mvc:interceptor>
+	
+	</mvc:interceptors>
+	
+	
+	
 
 </beans>

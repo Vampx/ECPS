@@ -24,15 +24,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 <link rel="search" type="application/opensearchdescription+xml" href="../opensearch.xml" title="移动购物" />
-<link rel="stylesheet" href="../res/css/style.css" />
-<script src="../res/js/jquery.js"></script>
-<script src="../res/js/com.js"></script>
+<link rel="stylesheet" href="${path }/res/css/style.css" />
+<script src="${path }/res/js/jquery.js"></script>
+<script src="${path }/res/js/com.js"></script>
+<script type="text/javascript">var path = "${path}";</script>
+<script src="${path }/res/js/getUser.js"></script>
 <script type="text/javascript">
 $(function(){
 
+
 	$("#loginAlertIs").click(function(){
-		tipShow('#loginAlert');
+		window.location.href = "${path}/user/toLogin.do";
 	});
+
 
 	$("#promptAlertIs").click(function(){
 		tipShow('#promptAlert');
@@ -338,7 +342,7 @@ $(function(){
 
 <div class="w loc">
 	
-	<p class="l"><a href="#" title="商城首页">商城首页</a><samp>|</samp><a href="./person/index.jsp" title="我的商城">我的商城</a></p>
+	<p class="l"><a href="#" title="商城首页">商城首页</a><samp>|</samp><a href="${path}/user/login/toPersonIndex.do" title="我的商城">我的商城</a></p>
 
 	<dl id="cart" class="cart l">
 		<dt><a href="#" title="结算">结算</a>购物车:<b id="">123</b>件</dt>

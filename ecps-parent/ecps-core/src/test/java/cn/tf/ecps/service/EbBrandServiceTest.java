@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import cn.tf.ecps.po.EbBrand;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)//指定juit的spring运行器
+/*@RunWith(SpringJUnit4ClassRunner.class)//指定juit的spring运行器
 @ContextConfiguration(locations={"classpath:beans.xml"})//指定spring的文件
 public class EbBrandServiceTest {
 
@@ -32,3 +32,4 @@ public class EbBrandServiceTest {
 
 	
 }
+*/

@@ -3,7 +3,7 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
+<%@include file="../taglibs.jsp" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -19,9 +19,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 <link rel="search" type="application/opensearchdescription+xml" href="../opensearch.xml" title="移动购物" />
-<link rel="stylesheet" href="../../res/css/style.css" />
-<script src="../../res/js/jquery.js"></script>
-<script src="../../res/js/com.js"></script>
+<link rel="stylesheet" href="${path }/res/css/style.css" />
+<script src="${path }/res/js/jquery.js"></script>
+<script src="${path }/res/js/com.js"></script>
 <script type="text/javascript">
 $(function(){
 
@@ -36,11 +36,51 @@ $(function(){
 	$("#transitAlertIs").click(function(){
 		tipShow('#transitAlert');
 	});
+	
+	$(".bg_text input").blur(function(){
+		//获得离开焦点的input的值
+		var val=$(this).val();
+		val=$.trim(val);
+		if(val==null || val==""){
+			//获得离开焦点的input的name
+			var inputName=$(this).attr("name");
+			if(inputName=="username"){
+				$("#errorName").html("请输入用户名");
+			}else if(inputName=="password"){
+				$("#errorName").html("请输入密码");
+			}else {
+				$("#errorName").html("请输入验证码");
+			}
+			//显示提示信息
+			$("#errorName").show(500);
+		}else{
+			$("#errorName").hide(500);
+		}
+	});
+	var tip=$("#tip").val();
+	if(tip=="cap_error"){
+		$("#errorName").html("验证码错误");
+		$("#errorName").show(500);
+	}else if(tip=="userpass_error"){
+		$("#errorName").html("用户名或密码错误");
+		$("#errorName").show(500);
+	}
+
+	
 
 });
 function login(){
 	window.location.href="../phoneClassification.jsp";
 }
+//刷新图片
+function changeImage(){
+	var imgsPath="${path}/user/getImage.do?date="+new Date();
+	$("#captchaImage").attr("src",imgsPath);
+}
+
+
+
+
 </script>
 </head>
 <body>
@@ -274,10 +314,12 @@ function login(){
 </div>
 
 <div class="sign">
-	<div class="l ad420x205"><a href="#" title="title"><img src="../../res/img/pic/ad420x205.jpg" alt="" /></a></div>
+	<div class="l ad420x205"><a href="#" title="title"><img src="${path}/res/img/pic/ad420x205.jpg" alt="" /></a></div>
 	<div class="r">
 		<h2 title="登录移动商城">登录移动商城</h2>
-		<form id="jvForm" action="../phoneClassification.jsp" method="post">
+		
+		<input  type="hidden" id="tip"  value="${tip}" }   />
+		<form id="jvForm" action="${path }/user/login.do" method="post">
 			<input type="hidden" name="returnUrl" value="${returnUrl}"/>
 			<input type="hidden" name="processUrl" value="${processUrl}"/>
 			<ul class="uls form">
@@ -296,7 +338,7 @@ function login(){
 				<span class="bg_text small">
 					<input type="text" id="captcha" name="captcha" maxLength="7" vld="{required:true}" />
 				</span>
-				<img src="../../res/img/pic/code.png" onclick="this.src='${base}/captcha.svl?d='+new Date()" class="code" alt="换一张" /><a href="javascript:void(0);" onclick="this.src='${base}/captcha.svl?d='+new Date()" title="换一张">换一张</a></li>
+				<img id="captchaImage"  src="${path}/user/getImage.do" onclick="changeImage();" class="code" alt="换一张" /><a href="javascript:void(0);" onclick="changeImage();" title="换一张">换一张</a></li>
 			<li class="gray"><label for="">&nbsp;</label><input type="checkbox" name="" />30天内免登录（公共电脑勿用）</li>
 			<li><label for="">&nbsp;</label><input type="submit" value="登 录" class="hand btn66x23"/><a href="#" title="忘记密码？">忘记密码？</a></li>
 			<li class="alg_c dev gray">还不是移动商城会员？<a href="../passport/register.html" title="免费注册">免费注册</a></li>

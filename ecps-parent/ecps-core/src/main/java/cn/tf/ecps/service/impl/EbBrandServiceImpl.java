@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 
 import cn.tf.ecps.dao.EbBrandDao;
-import cn.tf.ecps.mapper.EbBrandMapper;
 import cn.tf.ecps.po.EbBrand;
 import cn.tf.ecps.po.EbBrandExample;
 import cn.tf.ecps.po.EbBrandExample.Criteria;
