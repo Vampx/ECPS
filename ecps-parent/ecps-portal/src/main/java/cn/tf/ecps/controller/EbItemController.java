@@ -46,5 +46,13 @@ public class EbItemController {
 		model.addAttribute("itemList", itemList);
 		return "phoneClassification";
 	}
+	
+	//商品详情页
+	@RequestMapping("/productDetail.do")
+	public String productDetail(Long itemId,Model model) {
+		EbItem item = itemService.selectItemDetailById(itemId);
+		model.addAttribute("item",item);
+		return "productDetail";
+	}
 
 }

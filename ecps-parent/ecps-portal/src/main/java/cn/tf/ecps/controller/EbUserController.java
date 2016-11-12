@@ -135,8 +135,6 @@ public class EbUserController {
 			return "passport/login";
 		}
 		session.setAttribute("user", user);
-		
-		
 		return "redirect:/item/toIndex.do";
 	}
 	
@@ -148,7 +146,6 @@ public class EbUserController {
 		json.accumulate("user", user);  //自动转换为json字符串
 		String result=json.toString();
 		out.write(result);
-		
 	}
 	//跳转到个人中心
 	@RequestMapping("/login/toPersonIndex.do")
@@ -214,7 +211,6 @@ public class EbUserController {
 			return "redirect:toAddr.do";
 		}
 		return null;
-		
 	}
 
 }

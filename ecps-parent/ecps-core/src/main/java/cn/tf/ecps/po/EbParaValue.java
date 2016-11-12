@@ -8,8 +8,22 @@ public class EbParaValue {
     private Long featureId;
 
     private String paraValue;
+    
+    
+    private String featureName;
+    
+   
+   
 
-    public Long getParaId() {
+	public String getFeatureName() {
+		return featureName;
+	}
+
+	public void setFeatureName(String featureName) {
+		this.featureName = featureName;
+	}
+
+	public Long getParaId() {
         return paraId;
     }
 

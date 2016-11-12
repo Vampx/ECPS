@@ -2,6 +2,7 @@ package cn.tf.ecps.po;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class EbItem {
     private Long itemId;
@@ -78,7 +79,42 @@ public class EbItem {
     
     private BigDecimal skuPrice;
 	
+    private List<EbParaValue> paraList;
 	
+	private List<EbSku> skuList;
+	
+	private EbItemClob itemClob;
+	
+	
+	
+	
+
+	public List<EbParaValue> getParaList() {
+		return paraList;
+	}
+
+	public void setParaList(List<EbParaValue> paraList) {
+		this.paraList = paraList;
+	}
+
+	public List<EbSku> getSkuList() {
+		return skuList;
+	}
+
+	public void setSkuList(List<EbSku> skuList) {
+		this.skuList = skuList;
+	}
+
+	public EbItemClob getItemClob() {
+		return itemClob;
+	}
+
+	public void setItemClob(EbItemClob itemClob) {
+		this.itemClob = itemClob;
+	}
+
+
+    
 
 	public BigDecimal getSkuPrice() {
 		return skuPrice;

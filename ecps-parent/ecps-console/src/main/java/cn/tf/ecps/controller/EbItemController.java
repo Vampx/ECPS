@@ -244,10 +244,6 @@ public class EbItemController {
 				skuList.add(skuObj);
 			}
 		}
-		System.out.println(item);
-		System.out.println(itemClob);
-		System.out.println(paraList);
-		System.out.println(skuList);
 		itemService.saveItem(item, itemClob, paraList, skuList);
 		return "redirect:listItem.do?showStatus=1";
 	}

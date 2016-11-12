@@ -1,27 +1,34 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@include file="taglibs.jsp" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10" />
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">    
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="This is my page">
 <meta name="author" content="http://www.asiainfo-linkage.com/" />
 <meta name="copyright" content="asiainfo-linkage.com 版权所有，未经授权禁止链接、复制或建立镜像。" />
 <meta name="description" content="中国移动通信 name.com"/>
 <meta name="keywords" content="中国移动通信 name.com"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=1.0"/>
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10" />
-<title>商品详细_移动商城_中国移动通信</title>
+
+
+<title>手机商城_移动商城_中国移动通信</title>
 <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 <link rel="search" type="application/opensearchdescription+xml" href="../opensearch.xml" title="移动购物" />
-<link rel="stylesheet" href="../res/css/style.css" />
-<script src="../res/js/jquery.js"></script>
-<script src="../res/js/com.js"></script>
+<link rel="stylesheet" href="${path }/res/css/style.css" />
+<script src="${path }/res/js/jquery.js"></script>
+<script src="${path }/res/js/com.js"></script>
+<script type="text/javascript">var path = "${path}";</script>
+<script src="${path }/res/js/getUser.js"></script>
 <script type="text/javascript">
 $(function(){
 
@@ -578,19 +585,18 @@ function addCart(){
 	<div class="r wr">
 		
 		<div class="product">
-        	<h2>HTC A6390<span class="gray f14">WCDMA/GSM月黑价！只等你到天明！WCDMA/GSM月黑价！</span></h2>
+        	<h2>${item.itemName }<span class="gray f14">${item.promotion }</span></h2>
 			<div class="showPro">
-				<div class="big"><a id="showImg" class="cloud-zoom" href="../res/img/pic/bigimage00.jpg" rel="adjustX:10,adjustY:-1"><img title="optional title display" alt="" src="../res/img/pic/smallimage.jpg"></a></div>
-				<div class="big_type">团购中...</div>
+				<div class="big"><a id="showImg" class="cloud-zoom" href="${file_path }${item.imgs}" rel="adjustX:10,adjustY:-1"><img title="optional title display" alt="" src="${file_path }${item.imgs}"></a></div>
 				<div class="small">
 					<span class="smallL" title="向左">&nbsp</span>
 					<div class="smallBox">
 						<div class="smallList">
-							<a class="cloud-zoom-gallery here" title="red" href="../res/img/pic/bigimage00.jpg" rel="useZoom: 'showImg', smallImage: '../res/img/pic/smallimage.jpg'"><img alt="thumbnail 1" src="../res/img/pic/tinyimage.jpg"></a>
-							<a class="cloud-zoom-gallery" title="blue" href="../res/img/pic/bigimage01.jpg" rel="useZoom: 'showImg', smallImage: '../res/img/pic/smallimage-1.jpg'"><img alt="thumbnail 2" src="../res/img/pic/tinyimage-1.jpg"></a>
-							<a class="cloud-zoom-gallery" title="blue" href="../res/img/pic/bigimage02.jpg" rel="useZoom: 'showImg', smallImage: '../res/img/pic/smallimage-2.jpg'"><img alt="thumbnail 3" src="../res/img/pic/tinyimage-2.jpg"></a>
-							<a class="cloud-zoom-gallery" title="blue" href="../res/img/pic/bigimage03.jpg" rel="useZoom: 'showImg', smallImage: '../res/img/pic/smallimage-3.jpg'"><img alt="thumbnail 4" src="../res/img/pic/tinyimage-3.jpg"></a>
-							<a class="cloud-zoom-gallery" title="blue" href="../res/img/pic/bigimage04.jpg" rel="useZoom: 'showImg', smallImage: '../res/img/pic/smallimage-4.jpg'"><img alt="thumbnail 5" src="../res/img/pic/tinyimage-4.jpg"></a>
+							<a class="cloud-zoom-gallery here" title="red" href="${file_path }${item.imgs}" rel="useZoom: 'showImg', smallImage: '${file_path }${item.imgs}'"><img alt="thumbnail 1" src="${file_path }${item.imgs}"></a>
+							<a class="cloud-zoom-gallery" title="blue" href="${file_path }${item.imgs}" rel="useZoom: 'showImg', smallImage: '${file_path }${item.imgs}'"><img alt="thumbnail 2" src="${file_path }${item.imgs}"></a>
+							<a class="cloud-zoom-gallery" title="blue" href="${file_path }${item.imgs}" rel="useZoom: 'showImg', smallImage: '${file_path }${item.imgs}'"><img alt="thumbnail 3" src="${file_path }${item.imgs}"></a>
+							<a class="cloud-zoom-gallery" title="blue" href="${file_path }${item.imgs}" rel="useZoom: 'showImg', smallImage: '${file_path }${item.imgs}'"><img alt="thumbnail 4" src="${file_path }${item.imgs}"></a>
+							<a class="cloud-zoom-gallery" title="blue" href="${file_path }${item.imgs}" rel="useZoom: 'showImg', smallImage: '${file_path }${item.imgs}'"><img alt="thumbnail 5" src="${file_path }${item.imgs}"></a>
 						</div>
 					</div>
 					<span class="smallR" title="向右">&nbsp</span>
@@ -610,66 +616,53 @@ function addCart(){
 
 			<form method="post" action="" name="" class="infor">
 				<ul class="uls form">
-				<li class="p34x34">
-					<span><img title="Android" alt="Android" src="../res/img/gray/Android.gif" />Android</span>
-					<span><img title="蓝牙" alt="蓝牙" src="../res/img/gray/Bluetooth.gif" />蓝牙</span>
-					<span><img title="CPU双核" alt="CPU双核" src="../res/img/gray/CPU-Dual-core.gif" />CPU双核</span>
-					<span><img title="双摄像头" alt="双摄像头" src="../res/img/gray/Dual-cameras.gif" />双摄像头</span>
-					<span><img title="翻盖" alt="翻盖" src="../res/img/gray/Flip.gif" />翻盖</span>
-					<span><img title="GPS" alt="GPS" src="../res/img/gray/GPS.gif" />GPS</span>
-					<span><img title="塞班" alt="塞班" src="../res/img/gray/Saipan.gif" />塞班系统</span>
-					<span><img title="滑盖" alt="滑盖" src="../res/img/gray/Slide.gif" />滑盖</span>
-					<span><img title="侧滑盖" alt="侧滑盖" src="../res/img/gray/Sliding-cover.gif" />侧滑盖</span>
-					<span><img title="直板" alt="直板" src="../res/img/gray/Straight.gif" />直板</span>
-					<span><img title="Wifi" alt="Wifi" src="../res/img/gray/Wifi.gif" />Wifi</span>
-					<span><img title="Window7" alt="Window7" src="../res/img/gray/Window7.gif" />Window7</span>
-				</li>
-				<li><label>移 动 价：</label><span class="word"><b class="f14 red mr">￥3999.00</b>(市场价:<del>￥5789.00</del>)</span></li>
-				<li><label>商品编号：</label><span class="word">LJ93756</span></li>
+				
+				<li><label>移 动 价：</label><span class="word"><b id="skuPrice" class="f14 red mr">￥3999.00</b>(市场价:<del id="marketPrice">￥5789.00</del>)</span></li>
+				<li><label>商品编号：</label><span class="word">${item.itemNo }</span></li>
 				<li><label>商品评价：</label><span class="word"><span class="val_no val3d4" title="4分">4分</span><var class="blue">(已有17人评价)</var></span></li>
 				<li><label>运　　费：</label><span class="word">包邮&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" class="blue">配送区域</a></span></li>
-				<li><label>库　　存：</label><span class="word">有货</span></li>
+				<li><label>库　　存：</label><span id="stockState" class="word">有货</span></li>
 				<li><label>支付方式：</label><div class="pre word p16x16">
 					<span title="网银支付" class="bank">网银支付</span>
 					<span title="支付宝" class="pay">支付宝</span>
 					<span title="手机支付" class="moblie">手机支付</span>
 				</div></li>
 				</ul>
-				<div class="box_blue">
-					<ul class="uls form pb16">
-					<li><label class="b">赠　　品：</label><div class="pre">诺基亚（NOKIA）BH-21 NFC技术 连接两台手机 白色 <samp>X 1</samp><br />诺基亚（NOKIA）BH-21 NFC技术 连接两台手机 白色 <samp>X 1</samp></div></li>
-					</ul>
-				</div>
+				
 				<div class="box_orange">
 					<ul class="uls form">
 					<li><label>规　　格：</label><div class="pre spec">
-						<a href="javascript:void(0);" title="黑色16G" class="here">黑色<samp>*</samp>16G</a>
-						<a href="javascript:void(0);" title="白色16G">白色<samp>*</samp>16G白色<samp>*</samp>16G白色<samp>*</samp>16G</a>
-						<a href="javascript:void(0);" title="黑色16G">黑色<samp>*</samp>16G</a>
-						<a href="javascript:void(0);" title="白色16G">白色<samp>*</samp>16G白色<samp>*</samp>16G白色<samp>*</samp>16G</a>
-						<a href="javascript:void(0);" title="黑色16G">黑色<samp>*</samp>16G</a>
-						<a href="javascript:void(0);" title="白色16G">白色<samp>*</samp>16G白色<samp>*</samp>16G白色<samp>*</samp>16G</a>
-						<a href="javascript:void(0);" title="黑色16G">黑色<samp>*</samp>16G</a>
-						<a href="javascript:void(0);" title="白色16G">白色<samp>*</samp>16G白色<samp>*</samp>16G白色<samp>*</samp>16G</a>
-						<a href="javascript:void(0);" title="黑色16G">黑色<samp>*</samp>16G</a>
-						<span title="白色16G">白色<samp>*</samp>16G白色<samp>*</samp>16G白色<samp>*</samp>16G</span>
+					<c:forEach items="${item.skuList }" var="sku" varStatus="state">
+						<c:choose>
+							<c:when test="${state.index == 0 }">
+								<a href="javascript:void(0);"  class="here" skuId="${sku.skuId }">
+									<c:forEach items="${sku.specList }" var="spec">
+										${spec.specValue }
+									</c:forEach>						
+								</a>
+							</c:when>
+							<c:otherwise>
+								<a href="javascript:void(0);" skuId="${sku.skuId }">
+									<c:forEach items="${sku.specList }" var="spec">
+										${spec.specValue }
+									</c:forEach>						
+								</a>
+							</c:otherwise>
+						</c:choose>
+						
+					</c:forEach>
+						
 					</div></li>
 					<li><label>我 要 买：</label><a href="javascript:void(0);" class="inb sub"></a><input readonly type="text" name="" value="1" class="num" size="3" /><a href="javascript:void(0);" class="inb add"></a><em id="sub_add_msg" class="red"></em></li>
-					<li class="submit"><input type="button" value="" class="hand btn138x40" onclick="buy();"/><input type="button" value="" class="hand btn138x40b" onclick="addCart()"/><a href="#" title="加入收藏" class="inb fav">加入收藏</a></li>
+					<li class="submit">
+					<input id="buyNow" type="button" value="" class="hand btn138x40" onclick="buy();"/>
+					<input id="addMyCart" type="button" value="" class="hand btn138x40b" onclick="addCart()"/><a href="#" title="加入收藏" class="inb fav">加入收藏</a></li>
 					
 					
 					</ul>
 				</div>
 
-				<dl class="box_orange msg">
-                    <dt class="failMsg">该商品已下架或未参加活动！</dt>
-                    <dd>你可以：<p>1、联系客服电话&nbsp;<var>10086</var>；<br>2、返回&nbsp;<a href="${siteBaseDN}index.html" title="商城首页">商城首页<samp>&gt;&gt;</samp>。</a></p></dd>
-				</dl>
-
-				<dl class="box_orange msg">
-                    <dt class="failMsg">该商品已下架或未参加活动</dt>
-                    <dd>你可以：<p>1、联系客服电话&nbsp;<var>10086</var>；<br>2、返回&nbsp;<a href="${siteBaseDN}index.html" title="商城首页">商城首页<samp>&gt;&gt;</samp>。</a></p></dd>
-				</dl>
+				
 
 			</form>
 
@@ -698,8 +691,7 @@ function addCart(){
 		
 			<div id="detailTab1" class="detail">
 
-				<img src="../res/img/pic/p800a.jpg" /><img src="../res/img/pic/p800b.jpg" /><img src="../res/img/pic/p800c.jpg" /><img src="../res/img/pic/p800d.jpg" />
-
+				${item.itemClob.itemDesc }
 			</div>
 			
 			<div id="detailTab2" style="display:none">
@@ -711,109 +703,14 @@ function addCart(){
 				</tr>     
 				</thead>
 				<tbody>
-				<tr>
-				<th width="15%" class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>        
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>        
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>        
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>        
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>        
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>        
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>
-				</tbody>
-				<thead>
-				<tr>
-				<th colspan="2">基本参数</th>
-				</tr>     
-				</thead>
-				<tbody>
-				<tr>
-				<th width="15%" class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>        
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>        
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>        
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>        
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>        
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>        
-				<tr>
-				<th class="alg_r">网络频率</th>
-				<td>Edge 900/1800/1900 MHz;TD-SCDMA Dual_band</td>
-				</tr>
+				<c:forEach items="${item.paraList }" var="para">
+					<tr>
+					<th width="15%" class="alg_r">${para.featureName }</th>
+					<td>${para.paraValue }</td>
+					</tr>
+				</c:forEach>
+				        
+				
 				</tbody>
 				</table>
 
@@ -851,6 +748,7 @@ function addCart(){
 			</dl>
 
 		</div>
+
 
 	</div>
 </div>

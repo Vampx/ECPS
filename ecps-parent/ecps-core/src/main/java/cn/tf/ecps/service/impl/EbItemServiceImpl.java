@@ -140,4 +140,8 @@ public class EbItemServiceImpl implements EbItemService {
 		
 	}
 
+	public EbItem selectItemDetailById(long itemId) {
+		return itemDao.selectItemDetailById(itemId);
+	}
+
 }

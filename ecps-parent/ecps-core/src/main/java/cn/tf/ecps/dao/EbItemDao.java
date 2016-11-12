@@ -20,5 +20,7 @@ public interface EbItemDao {
 	public void updateItem(EbItem item);
 
 	public List<EbItem> listItem(Map<String, Object> map);
+	
+	public EbItem selectItemDetailById(long itemId);
 
 }

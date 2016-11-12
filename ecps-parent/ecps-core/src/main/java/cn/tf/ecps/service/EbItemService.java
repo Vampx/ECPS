@@ -33,5 +33,7 @@ public interface EbItemService {
 
 	public List<EbItem> selectItemFont(String price, Long brandId,
 			String paraList);
+	//商品详情查询
+	public EbItem selectItemDetailById(long itemId);
  
 }
