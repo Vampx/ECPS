@@ -25,14 +25,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import cn.tf.ecps.po.EbArea;
 import cn.tf.ecps.po.EbBrand;
 import cn.tf.ecps.po.EbFeature;
 import cn.tf.ecps.po.EbItem;
+import cn.tf.ecps.po.EbShipAddr;
+import cn.tf.ecps.po.EbShipAddrBean;
 import cn.tf.ecps.po.TsPtlUser;
+import cn.tf.ecps.service.EbAreaService;
 import cn.tf.ecps.service.EbBrandService;
 import cn.tf.ecps.service.EbFeatureService;
 import cn.tf.ecps.service.EbItemService;
+import cn.tf.ecps.service.EbShipAddrService;
 import cn.tf.ecps.service.TsPtlUserService;
+import cn.tf.ecps.utils.ECPSUtil;
 import cn.tf.ecps.utils.MD5;
 
 @Controller
@@ -41,6 +47,11 @@ public class EbUserController {
 
 	@Autowired
 	private TsPtlUserService userService;
+	
+	@Autowired
+	private EbShipAddrService addrService;
+	@Autowired
+	private EbAreaService areaService;
 
 	// 进入主页面
 	@RequestMapping("/toLogin.do")
@@ -145,10 +156,55 @@ public class EbUserController {
 		return "person/index";
 	}
 	
-	//跳转到个人中心
+	//查询用户的收货地址
 	@RequestMapping("/login/toAddr.do")
-	public String toAddr(Model model) {
+	public String toAddr(HttpSession session,Model model) {
+		TsPtlUser user=(TsPtlUser) session.getAttribute("user");
+		List<EbShipAddrBean> addrList = addrService.selectAddrByUserId(user.getPtlUserId());
+		model.addAttribute("addrList",addrList);
+		//查询省市级联的地址
+		List<EbArea> aList = areaService.selectAreaByParentId(0l);
+		model.addAttribute("aList",aList);
 		return "person/deliverAddress";
 	}
+	
+	//
+	@RequestMapping("/loadOption.do")
+	public void loadOption(Long parentId,HttpServletResponse response){
+		List<EbArea> aList = areaService.selectAreaByParentId(parentId);
+		JSONObject json=new JSONObject();
+		json.accumulate("aList", aList);  //自动转换为json字符串
+		String result=json.toString();
+		ECPSUtil.printJSON(result, response);
+
+	}
+	
+	/**
+	 * 根据收货地址id查询收货地址
+	 * @param shipAddrId
+	 * @param response
+	 */
+	@RequestMapping("/login/getAddrById.do")
+	public void getAddrById(Long shipAddrId, HttpServletResponse response){
+		EbShipAddr addr = addrService.selectAddrById(shipAddrId);
+		JSONObject jo = new JSONObject();
+		jo.accumulate("addr", addr);
+		String result = jo.toString();
+		ECPSUtil.printJSON(result, response);
+	}
+	
+	//保存或修改
+	@RequestMapping("/login/saveOrUpdateAddr.do")
+	public String saveOrUpdateAddr(HttpSession session,EbShipAddr addr){
+		if(addr.getDefaultAddr()==null){
+			addr.setDefaultAddr((short)0);
+		}
+		TsPtlUser user=(TsPtlUser) session.getAttribute("user");
+		addr.setPtlUserId(user.getPtlUserId());
+		addrService.saveOrUpdateAddr(addr);
+		//重定向时，同一个controller中有两个方法有共同的一段路径，就不需要指定，例如这里/login就可以省略
+		return "redirect:toAddr.do";
+	}
+	
 
 }

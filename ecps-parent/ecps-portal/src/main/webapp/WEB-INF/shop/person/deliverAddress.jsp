@@ -4,23 +4,19 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10" />
-<meta http-equiv="pragma" content="no-cache">
-<meta http-equiv="cache-control" content="no-cache">
-<meta http-equiv="expires" content="0">    
-<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-<meta http-equiv="description" content="This is my page">
+<meta charset="utf-8">
 <meta name="author" content="http://www.asiainfo-linkage.com/" />
 <meta name="copyright" content="asiainfo-linkage.com 版权所有，未经授权禁止链接、复制或建立镜像。" />
 <meta name="description" content="中国移动通信 name.com"/>
 <meta name="keywords" content="中国移动通信 name.com"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=1.0"/>
 <meta name="apple-mobile-web-app-capable" content="yes" />
-
-
-<title>手机商城_移动商城_中国移动通信</title>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10" />
+<title>收货地址_用户中心_移动商城_中国移动通信</title>
 <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 <link rel="search" type="application/opensearchdescription+xml" href="../opensearch.xml" title="移动购物" />
@@ -31,6 +27,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script src="${path }/res/js/getUser.js"></script>
 <script type="text/javascript">
 $(function(){
+	
+	$("#jvForm").submit(function(){
+		var isSubmit = true;
+		var addrLength = $("#addrLength").val();
+		var shipAddrId = $("#shipAddrId").val();
+		if(shipAddrId == null || shipAddrId == ""){
+			if(addrLength == 5){
+				alert("收货地址最后只能有5个");
+				isSubmit = false;
+			}
+		}
+		return isSubmit;
+	})
 
 	$("#loginAlertIs").click(function(){
 		tipShow('#loginAlert');
@@ -44,7 +53,97 @@ $(function(){
 		tipShow('#transitAlert');
 	});
 	
+	//选择省的选项的时的事件定义
+	$("#province").change(function(){
+		var parentId = $(this).val();
+		loadOption(parentId, "#mycity");
+	})
+	$("#mycity").change(function(){
+		var parentId = $(this).val();
+		loadOption(parentId, "#district");
+	})
+	
+	
+	
 });
+/**
+ * 第一个参数是要加载的select的父节点的id， 
+          第二个参数当前页面上要加载的select元素的id
+ */
+function loadOption(parentId, selectId){
+	$.ajax({
+		url:"${path}/user/loadOption.do",
+		type:"post",
+		dataType:"text",
+		async:false,
+		data:{
+			parentId:parentId
+		},
+		success:function(responseText){
+			//清空要追加的select
+			
+			if(selectId == "#mycity"){
+				//如果是选择其中一个省，加载该省下的所有的option时既要清空城市的option也要清空区县
+				$(selectId).empty();
+				$("#district").empty();
+				//把城市和区县的请选择的option给加回来
+				$(selectId).append("<option value='-1'>城市</option>");
+				$("#district").append("<option value='-1'>区县</option>");
+			}else{
+				//如果是选择城市，加载城市下的区县，只清区县下的option即可
+				$(selectId).empty();
+				$(selectId).append("<option value='-1'>区县</option>");
+			}
+			//alert(responseText);
+			//把json字符串转换成json对象
+			var jsonObj = $.parseJSON(responseText);
+			for(var i = 0; i < jsonObj.aList.length; i++){
+				var opt = $("<option value='"+jsonObj.aList[i].areaId+"'>"+jsonObj.aList[i].areaName+"</option>");
+				//追加option
+				$(selectId).append(opt);
+			}
+		},
+		error:function(){
+			alert("系统错误");
+		}
+	})
+}
+
+function modify(shipAddrId){
+	$.ajax({
+		url:"${path}/user/login/getAddrById.do",
+		type:"post",
+		dataType:"text",
+		data:{
+			shipAddrId:shipAddrId
+		},
+		success:function(responseText){
+			var jsonObj = $.parseJSON(responseText);
+			$("#shipAddrId").val(jsonObj.addr.shipAddrId);
+			$("#shipName").val(jsonObj.addr.shipName);
+			$("#province").val(jsonObj.addr.province);
+			//加载出来城市的option
+			loadOption(jsonObj.addr.province, "#mycity");
+			//回显城市
+			$("#mycity").val(jsonObj.addr.city);
+			//加载出来区县的option
+			loadOption(jsonObj.addr.city, "#district");
+			//回显区县
+			$("#district").val(jsonObj.addr.district);
+			$("#addr").val(jsonObj.addr.addr);
+			$("#zipCode").val(jsonObj.addr.zipCode);
+			$("#phone").val(jsonObj.addr.phone);
+			if(jsonObj.addr.defaultAddr == 1){
+				$("#defaultAddr").attr("checked", "checked");
+			}else{
+				$("#defaultAddr").removeAttr("checked");
+			}
+		},
+		error:function(){
+			alert("系统错误");
+		}
+	})
+}
 </script>
 </head>
 <body>
@@ -80,48 +179,7 @@ $(function(){
 	<li class="dev"><a href="#" title="在线客服">在线客服</a></li>
 	<li class="dev"><a href="#" title="关于中国移动">关于中国移动</a></li>
 	<li class="dev after"><a href="#" title="English">English</a></li>
-	<!--
-		<li class="dev"><a href="#" title="购物车2件" class="icon_car">购物车<var>2</var>件</a></li>
-		<li class="dev"><a href="javascript:void(0)" id="addFavorite">加入收藏夹</a></li>
-		<li class="dev"><a href="javascript:void(0)" id="setHome">设为首页</a></li>
-
-		<li class="sit"><a href="javascript:void(0);" title="网站群链接" class="sel">网站群链接<cite class="inb"></cite></a>
-		<ul class="ul bx_bottom" style="display:none">
-		<li><a href="http://www.ah.10086.cn" title="安徽公司">安徽公司</a></li>
-		<li><a href="http://www.bj.10086.cn" title="北京公司">北京公司</a></li>
-		<li><a href="http://www.cq.10086.cn" title="重庆公司">重庆公司</a></li>
-		<li><a href="http://www.fj.10086.cn" title="福建公司">福建公司</a></li>
-		<li><a href="http://www.gs.10086.cn" title="甘肃公司">甘肃公司</a></li>
-		<li><a href="http://www.gd.10086.cn" title="广东公司">广东公司</a></li>
-		<li><a href="http://www.gx.10086.cn" title="广西公司">广西公司</a></li>
-		<li><a href="http://www.gz.10086.cn" title="贵州公司">贵州公司</a></li>
-		<li><a href="http://www.hi.10086.cn" title="海南公司">海南公司</a></li>
-		<li><a href="http://www.he.10086.cn" title="河北公司">河北公司</a></li>
-		<li><a href="http://www.ha.10086.cn" title="河南公司">河南公司</a></li>
-		<li><a href="http://www.hl.10086.cn" title="黑龙江公司">黑龙江公司</a></li>
-		<li><a href="http://www.hb.10086.cn" title="湖北公司">湖北公司</a></li>
-		<li><a href="http://www.hn.10086.cn" title="湖南公司">湖南公司</a></li>
-		<li><a href="http://www.js.10086.cn" title="江苏公司">江苏公司</a></li>
-		<li><a href="http://www.jx.10086.cn" title="江西公司">江西公司</a></li>
-		<li><a href="http://www.jl.10086.cn" title="吉林公司">吉林公司</a></li>
-		<li><a href="http://www.ln.10086.cn" title="辽宁公司">辽宁公司</a></li>
-		<li><a href="http://www.nm.10086.cn" title="内蒙古公司">内蒙古公司</a></li>
-		<li><a href="http://www.nx.10086.cn" title="宁夏公司">宁夏公司</a></li>
-		<li><a href="http://www.qh.10086.cn" title="青海公司">青海公司</a></li>
-		<li><a href="http://www.sd.10086.cn" title="山东公司">山东公司</a></li>
-		<li><a href="http://www.sn.10086.cn" title="陕西公司">陕西公司</a></li>
-		<li><a href="http://www.sx.10086.cn" title="山西公司">山西公司</a></li>
-		<li><a href="http://www.sh.10086.cn" title="上海公司">上海公司</a></li>
-		<li><a href="http://www.sc.10086.cn" title="四川公司">四川公司</a></li>
-		<li><a href="http://www.tj.10086.cn" title="天津公司">天津公司</a></li>
-		<li><a href="http://www.xj.10086.cn" title="新疆公司">新疆公司</a></li>
-		<li><a href="http://www.xz.10086.cn" title="西藏公司">西藏公司</a></li>
-		<li><a href="http://www.yn.10086.cn" title="云南公司">云南公司</a></li>
-		<li><a href="http://www.zj.10086.cn" title="浙江公司">浙江公司</a></li>
-		<li class="clr"><a href="http://www.chinamobileltd.com" title="chinamobileltd">chinamobileltd</a></li>
-		<li class="clr"><a href="http://www.cmdi.10086.cn" title="中国移动设计院">中国移动设计院</a></li>
-		<li class="clr"><a href="http://labs.10086.cn" title="中国移动研究院">中国移动研究院</a></li>
-		</ul>-->
+	
 	</li>
 	</ul>
 </div></div>
@@ -333,7 +391,7 @@ $(function(){
 		<div class="box bg_gray">
 			<ul class="ul left_nav">
 			<li><a href="../person/profile.jsp" title="个人资料">个人资料</a></li>
-			<li><a href="../person/deliverAddress.jsp" title="收货地址" class="here">收货地址</a></li>
+			<li><a href="${path}/user/login/toAddr.do" title="收货地址" class="here">收货地址</a></li>
 			<li><a href="../person/changePassword.jsp" title="修改密码">修改密码</a></li>
 			</ul>
 		</div>
@@ -344,7 +402,7 @@ $(function(){
 		<div class="confirm">
 			<div class="tl"></div><div class="tr"></div>
 			<div class="ofc">
-
+				<input id="addrLength" type="hidden" value="${fn:length(addrList) }">
 				<h2 class="h2 h2_r2"><em title="个人资料">收货地址</em></h2>
 
 				<h3 class="h3_r">已存收货地址列表<span>最多保存5个收货地址</span></h3>
@@ -362,74 +420,53 @@ $(function(){
 				</tr>                                                          
 				</thead>
 				<tbody>
-				<tr>
-				<td>王强</td>
-				<td>北京 北京市 海淀区</td>
-				<td>XXX大道XXX号XX室</td>
-				<td>100081</td>
-				<td>13750532806</td>
-				<td class="def"><a href="javascript:void(0);" title="设为默认">设为默认</a></td>
-				<td><a href="javascript:void(0);" title="修改" onclick="modify('1')" class="blue">[修改]</a><a href="javascript:void(0);" title="删除" onclick="del(this)" class="blue">[删除]</a></td>                  
+				
+				<c:forEach items="${addrList }" var="addr">
+				<tr <c:if test="${addr.defaultAddr == 1 }">class='here'</c:if> >
+					<td>${addr.shipName }</td>
+					<td>${addr.provText }&nbsp;${addr.cityText }&nbsp;${addr.distText }</td>
+					<td>${addr.addr }</td>
+					<td>${addr.zipCode }</td>
+					<td>${addr.phone }</td>
+					<td class="def blue">设为默认</td>
+					<td><a href="javascript:void(0);" title="修改" onclick="modify(${addr.shipAddrId})" class="blue">[修改]</a><a href="javascript:void(0);" title="删除" onclick="del(this)" class="blue">[删除]</a></td>
 				</tr>
-				<tr class="here">
-				<td>王强</td>
-				<td>北京 北京市 海淀区</td>
-				<td>XXX大道XXX号XX室</td>
-				<td>100081</td>
-				<td>13750532806</td>
-				<td class="def blue">设为默认</td>
-				<td><a href="javascript:void(0);" title="修改" onclick="modify('1')" class="blue">[修改]</a><a href="javascript:void(0);" title="删除" onclick="del(this)" class="blue">[删除]</a></td>
-				</tr>
-					<tr>
-				<td>王强</td>
-				<td>北京 北京市 海淀区</td>
-				<td>XXX大道XXX号XX室</td>
-				<td>100081</td>
-				<td>13750532806</td>
-				<td class="def"><a href="javascript:void(0);" title="设为默认">设为默认</a></td>
-				<td><a href="javascript:void(0);" title="修改" onclick="modify('1')" class="blue">[修改]</a><a href="javascript:void(0);" title="删除" onclick="del(this)" class="blue">[删除]</a></td>                  
-				</tr>
-					<tr>
-				<td>王强</td>
-				<td>北京 北京市 海淀区</td>
-				<td>XXX大道XXX号XX室</td>
-				<td>100081</td>
-				<td>13750532806</td>
-				<td class="def"><a href="javascript:void(0);" title="设为默认">设为默认</a></td>
-				<td><a href="javascript:void(0);" title="修改" onclick="modify('1')" class="blue">[修改]</a><a href="javascript:void(0);" title="删除" onclick="del(this)" class="blue">[删除]</a></td>                  
-				</tr>
+				</c:forEach>
+				
+					
 				</tbody>
 				</table>
 
 				<h3 class="h3_r">新增/修改收货地址<span>手机、固定电话选填一项，其余均为必填</span></h3>
 
-				<form id="jvForm" action="profile.do" method="post">
-					<input type="hidden" name="returnUrl" value="${returnUrl}"/>
-					<input type="hidden" name="processUrl" value="${processUrl}"/>
+				<form id="jvForm" action="${path }/user/login/saveOrUpdateAddr.do" method="post">
+					<input id="shipAddrId" name="shipAddrId" type="hidden">
 					<ul class="uls form">
 					<li id="errorName" class="errorTip" style="display:none">${error}</li>
 					<li>
 						<label for="username"><samp>*</samp>收货人姓名：</label>
-						<span class="bg_text"><input type="text" id="username" name="username" vld="{required:true}" maxLength="100" /></span>
+						<span class="bg_text"><input type="text" id="shipName" name="shipName" vld="{required:true}" maxLength="100" /></span>
 						<span class="pos"><span class="tip okTip">&nbsp;</span></span>
 					</li>
 					<li>
 						<label for="residence"><samp>*</samp>地　　址：</label>
 						<span class="word">
-						<select name="">
-							<option value="" selected>省/直辖市</option>
-							<option value=""></option>
-						</select><select name="">
-							<option value="" selected>城市</option>
-							<option value=""></option>
-						</select><select name="">
-							<option value="" selected>县/区</option>
-							<option value=""></option>
+						<select id="province" name="province">
+							<option value="-1" selected="selected">请选择省</option>
+							<c:forEach items="${aList }" var="area">
+								<option value="${area.areaId }" >${area.areaName }</option>
+							</c:forEach>
+						</select>
+						<select id="mycity" name="city">
+							<option value="-1" selected>城市</option>
+						</select>
+						<select id="district" name="district">
+							<option value="-1" selected>县/区</option>
 						</select></span>
 					</li>
 					<li>
 						<label for="nick"><samp>*</samp>街道地址：</label>
-						<span class="bg_text"><input type="text" id="nick" name="nick" maxLength="32" vld="{required:true}" /></span>
+						<span class="bg_text"><input type="text" id="addr" name="addr" maxLength="32" vld="{required:true}" /></span>
 						<span class="pos"><span class="tip errorTip">用户名为4-20位字母、数字或中文组成，字母区分大小写。</span></span>
 					</li>
 					<li>
@@ -438,12 +475,12 @@ $(function(){
 					</li>
 					<li>
 						<label for="telphone"><samp>*</samp>联系电话：</label>
-						<span class="bg_text"><input type="text" id="telphone" name="telphone" maxLength="32" vld="{required:true}" /></span>
+						<span class="bg_text"><input type="text" id="phone" name="phone" maxLength="32" vld="{required:true}" /></span>
 						<span class="pos"><span class="tip warningTip">用户名为4-20位字母、数字或中文组成，字母区分大小写。</span></span>
 					</li>
 					<li>
 						<label for="statusAddr">&nbsp;</label>
-						<span><input type="checkbox" name="statusAddr" />设为默认收货地址</span>
+						<span><input type="checkbox" name="defaultAddr" id="defaultAddr" value="1"/>设为默认收货地址</span>
 					</li>
 					<li><label for="">&nbsp;</label><input type="submit" value="保存" class="hand btn66x23" /></li>
 					</ul>

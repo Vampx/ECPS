@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import javax.servlet.http.HttpServletResponse;
+
 public class ECPSUtil {
 	
 	
@@ -21,6 +23,25 @@ public class ECPSUtil {
 			return value;
 			
 		}
+		
+		public static void printJSON(String result,HttpServletResponse response){
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("html/text;charset=UTF-8");
+			try {
+				response.getWriter().write(result);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
+		
 	}
+
+
+
+
 
 

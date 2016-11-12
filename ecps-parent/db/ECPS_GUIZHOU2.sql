@@ -13,8 +13,8 @@ create sequence seqareaid  start with 1000;
 insert into eb_area  values(seqareaid.nextval,0,'吉林省',1);
 insert into eb_area  values(seqareaid.nextval,0,'广西省',1);
 insert into eb_area  values(seqareaid.nextval,1001,'长春市',2);
-insert into eb_area  values(seqareaid.nextval,10001,'吉林市',2);
-insert into eb_area  values(seqareaid.nextval,10003,'农安县',3);
+insert into eb_area  values(seqareaid.nextval,1001,'吉林市',2);
+insert into eb_area  values(seqareaid.nextval,1003,'农安县',3);
 
 select * from eb_area;
 
