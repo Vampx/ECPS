@@ -17,4 +17,6 @@ public interface EbShipAddrDao {
 	
 	//更新默认收货地址
 	public void updateDefaultAddr(Long userId);
+
+	public int deleteAddr(String id);
 }

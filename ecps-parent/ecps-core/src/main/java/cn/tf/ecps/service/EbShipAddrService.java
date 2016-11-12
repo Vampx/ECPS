@@ -12,6 +12,8 @@ public interface EbShipAddrService {
 	public EbShipAddr selectAddrById(Long shipAddrId);
 	
 	public void saveOrUpdateAddr(EbShipAddr addr);
+
+	public int  deleteAddr(String id);
 	
 	
 

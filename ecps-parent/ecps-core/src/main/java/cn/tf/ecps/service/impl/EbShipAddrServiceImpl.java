@@ -55,6 +55,12 @@ public class EbShipAddrServiceImpl implements EbShipAddrService {
 		
 		
 	}
+
+
+	public int deleteAddr(String id) {
+		return shipAddrDao.deleteAddr(id);
+		
+	}
 	
 	
 

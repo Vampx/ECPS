@@ -46,5 +46,11 @@ public class EbShipAddrDaoImpl extends SqlSessionDaoSupport implements EbShipAdd
 	public void updateDefaultAddr(Long userId) {
 		this.getSqlSession().update(ns+"updateDefaultAddr",userId);	
 	}
+
+
+	public int  deleteAddr(String id) {
+		return this.getSqlSession().delete(ns+"deleteByPrimaryKey",id);	
+		
+	}
 	
 }

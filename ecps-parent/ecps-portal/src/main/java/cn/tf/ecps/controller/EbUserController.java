@@ -206,5 +206,15 @@ public class EbUserController {
 		return "redirect:toAddr.do";
 	}
 	
+		//删除
+	@RequestMapping("/login/deleteAddr.do")
+	public String deleteAddr(String id){	
+		int result=addrService.deleteAddr(id);
+		if(result>0){
+			return "redirect:toAddr.do";
+		}
+		return null;
+		
+	}
 
 }
