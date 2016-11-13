@@ -610,56 +610,50 @@
   
   
   <!-- resultMap的关系是由实体类之间的关系确定的，实体类之间的关系是由表之间的关系确定 -->
-  <resultMap type="cn.tf.ecps.po.EbItem" id="selectItemDetailByIdRM" extends="BaseResultMap">
-  		<association property="itemClob" javaType="cn.tf.ecps.po.EbItemClob">
-  			 <id column="ITEM_ID" property="itemId" jdbcType="DECIMAL" />
-  			 <result column="ITEM_DESC" property="itemDesc" jdbcType="CLOB" />
-    		 <result column="PACKING_LIST" property="packingList" jdbcType="CLOB" />
-  		</association>
-
-  		<collection property="paraList"  ofType="cn.tf.ecps.po.EbParaValue">
-		    <id column="PARA_ID" property="paraId" jdbcType="DECIMAL" />
-		    <result column="ITEM_ID" property="itemId" jdbcType="DECIMAL" />
-		    <result column="FEATURE_ID" property="featureId" jdbcType="DECIMAL" />
-		    <result column="PARA_VALUE" property="paraValue" jdbcType="VARCHAR" />
-  			<result  column="FEATURE_NAME"  property="featureName"   />
-  		
-  		</collection>
-  		
-  		<collection property="skuList"  ofType="cn.tf.ecps.po.EbSku" >
-  			<id column="SKU_ID" property="skuId" jdbcType="DECIMAL" />
-		    <result column="ITEM_ID" property="itemId" jdbcType="DECIMAL" />
-		    <result column="SKU" property="sku" jdbcType="VARCHAR" />
-		    <result column="SKU_PRICE" property="skuPrice" jdbcType="DECIMAL" />
-		    <result column="SHOW_STATUS" property="showStatus" jdbcType="DECIMAL" />
-		    <result column="STOCK_INVENTORY" property="stockInventory" jdbcType="DECIMAL" />
-		    <result column="SKU_UPPER_LIMIT" property="skuUpperLimit" jdbcType="DECIMAL" />
-		    <result column="LOCATION" property="location" jdbcType="VARCHAR" />
-		    <result column="SKU_IMG" property="skuImg" jdbcType="VARCHAR" />
-		    <result column="SKU_SORT" property="skuSort" jdbcType="DECIMAL" />
-		    <result column="SKU_NAME" property="skuName" jdbcType="VARCHAR" />
-		    <result column="MARKET_PRICE" property="marketPrice" jdbcType="DECIMAL" />
-		    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
-		    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
-		    <result column="CREATE_USER_ID" property="createUserId" jdbcType="DECIMAL" />
-		    <result column="UPDATE_USER_ID" property="updateUserId" jdbcType="DECIMAL" />
-		    <result column="ORIGINAL_SKU_ID" property="originalSkuId" jdbcType="DECIMAL" />
-		    <result column="LAST_STATUS" property="lastStatus" jdbcType="DECIMAL" />
-		    <result column="MERCHANT_ID" property="merchantId" jdbcType="DECIMAL" />
-		    <result column="SKU_TYPE" property="skuType" jdbcType="DECIMAL" />
-		    <result column="SALES" property="sales" jdbcType="DECIMAL" />
-		    <result column="RES_CODE" property="resCode" jdbcType="VARCHAR" />
-		    <result column="PACK_ID" property="packId" jdbcType="DECIMAL" />
-		    
-		    <collection property="specList"  ofType="cn.tf.ecps.po.EbSpecValue">
-		    		<result column="SKU_ID" property="skuId" jdbcType="DECIMAL" />
-				    <result column="FEATURE_ID" property="featureId" jdbcType="DECIMAL" />
-				    <result column="SPEC_VALUE" property="specValue" jdbcType="VARCHAR" />
-		    </collection> 
-  		</collection>
-  
-  
-  
+ <resultMap type="cn.tf.ecps.po.EbItem" id="selectItemDetailByIdRM" extends="BaseResultMap">
+  	<association property="itemClob" javaType="cn.tf.ecps.po.EbItemClob">
+  		<id column="ITEM_ID" jdbcType="DECIMAL" property="itemId" />
+  		<result column="ITEM_DESC" jdbcType="CLOB" property="itemDesc" />
+    	<result column="PACKING_LIST" jdbcType="CLOB" property="packingList" />
+  	</association>
+  	<collection property="paraList" ofType="cn.tf.ecps.po.EbParaValue">
+  		<id column="PARA_ID" jdbcType="DECIMAL" property="paraId" />
+    	<result column="ITEM_ID" jdbcType="DECIMAL" property="itemId" />
+   	 	<result column="FEATURE_ID" jdbcType="DECIMAL" property="featureId" />
+    	<result column="PARA_VALUE" jdbcType="VARCHAR" property="paraValue" />
+    	<result column="FEATURE_NAME" property="featureName"/>
+  	</collection>
+  	<collection property="skuList" ofType="cn.tf.ecps.po.EbSku">
+  		<id column="SKU_ID" jdbcType="DECIMAL" property="skuId" />
+	    <result column="ITEM_ID" jdbcType="DECIMAL" property="itemId" />
+	    <result column="SKU" jdbcType="VARCHAR" property="sku" />
+	    <result column="SKU_PRICE" jdbcType="DECIMAL" property="skuPrice" />
+	    <result column="SHOW_STATUS" jdbcType="DECIMAL" property="showStatus" />
+	    <result column="STOCK_INVENTORY" jdbcType="DECIMAL" property="stockInventory" />
+	    <result column="SKU_UPPER_LIMIT" jdbcType="DECIMAL" property="skuUpperLimit" />
+	    <result column="LOCATION" jdbcType="VARCHAR" property="location" />
+	    <result column="SKU_IMG" jdbcType="VARCHAR" property="skuImg" />
+	    <result column="SKU_SORT" jdbcType="DECIMAL" property="skuSort" />
+	    <result column="SKU_NAME" jdbcType="VARCHAR" property="skuName" />
+	    <result column="MARKET_PRICE" jdbcType="DECIMAL" property="marketPrice" />
+	    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+	    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+	    <result column="CREATE_USER_ID" jdbcType="DECIMAL" property="createUserId" />
+	    <result column="UPDATE_USER_ID" jdbcType="DECIMAL" property="updateUserId" />
+	    <result column="ORIGINAL_SKU_ID" jdbcType="DECIMAL" property="originalSkuId" />
+	    <result column="LAST_STATUS" jdbcType="DECIMAL" property="lastStatus" />
+	    <result column="MERCHANT_ID" jdbcType="DECIMAL" property="merchantId" />
+	    <result column="SKU_TYPE" jdbcType="DECIMAL" property="skuType" />
+	    <result column="SALES" jdbcType="DECIMAL" property="sales" />
+	    <result column="RES_CODE" jdbcType="VARCHAR" property="resCode" />
+	    <result column="PACK_ID" jdbcType="DECIMAL" property="packId" />
+	    <collection property="specList" ofType="cn.tf.ecps.po.EbSpecValue">
+	    	<id column="SPEC_ID" jdbcType="DECIMAL" property="specId" />
+		    <result column="SKU_ID" jdbcType="DECIMAL" property="skuId" />
+		    <result column="FEATURE_ID" jdbcType="DECIMAL" property="featureId" />
+		    <result column="SPEC_VALUE" jdbcType="VARCHAR" property="specValue" />
+	    </collection>
+  	</collection>
   </resultMap>
   
   

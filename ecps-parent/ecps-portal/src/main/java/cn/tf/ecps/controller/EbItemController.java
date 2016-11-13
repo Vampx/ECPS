@@ -3,6 +3,8 @@ package cn.tf.ecps.controller;
 import java.io.PrintWriter;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import net.sf.json.JSONObject;
 
 import org.compass.core.json.JsonObject;
@@ -19,6 +21,7 @@ import cn.tf.ecps.service.EbBrandService;
 import cn.tf.ecps.service.EbFeatureService;
 import cn.tf.ecps.service.EbItemService;
 import cn.tf.ecps.service.EbSkuService;
+import cn.tf.ecps.utils.ECPSUtil;
 
 @Controller
 @RequestMapping("/item")

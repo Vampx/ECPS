@@ -66,7 +66,7 @@ public class EbUserController {
 	 */
 	@RequestMapping("/getImage.do")
 	public void getImage(HttpServletRequest request, HttpServletResponse response) throws Exception{
-		 System.out.println("#######################生成数字和字母的验证码#######################");  
+		
 	        BufferedImage img = new BufferedImage(68, 22,  
 	  
 	        BufferedImage.TYPE_INT_RGB);  

@@ -12,6 +12,7 @@ import cn.tf.ecps.po.EbBrand;
 import cn.tf.ecps.service.EbBrandService;
 import cn.tf.ecps.service.EbItemService;
 import cn.tf.ecps.utils.ECPSUtil;
+import cn.tf.ecps.utils.GetMD5;
 import cn.tf.ecps.utils.Page;
 import cn.tf.ecps.utils.QueryCondition;
 
@@ -70,8 +71,13 @@ public class ItemController {
 	//调用服务
 	@RequestMapping("/publish.do")
 	public void publish(Long itemId,PrintWriter out){
-		String password=ECPSUtil.readProp("ws_pass");
-		String result=itemService.publishItem(itemId,password);
+		String wsPass=GetMD5.getMD5(itemId);
+		String result = null;
+		try {
+			result = itemService.publishItem(itemId,wsPass);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		out.write(result);
 	
 	}

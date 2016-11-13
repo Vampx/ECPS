@@ -25,26 +25,26 @@ $(function(){
 	
 	
 	$(".spec a").click(function(){
-		//先清掉之前的选中状态
+		//先清掉之前选中状态
 		$(".spec a").each(function(){
 			$(this).removeClass();
-		})
-		//在当前点击的a链接上加上here
-		$(this).attr("class", "here");
-		//根据自定义属性获得skuId
-		var skuId = $(this).attr("skuId");
+		});
+		//在当前链接上加上here
+		$(this).attr("class","here");
+		
+		var skuId=$(this).attr("skuId");
 		$.ajax({
-			url:"${path}/item/getSkuById.do",
-			type:"post",
-			dataType:"text",
-			data:{
-				skuId:skuId
-			},
-			success:function(responseText){
-				//把字符串转换成json对象
-				var jsonObj = $.parseJSON(responseText);
-				$("#skuPrice").html("￥"+jsonObj.sku.skuPrice);
-				$("#marketPrice").html("￥"+jsonObj.sku.marketPrice);
+		url:"${path}/item/getSkuById.do",
+		type:"post",
+		dataType:"text",
+		data:{
+			skuId:skuId
+		},
+		success:function(responseText){
+			//把字符串转换成json对象
+			var jsonObj = $.parseJSON(responseText);
+			$("#skuPrice").html("￥"+jsonObj.sku.skuPrice);
+			$("#marketPrice").html("￥"+jsonObj.sku.marketPrice);
 				if(jsonObj.sku.stockInventory > 0){
 					$("#stockState").html("有货");
 					$("#buyNow").show();
@@ -54,12 +54,11 @@ $(function(){
 					$("#buyNow").hide();
 					$("#addMyCart").hide();
 				}
-			},
-			error:function(){
-				alert("系统错误");
-			}
-		})
-		
+		},
+		error:function(){
+			alert("系统错误");
+		}
+	})
 		
 	});
 	
