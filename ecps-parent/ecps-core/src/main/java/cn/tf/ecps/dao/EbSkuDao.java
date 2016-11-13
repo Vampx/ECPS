@@ -8,7 +8,8 @@ import cn.tf.ecps.po.EbSku;
 
 public interface EbSkuDao {
 
+	
+	public EbSku getSkuById(Long skuId);
+
 	public void saveSku(List<EbSku> skuList, Long itemId);
-	
-	
 }
