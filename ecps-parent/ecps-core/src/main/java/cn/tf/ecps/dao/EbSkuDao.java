@@ -12,4 +12,9 @@ public interface EbSkuDao {
 	public EbSku getSkuById(Long skuId);
 
 	public void saveSku(List<EbSku> skuList, Long itemId);
+
+	public EbSku getSkuDetail(Long skuId);
+	
+	
+	public EbSku getSkuDetailWithRedis(Long skuId);
 }

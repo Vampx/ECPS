@@ -50,6 +50,29 @@ public class EbSku {
 	private String resCode;
 
 	private Integer packId;
+	
+	private List<EbSpecValue> specList;
+
+	
+	private EbItem item;
+	
+	public EbItem getItem() {
+		return item;
+	}
+
+	public void setItem(EbItem item) {
+		this.item = item;
+	}
+
+	public List<EbSpecValue> getSpecList() {
+		return specList;
+	}
+
+	public void setSpecList(List<EbSpecValue> specList) {
+		this.specList = specList;
+	}
+	
+	
 
 	public Long getSkuId() {
 		return skuId;
@@ -235,14 +258,6 @@ public class EbSku {
 		this.packId = packId;
 	}
 
-	private List<EbSpecValue> specList;
-
-	public List<EbSpecValue> getSpecList() {
-		return specList;
-	}
-
-	public void setSpecList(List<EbSpecValue> specList) {
-		this.specList = specList;
-	}
+	
 
 }

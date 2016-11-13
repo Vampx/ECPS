@@ -25,26 +25,26 @@ $(function(){
 	
 	
 	$(".spec a").click(function(){
-		//先清掉之前选中状态
+		//先清掉之前的选中状态
 		$(".spec a").each(function(){
 			$(this).removeClass();
-		});
-		//在当前链接上加上here
-		$(this).attr("class","here");
-		
-		var skuId=$(this).attr("skuId");
+		})
+		//在当前点击的a链接上加上here
+		$(this).attr("class", "here");
+		//根据自定义属性获得skuId
+		var skuId = $(this).attr("skuId");
 		$.ajax({
-		url:"${path}/item/getSkuById.do",
-		type:"post",
-		dataType:"text",
-		data:{
-			skuId:skuId
-		},
-		success:function(responseText){
-			//把字符串转换成json对象
-			var jsonObj = $.parseJSON(responseText);
-			$("#skuPrice").html("￥"+jsonObj.sku.skuPrice);
-			$("#marketPrice").html("￥"+jsonObj.sku.marketPrice);
+			url:"${path}/item/getSkuById.do",
+			type:"post",
+			dataType:"text",
+			data:{
+				skuId:skuId
+			},
+			success:function(responseText){
+				//把字符串转换成json对象
+				var jsonObj = $.parseJSON(responseText);
+				$("#skuPrice").html("￥"+jsonObj.sku.skuPrice);
+				$("#marketPrice").html("￥"+jsonObj.sku.marketPrice);
 				if(jsonObj.sku.stockInventory > 0){
 					$("#stockState").html("有货");
 					$("#buyNow").show();
@@ -54,11 +54,12 @@ $(function(){
 					$("#buyNow").hide();
 					$("#addMyCart").hide();
 				}
-		},
-		error:function(){
-			alert("系统错误");
-		}
-	})
+			},
+			error:function(){
+				alert("系统错误");
+			}
+		})
+		
 		
 	});
 	
@@ -173,7 +174,72 @@ function buy(){
 }
 
 function addCart(){
-	window.location.href = "./shop/car.jsp";
+	//定义skuId的变量
+	var skuId = null;
+	//获得被选中的sku的Id
+	$(".spec a").each(function(){
+		var clazz = $(this).attr("class");
+		if(clazz == "here"){
+			skuId = $(this).attr("skuId");
+		}
+	})
+	var quantity = $("#quantity").val();
+	alert(skuId + "    "+quantity);
+	//校验库存
+	var result = validStock(skuId, quantity);
+	if(result == "yes"){
+		addCartReal(skuId, quantity);
+	}else{
+		alert("库存不足");
+	}
+	
+}
+/**
+ * 添加购物车时验证库存是否足够
+ */
+function validStock(skuId, quantity){
+	var result = "yes";
+	var option = {
+			url:"${path}/cart/validStock.do",
+			type:"post",
+			dataType:"text",
+			async:false,//修改ajax成同步，程序按顺序执行
+			data:{
+				skuId:skuId,
+				quantity:quantity
+			},
+			success:function(responseText){
+				result = responseText;
+			},
+			error:function(){
+				alert("系统错误");
+			}
+	}
+	$.ajax(option);
+	return result;
+}
+
+function addCartReal(skuId, quantity){
+	
+	var option = {
+			url:"${path}/cart/addCart.do",
+			type:"post",
+			dataType:"text",
+			data:{
+				skuId:skuId,
+				quantity:quantity
+			},
+			success:function(responseText){
+				if(responseText == "success"){
+					alert("添加购物车成功");
+				}
+			},
+			error:function(){
+				alert("系统错误");
+			}
+	}
+	$.ajax(option);
+	
 }
 </script>
 </head>
@@ -356,7 +422,7 @@ function addCart(){
 	<p class="l"><a href="#" title="商城首页">商城首页</a><samp>|</samp><a href="#" title="我的商城">我的商城</a></p>
 
 	<dl id="cart" class="cart l">
-		<dt><a href="#" title="结算">结算</a>购物车:<b id="">123</b>件</dt>
+		<dt><a href="${path}/cart/listCart.do" title="结算">结算</a>购物车:<b id="">123</b>件</dt>
 		<dd class="hidden">
 			<p class="alg_c hidden">购物车中还没有商品，赶紧选购吧！</p>
 			<h3 title="最新加入的商品">最新加入的商品</h3>
@@ -642,7 +708,8 @@ function addCart(){
 					</#list>
 						
 					</div></li>
-					<li><label>我 要 买：</label><a href="javascript:void(0);" class="inb sub"></a><input readonly type="text" name="" value="1" class="num" size="3" /><a href="javascript:void(0);" class="inb add"></a><em id="sub_add_msg" class="red"></em></li>
+					<li><label>我 要 买：</label><a href="javascript:void(0);" class="inb sub"></a>
+					<input readonly type="text" name="" id="quantity" value="1" class="num" size="3" /><a href="javascript:void(0);" class="inb add"></a><em id="sub_add_msg" class="red"></em></li>
 					<li class="submit">
 					<input id="buyNow" type="button" value="" class="hand btn138x40" onclick="buy();"/>
 					<input id="addMyCart" type="button" value="" class="hand btn138x40b" onclick="addCart()"/><a href="#" title="加入收藏" class="inb fav">加入收藏</a></li>

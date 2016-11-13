@@ -24,8 +24,7 @@ public class EbBrandServiceTest {
 
 	@Autowired
 	private EbBrandService brandService;
-	@Autowired
-	private EbItemService itemService;
+	
 
 /*	@Test
 	public void testSaveBrand() {
@@ -38,6 +37,8 @@ public class EbBrandServiceTest {
 		brandService.saveBrand(brand);
 	
 	}*/
+	@Autowired
+	private EbItemService itemService;
 
 	@Test
 	public void testGeneraHtml() throws Exception {

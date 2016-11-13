@@ -47,8 +47,4 @@ public class EbWSItemServiceImpl  implements EbWSItemService {
 		
 		return isOK;
 	}
-	
-	
-	  
-
 }

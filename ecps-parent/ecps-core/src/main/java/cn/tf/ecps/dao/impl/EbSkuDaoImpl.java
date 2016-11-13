@@ -38,6 +38,15 @@ public class EbSkuDaoImpl extends SqlSessionDaoSupport implements EbSkuDao {
 		return this.getSqlSession().selectOne(ns+"selectByPrimaryKey",skuId);
 	}
 
+	public EbSku getSkuDetail(Long skuId) {
+		return this.getSqlSession().selectOne(ns+"getSkuDetail",skuId);
+	}
+
+	public EbSku getSkuDetailWithRedis(Long skuId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	
 }

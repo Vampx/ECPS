@@ -309,4 +309,61 @@
       PACK_ID = #{packId,jdbcType=DECIMAL}
     where SKU_ID = #{skuId,jdbcType=DECIMAL}
   </update>
+  
+  <resultMap type="cn.tf.ecps.po.EbSku" id="getSkuDetail" extends="BaseResultMap">
+  	<association property="item" javaType="cn.tf.ecps.po.EbItem">
+  		<id column="ITEM_ID" jdbcType="DECIMAL" property="itemId" />
+	    <result column="ITEM_NAME" jdbcType="VARCHAR" property="itemName" />
+	    <result column="ITEM_NO" jdbcType="VARCHAR" property="itemNo" />
+	    <result column="BRAND_ID" jdbcType="DECIMAL" property="brandId" />
+	    <result column="CAT_ID" jdbcType="DECIMAL" property="catId" />
+	    <result column="TAG_IMG_ID" jdbcType="DECIMAL" property="tagImgId" />
+	    <result column="TAG_IMG" jdbcType="DECIMAL" property="tagImg" />
+	    <result column="IS_NEW" jdbcType="DECIMAL" property="isNew" />
+	    <result column="IS_GOOD" jdbcType="DECIMAL" property="isGood" />
+	    <result column="IS_HOT" jdbcType="DECIMAL" property="isHot" />
+	    <result column="PROMOTION" jdbcType="VARCHAR" property="promotion" />
+	    <result column="AUDIT_STATUS" jdbcType="DECIMAL" property="auditStatus" />
+	    <result column="SHOW_STATUS" jdbcType="DECIMAL" property="showStatus" />
+	    <result column="IMGS" jdbcType="VARCHAR" property="imgs" />
+	    <result column="KEYWORDS" jdbcType="VARCHAR" property="keywords" />
+	    <result column="PAGE_DESC" jdbcType="VARCHAR" property="pageDesc" />
+	    <result column="ITEM_RECYCLE" jdbcType="DECIMAL" property="itemRecycle" />
+	    <result column="ON_SALE_TIME" jdbcType="TIMESTAMP" property="onSaleTime" />
+	    <result column="CHECK_TIME" jdbcType="TIMESTAMP" property="checkTime" />
+	    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+	    <result column="UPDATE_USER_ID" jdbcType="DECIMAL" property="updateUserId" />
+	    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+	    <result column="CHECKER_USER_ID" jdbcType="DECIMAL" property="checkerUserId" />
+	    <result column="FULL_PATH_DEPLOY" jdbcType="VARCHAR" property="fullPathDeploy" />
+	    <result column="FULL_PATH_DEPLOY_OFFER" jdbcType="VARCHAR" property="fullPathDeployOffer" />
+	    <result column="ORIGINAL_ITEM_ID" jdbcType="DECIMAL" property="originalItemId" />
+	    <result column="LAST_STATUS" jdbcType="DECIMAL" property="lastStatus" />
+	    <result column="MERCHANT_ID" jdbcType="DECIMAL" property="merchantId" />
+	    <result column="ITEM_SORT" jdbcType="DECIMAL" property="itemSort" />
+	    <result column="SALES" jdbcType="DECIMAL" property="sales" />
+	    <result column="CREATE_USER_ID" jdbcType="DECIMAL" property="createUserId" />
+	    <result column="SIM_LEVEL" jdbcType="DECIMAL" property="simLevel" />
+	    <result column="GIFT_DESC" jdbcType="VARCHAR" property="giftDesc" />
+	    <result column="GIFT_IMG" jdbcType="VARCHAR" property="giftImg" />
+	    <result column="GIFT_SHOW_TYPE" jdbcType="VARCHAR" property="giftShowType" />
+	    <result column="IMG_SIZE1" jdbcType="VARCHAR" property="imgSize1" />
+  	</association>
+  	<collection property="specList" ofType="cn.tf.ecps.po.EbSpecValue">
+  		<id column="SPEC_ID" jdbcType="DECIMAL" property="specId" />
+	    <result column="SKU_ID" jdbcType="DECIMAL" property="skuId" />
+	    <result column="FEATURE_ID" jdbcType="DECIMAL" property="featureId" />
+	    <result column="SPEC_VALUE" jdbcType="VARCHAR" property="specValue" />
+  	</collection>
+  </resultMap>
+  <select id="getSkuDetail" parameterType="long" resultMap="getSkuDetail">
+  	select *
+  from eb_sku es, eb_item ei, eb_spec_value ev
+ where es.item_id = ei.item_id
+   and es.sku_id = ev.sku_id(+)
+   and es.sku_id = #{skuId}
+  </select>
+  
+  
+  
 </mapper>

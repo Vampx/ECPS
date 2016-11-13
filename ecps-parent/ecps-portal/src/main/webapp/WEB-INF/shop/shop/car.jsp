@@ -1,27 +1,34 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@include file="../taglibs.jsp" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10" />
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">    
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="This is my page">
 <meta name="author" content="http://www.asiainfo-linkage.com/" />
 <meta name="copyright" content="asiainfo-linkage.com 版权所有，未经授权禁止链接、复制或建立镜像。" />
 <meta name="description" content="中国移动通信 name.com"/>
 <meta name="keywords" content="中国移动通信 name.com"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=1.0"/>
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10" />
-<title>我的购物车_移动商城_中国移动通信</title>
+
+
+<title>手机商城_移动商城_中国移动通信</title>
 <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 <link rel="search" type="application/opensearchdescription+xml" href="../opensearch.xml" title="移动购物" />
-<link rel="stylesheet" href="../../res/css/style.css" />
-<script src="../../res/js/jquery.js"></script>
-<script src="../../res/js/com.js"></script>
+<link rel="stylesheet" href="${path }/res/css/style.css" />
+<script src="${path }/res/js/jquery.js"></script>
+<script src="${path }/res/js/com.js"></script>
+<script type="text/javascript">var path = "${path}";</script>
+<script src="${path }/res/js/getUser.js"></script>
 <script type="text/javascript">
 $(function(){
 
@@ -78,48 +85,7 @@ function trueBuy(){
 	<li class="dev"><a href="#" title="在线客服">在线客服</a></li>
 	<li class="dev"><a href="#" title="关于中国移动">关于中国移动</a></li>
 	<li class="dev after"><a href="#" title="English">English</a></li>
-	<!--
-		<li class="dev"><a href="#" title="购物车2件" class="icon_car">购物车<var>2</var>件</a></li>
-		<li class="dev"><a href="javascript:void(0)" id="addFavorite">加入收藏夹</a></li>
-		<li class="dev"><a href="javascript:void(0)" id="setHome">设为首页</a></li>
-
-		<li class="sit"><a href="javascript:void(0);" title="网站群链接" class="sel">网站群链接<cite class="inb"></cite></a>
-		<ul class="ul bx_bottom" style="display:none">
-		<li><a href="http://www.ah.10086.cn" title="安徽公司">安徽公司</a></li>
-		<li><a href="http://www.bj.10086.cn" title="北京公司">北京公司</a></li>
-		<li><a href="http://www.cq.10086.cn" title="重庆公司">重庆公司</a></li>
-		<li><a href="http://www.fj.10086.cn" title="福建公司">福建公司</a></li>
-		<li><a href="http://www.gs.10086.cn" title="甘肃公司">甘肃公司</a></li>
-		<li><a href="http://www.gd.10086.cn" title="广东公司">广东公司</a></li>
-		<li><a href="http://www.gx.10086.cn" title="广西公司">广西公司</a></li>
-		<li><a href="http://www.gz.10086.cn" title="贵州公司">贵州公司</a></li>
-		<li><a href="http://www.hi.10086.cn" title="海南公司">海南公司</a></li>
-		<li><a href="http://www.he.10086.cn" title="河北公司">河北公司</a></li>
-		<li><a href="http://www.ha.10086.cn" title="河南公司">河南公司</a></li>
-		<li><a href="http://www.hl.10086.cn" title="黑龙江公司">黑龙江公司</a></li>
-		<li><a href="http://www.hb.10086.cn" title="湖北公司">湖北公司</a></li>
-		<li><a href="http://www.hn.10086.cn" title="湖南公司">湖南公司</a></li>
-		<li><a href="http://www.js.10086.cn" title="江苏公司">江苏公司</a></li>
-		<li><a href="http://www.jx.10086.cn" title="江西公司">江西公司</a></li>
-		<li><a href="http://www.jl.10086.cn" title="吉林公司">吉林公司</a></li>
-		<li><a href="http://www.ln.10086.cn" title="辽宁公司">辽宁公司</a></li>
-		<li><a href="http://www.nm.10086.cn" title="内蒙古公司">内蒙古公司</a></li>
-		<li><a href="http://www.nx.10086.cn" title="宁夏公司">宁夏公司</a></li>
-		<li><a href="http://www.qh.10086.cn" title="青海公司">青海公司</a></li>
-		<li><a href="http://www.sd.10086.cn" title="山东公司">山东公司</a></li>
-		<li><a href="http://www.sn.10086.cn" title="陕西公司">陕西公司</a></li>
-		<li><a href="http://www.sx.10086.cn" title="山西公司">山西公司</a></li>
-		<li><a href="http://www.sh.10086.cn" title="上海公司">上海公司</a></li>
-		<li><a href="http://www.sc.10086.cn" title="四川公司">四川公司</a></li>
-		<li><a href="http://www.tj.10086.cn" title="天津公司">天津公司</a></li>
-		<li><a href="http://www.xj.10086.cn" title="新疆公司">新疆公司</a></li>
-		<li><a href="http://www.xz.10086.cn" title="西藏公司">西藏公司</a></li>
-		<li><a href="http://www.yn.10086.cn" title="云南公司">云南公司</a></li>
-		<li><a href="http://www.zj.10086.cn" title="浙江公司">浙江公司</a></li>
-		<li class="clr"><a href="http://www.chinamobileltd.com" title="chinamobileltd">chinamobileltd</a></li>
-		<li class="clr"><a href="http://www.cmdi.10086.cn" title="中国移动设计院">中国移动设计院</a></li>
-		<li class="clr"><a href="http://labs.10086.cn" title="中国移动研究院">中国移动研究院</a></li>
-		</ul>-->
+	
 	</li>
 	</ul>
 </div></div>
@@ -162,7 +128,8 @@ function trueBuy(){
 			<thead>
 			<tr>
 			<th>商品编号</th>
-			<th class="wp">商品名称</th>
+			<th>商品名称</th>
+			<th>规格</th>
 			<th>单价（元）</th>
 			<th>数量</th>
 			<th>小计（元）</th>
@@ -170,78 +137,35 @@ function trueBuy(){
 			</tr>     
 			</thead>
 			<tbody>
+				<c:forEach items="${cartList }" var="cart">
 				<tr>
-					<td>H7859454</td>
+					<td>${cart.sku.item.itemNo }</td>
 					<td class="nwp pic">
 						<ul class="uls">
 							<li>
-								<a href="#" title="摩托罗拉ME525" class="pic"><img src="../../res/img/pic/p50x50.jpg" alt="摩托罗拉ME525" /></a>
+								<a href="#" title="摩托罗拉ME525" class="pic"><img src="${file_path }${cart.sku.item.imgs }" alt="摩托罗拉ME525" /></a>
 								<dl>
-									<dt><a href="#" title="摩托罗拉ME525">摩托罗拉ME525</a></dt>
-								</dl>
-							</li>
-							<li>
-								<a href="#" title="摩托罗拉ME525" class="pic"><img src="../../res/img/pic/p50x50.jpg" alt="摩托罗拉ME525" /></a>
-								<dl>
-									<dt><a href="#" title="摩托罗拉ME525">摩托罗拉ME525</a></dt>
-									<dd>全球通88初始套餐（预付费）</dd>
-									<dd><span class="red">【赠品】</span>
-										<p class="box_d bg_gray2 gray"><a href="#" title="1、三星（SAMSUNG）i900 3G手机（黑色）WCDMA/GSM">1、三星（SAMSUNG）i900 3G手机（黑色）WCDMA/GSM</a><br /><a href="#" title="2、三星（SAMSUNG）i900 3G手机（黑色）WCDMA/GSM">2、三星（SAMSUNG）i900 3G手机（黑色）WCDMA/GSM</a></p>
-									</dd>
-								</dl>
-							</li>
-							<li>
-								<a href="#" title="摩托罗拉ME525" class="pic"><img src="../../res/img/pic/p50x50.jpg" alt="摩托罗拉ME525" /></a>
-								<dl>
-									<dt><a href="#" title="摩托罗拉ME525">摩托罗拉ME525</a></dt>
-									<dd>全球通88初始套餐（预付费）</dd>
+									<dt><a href="#" title="摩托罗拉ME525">${cart.sku.item.itemName }</a></dt>
 								</dl>
 							</li>
 						</ul>
 					</td>
-					<td>￥3567.00</td>
 					<td>
-						<a href="javascript:void(0);" title="减" class="inb arr">-</a><input type="text" class="txts" size="1" name="" value="1" /><a href="javascript:void(0);" title="加" class="inb arr">+</a></td>
-					<td>￥3567.00</td>
-					<td class="blue"><a href="javascript:void(0);" title="删除">删除</a><br /><a href="javascript:void(0);" title="收藏">收藏</a></td>
-				</tr>        
-				<tr class="over">
-					<td>H7859454</td>
-					<td class="nwp pic">
-						<ul class="uls">
-							<li>
-								<a href="#" title="摩托罗拉ME525" class="pic"><img src="../../res/img/pic/p50x50.jpg" alt="摩托罗拉ME525" /></a>
-								<dl>
-									<dt><a href="#" title="摩托罗拉ME525">摩托罗拉ME525</a></dt>
-								</dl>
-							</li>
-						</ul>
+						<c:forEach items="${cart.sku.specList }" var="spec"> 
+							${spec.specValue }
+						</c:forEach>
 					</td>
-					<td>￥3567.00</td>
+					<td>￥${cart.sku.skuPrice }</td>
 					<td>
-						<a href="javascript:void(0);" title="减" class="inb arr">-</a><input type="text" class="txts" size="1" name="" value="1" /><a href="javascript:void(0);" title="加" class="inb arr">+</a></td>
-					<td>￥3567.00</td>
+						<a href="javascript:void(0);" title="减" class="inb arr" onclick="changeQuantity(${cart.skuId},${cart.quantity -1 })">-</a>
+						<input type="text" class="txts" size="1" name="" value="${cart.quantity }" onblur="changeQuantity(${cart.skuId},this.value)""/>
+						<a href="javascript:void(0);" title="加" class="inb arr" onclick="changeQuantity(${cart.skuId},${cart.quantity +1 })">+</a></td>
+					<td>￥${cart.sku.skuPrice*cart.quantity }</td>
 					<td class="blue"><a href="javascript:void(0);" title="删除">删除</a><br /><a href="javascript:void(0);" title="收藏">收藏</a></td>
-				</tr>
-				<tr>
-					<td>H7859454</td>
-					<td class="nwp pic">
-						<ul class="uls">
-							<li>
-								<a href="#" title="摩托罗拉ME525" class="pic"><img src="../../res/img/pic/p50x50.jpg" alt="摩托罗拉ME525" /></a>
-								<dl>
-									<dt><a href="#" title="摩托罗拉ME525">摩托罗拉ME525</a></dt>
-									<dd>全球通88初始套餐（预付费）</dd>
-								</dl>
-							</li>
-						</ul>
-					</td>
-					<td>￥3567.00</td>
-					<td>
-						<a href="javascript:void(0);" title="减" class="inb arr">-</a><input type="text" class="txts" size="1" name="" value="1" /><a href="javascript:void(0);" title="加" class="inb arr">+</a></td>
-					<td>￥3567.00</td>
-					<td class="blue"><a href="javascript:void(0);" title="删除">删除</a><br /><a href="javascript:void(0);" title="收藏">收藏</a></td>
-				</tr> 
+				</tr>    
+				</c:forEach>
+				    
+				
 			</tbody>
 			</table>
 
@@ -253,10 +177,10 @@ function trueBuy(){
 				</span>
 				<span class="r box_gray">
 					<dl class="total">
-						<dt>购物车金额小计：<cite>(共<var id="totalNum"><c:out value="${totalItemNum }"/></var>个商品)</cite></dt>
-						<dd><em class="l">商品金额：</em>￥<var id="totalMoney"><fmt:formatNumber value="${totalMoney/100 }" pattern="#0.00"/></var></dd>
+						<dt>购物车金额小计：<cite>(共<var id="totalNum"><c:out value="${itemNum }"/></var>个商品)</cite></dt>
+						<dd><em class="l">商品金额：</em>￥<var id="totalMoney"><fmt:formatNumber value="${totalPrice}" pattern="#0.00"/></var></dd>
 						<dd><em class="l">运费：</em>￥<var><c:out value="0.00"/></var></dd>
-						<dd class="orange"><em class="l">应付总额：</em>￥<var id="totalMoney1"><fmt:formatNumber value="${totalMoney/100 }" pattern="#0.00"/></var></dd>
+						<dd class="orange"><em class="l">应付总额：</em>￥<var id="totalMoney1"><fmt:formatNumber value="${totalPrice }" pattern="#0.00"/></var></dd>
 						<dd class="alg_c"><input id="settleAccountId" type="button" value="结算" class="hand btn136x36a" onclick="trueBuy();"/></dd>
 					</dl>
 				</span>
