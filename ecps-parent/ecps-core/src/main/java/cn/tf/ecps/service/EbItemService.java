@@ -35,5 +35,8 @@ public interface EbItemService {
 			String paraList);
 	//商品详情查询
 	public EbItem selectItemDetailById(long itemId);
+	
+	//调用接口
+	public String publishItem(Long itemId,String password);
  
 }

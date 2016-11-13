@@ -1,5 +1,6 @@
 package cn.tf.ecps.controller;
 
+import java.io.PrintWriter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import cn.tf.ecps.po.EbBrand;
 import cn.tf.ecps.service.EbBrandService;
 import cn.tf.ecps.service.EbItemService;
+import cn.tf.ecps.utils.ECPSUtil;
 import cn.tf.ecps.utils.Page;
 import cn.tf.ecps.utils.QueryCondition;
 
@@ -62,11 +64,17 @@ public class ItemController {
 			if(showStatus == 1){
 				flag = "0";
 			}
-			
 			return "redirect:listItem.do?auditStatus=1&showStatus="+flag;
 		}
 		
+	//调用服务
+	@RequestMapping("/publish.do")
+	public void publish(Long itemId,PrintWriter out){
+		String password=ECPSUtil.readProp("ws_pass");
+		String result=itemService.publishItem(itemId,password);
+		out.write(result);
 	
+	}
 	
 	
 }

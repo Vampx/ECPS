@@ -55,7 +55,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<ul class="uls i_150x150 x4_150x150b">
 				<c:forEach items="${itemList }" var="item">
 					<li>
-						<a href="${path}/item/productDetail.do?itemId=${item.itemId}" title="${item.itemName }" target="_blank" class="pic"><img src="${file_path }${item.imgs}" alt="${item.itemName }" /></a>
+						<a href="${path}/html/${item.itemId}.html<%-- ${path}/item/productDetail.do?itemId=${item.itemId} --%>" title="${item.itemName }" target="_blank" class="pic"><img src="${file_path }${item.imgs}" alt="${item.itemName }" /></a>
 						<dl>
 							<!-- dt 10个文字+... -->
 							<dt><a href="${path}/item/productDetail.do" title="${item.itemName }" target="_blank">${item.itemName }</a></dt>

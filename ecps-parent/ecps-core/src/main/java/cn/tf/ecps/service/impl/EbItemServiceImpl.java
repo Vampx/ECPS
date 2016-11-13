@@ -21,6 +21,8 @@ import cn.tf.ecps.po.EbItemClob;
 import cn.tf.ecps.po.EbParaValue;
 import cn.tf.ecps.po.EbSku;
 import cn.tf.ecps.service.EbItemService;
+import cn.tf.ecps.stub.EbWSItemService;
+import cn.tf.ecps.stub.EbWSItemServiceService;
 import cn.tf.ecps.utils.ECPSUtil;
 import cn.tf.ecps.utils.Page;
 import cn.tf.ecps.utils.QueryCondition;
@@ -142,6 +144,16 @@ public class EbItemServiceImpl implements EbItemService {
 
 	public EbItem selectItemDetailById(long itemId) {
 		return itemDao.selectItemDetailById(itemId);
+	}
+
+	//调用服务
+	public String publishItem(Long itemId, String password) {
+		//创建服务访问点的集合
+		EbWSItemServiceService  itemServiceService=new EbWSItemServiceService();
+		//获得服务端的接口，通过服务访问点的name在前面加上get这个方法就是获得webService服务的接口方法
+		EbWSItemService service = itemServiceService.getEbWSItemServicePort();
+		//调用webService的发布方法
+		return service.publishItem(itemId, password);
 	}
 
 }

@@ -122,6 +122,32 @@ function isShow(itemId, showStatus){
 	$("#myShowStatus").val(showStatus);
 	tipShow("#addItemNote");
 } 
+    
+   function publish(itemId){
+	   tipShow("#refundLoadDiv");
+		var option = {
+				url:"${path}/item/publish.do",
+				type:"post",
+				dataType:"text",
+				data:{
+					itemId:itemId
+				},
+				success:function(responseText){
+					if(responseText == "success"){
+						alert("发布成功");
+					}else{
+						alert("发布失败");
+					}
+					tipHide("#refundLoadDiv");
+				},
+				error:function(){
+					alert("系统错误");
+				}
+		}
+		$.ajax(option);
+	}
+	   
+    
 </script>
 </head>
 <body id="main">
@@ -233,7 +259,7 @@ function isShow(itemId, showStatus){
 					  		</c:if>
 					  		<c:if test="${item.showStatus == 0 }">
 					  			<a href="javascript:void(0);" onclick="isShow(${item.itemId}, 1)">下架</a>
-					  			<a href="javascript:void(0);" >发布</a>
+					  			<a href="javascript:void(0);"   onclick="publish(${item.itemId})">发布</a>
 					  		</c:if>
 					  		
 				</td>
