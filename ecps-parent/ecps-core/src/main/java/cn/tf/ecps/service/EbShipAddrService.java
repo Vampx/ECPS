@@ -15,6 +15,7 @@ public interface EbShipAddrService {
 
 	public int  deleteAddr(String id);
 	
-	
+	public List<EbShipAddrBean>  selectAddrByUserIdWithRedis(Long userId);
+
 
 }

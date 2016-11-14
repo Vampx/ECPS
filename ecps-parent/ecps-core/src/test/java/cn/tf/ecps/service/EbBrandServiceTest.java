@@ -23,6 +23,7 @@ import cn.tf.ecps.dao.EbItemDao;
 import cn.tf.ecps.dao.EbSkuDao;
 import cn.tf.ecps.po.EbBrand;
 import cn.tf.ecps.po.EbItem;
+import cn.tf.ecps.po.EbShipAddrBean;
 import cn.tf.ecps.po.EbSku;
 import cn.tf.ecps.po.EbSpecValue;
 import cn.tf.ecps.utils.ECPSUtil;
@@ -54,7 +55,7 @@ public class EbBrandServiceTest {
 	private EbSkuDao  skuDao;
 	
 
-	/*@Test
+	//@Test
 	public void testGeneraHtml() throws Exception {
 		Map<String,Object>  map=new HashMap<String,Object> ();
 		EbItem item=itemService.selectItemDetailById(3080);
@@ -67,10 +68,10 @@ public class EbBrandServiceTest {
 	     fm.ouputFile("productDetail.ftl", item.getItemId()+".html", map);
 	
 	}
-	*/
+	
 
 	
-	@Test
+	//@Test
 	public  void importDataRedis() {
 		String host = ECPSUtil.readProp("redis_path");
 		String port = ECPSUtil.readProp("redis_port");
@@ -110,7 +111,7 @@ public class EbBrandServiceTest {
 		
 	}
 	
-	@Test
+	//@Test
 	public void getDateFromRedis() throws Exception {
 		Long skuId = 3082l;
 		String host = ECPSUtil.readProp("redis_path");
@@ -158,5 +159,37 @@ public class EbBrandServiceTest {
 		
 	}
 	
+	@Autowired
+	private EbShipAddrService addrService;
 	
+	@Test
+	public void importAddrList(){
+		
+		String host = ECPSUtil.readProp("redis_path");
+		String port = ECPSUtil.readProp("redis_port");
+		Jedis je = new Jedis(host, new Integer(port));
+		
+		List<EbShipAddrBean> addrList = addrService.selectAddrByUserId(3042l);
+		for (EbShipAddrBean ebShipAddrBean : addrList) {
+			//把用户id存进去
+			je.lpush("ptl_user:3042l:addrList", ebShipAddrBean.getShipAddrId()+"");
+			//把地址信息存储在hset中
+			je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(),"shipAddrId",ebShipAddrBean.getShipAddrId()+"");
+			je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "shipName", ebShipAddrBean.getShipName()+"");
+			je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "province", ebShipAddrBean.getProvince()+"");
+			je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "city", ebShipAddrBean.getCity()+"");
+			je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "district", ebShipAddrBean.getDistrict()+"");
+			je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "addr", ebShipAddrBean.getAddr()+"");
+			je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "zipCode", ebShipAddrBean.getZipCode()+"");
+			je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "phone", ebShipAddrBean.getPhone()+"");
+			je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "defaultAddr", ebShipAddrBean.getDefaultAddr()+"");
+			je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "provText", ebShipAddrBean.getProvText()+"");
+			je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "cityText", ebShipAddrBean.getCityText()+"");
+			je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "distText", ebShipAddrBean.getDistText()+"");
+		}
+	}
+		
+		
 }
+	
+	
