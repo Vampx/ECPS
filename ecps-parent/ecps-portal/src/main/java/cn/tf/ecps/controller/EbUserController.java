@@ -212,5 +212,30 @@ public class EbUserController {
 		}
 		return null;
 	}
+	
+	//生成订单时用户登陆校验
+	@RequestMapping("/loginAjax.do")
+	public void loginAjax(HttpSession session,String username,String password,String captcha,
+			PrintWriter out){
+		//获得正确d 验证码
+		String relCap=(String) session.getAttribute("piccode");
+		if(!StringUtils.equalsIgnoreCase(captcha, relCap)){
+			out.write("cap_error");
+			return ;
+		}
+		password=new MD5().GetMD5Code(password);
+		Map<String, String> map=new HashMap<String, String>();
+		map.put("username", username);
+		map.put("password", password);
+		TsPtlUser user = userService.selectUserByUserPass(map);
+		if(user == null){
+			out.write("userpass_error");
+			return;
+		}
+		session.setAttribute("user", user);
+		out.write("success");
+	}
+	
+	
 
 }

@@ -20,6 +20,7 @@ import cn.tf.ecps.po.EbCart;
 import cn.tf.ecps.po.EbSku;
 import cn.tf.ecps.service.EbCartService;
 import cn.tf.ecps.service.EbSkuService;
+import cn.tf.ecps.utils.ECPSUtil;
 
 @Controller
 @RequestMapping("/cart")
@@ -109,6 +110,15 @@ public class EbCartController {
 	public String clearCart(HttpServletRequest  request,HttpServletResponse response){
 		cartService.clearCart(request, response);
 		return "redirect:listCart.do";
+	}
+	
+	//生成订单时验证库存
+	@RequestMapping("/validCart.do")
+	public void validCart(HttpServletRequest  request,HttpServletResponse response){
+		
+		String result=cartService.validCart(request, response);
+		ECPSUtil.printJSON(result, response);
+			
 	}
 
 }

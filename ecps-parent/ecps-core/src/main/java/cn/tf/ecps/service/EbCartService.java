@@ -56,5 +56,15 @@ public interface EbCartService {
 	 */
 	public void clearCart(HttpServletRequest request, HttpServletResponse response);
 	
+	/**
+	 * 验证购物车的库存
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	public String validCart(HttpServletRequest  request,HttpServletResponse response);
+	
+	
 	
 }

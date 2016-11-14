@@ -31,6 +31,7 @@ import cn.tf.ecps.po.EbCart;
 import cn.tf.ecps.po.EbShipAddr;
 import cn.tf.ecps.po.EbShipAddrBean;
 import cn.tf.ecps.po.EbSku;
+import cn.tf.ecps.po.EbSpecValue;
 import cn.tf.ecps.po.TsPtlUser;
 import cn.tf.ecps.service.EbBrandService;
 import cn.tf.ecps.service.EbCartService;
@@ -292,6 +293,61 @@ public class EbCartServiceImpl implements EbCartService {
 		//把cookie写入浏览器
 		response.addCookie(cookie);
 		
+	}
+
+	
+	//验证购物车的库存
+	public String validCart(HttpServletRequest request,
+			HttpServletResponse response) {
+		String result="success";
+		
+		
+		List<EbCart> cartList = new ArrayList<EbCart>();
+		//把jsonArray转换成java对象
+		JsonConfig jc = new JsonConfig();
+		//设置要转换的类型
+		jc.setRootClass(EbCart.class);
+		jc.setExcludes(new String[]{"sku"});
+		String cartKey = ECPSUtil.readProp("ecps_cart_data");
+		//查询浏览器中是否存储购物车的cookie
+		Cookie[] cookies = request.getCookies();
+		if(cookies != null && cookies.length > 0){
+			for(Cookie cookie : cookies){
+				//获得cookie的name
+				String cookieKey = cookie.getName();
+				//如果cookie中存储在购物车模块的cookie证明购物车中是有数据
+				if(StringUtils.equals(cartKey, cookieKey)){
+					//获得购物车cookie的value
+					String cartVal = cookie.getValue();
+					//base64解码
+					cartVal = URLDecoder.decode(cartVal);
+					//把json字符串转换json数组
+					JSONArray ja = JSONArray.fromObject(cartVal);
+					//把jsonArray转换成java对象的集合
+					cartList = (List<EbCart>) JSONSerializer.toJava(ja, jc);
+					for(EbCart cart : cartList){
+						//EbSku sku = skuDao.getSkuDetail(cart.getSkuId());
+						EbSku sku = skuDao.getSkuDetailWithRedis(cart.getSkuId());
+						if(cart.getQuantity().intValue()>sku.getStockInventory()){
+							//库存不足
+							result=sku.getItem().getItemName()+",";
+							List<EbSpecValue>  specList=sku.getSpecList();
+							for (EbSpecValue spec : specList) {
+								result=result+spec.getSpecValue();
+							}
+							result=result+",库存不足"+cart.getQuantity()
+									+"个,实际只有"+sku.getStockInventory()+"个";
+							break;
+						}
+					}
+				}
+			}
+		}
+		
+		return result;
+		
+		
+
 	}
 	
 	
