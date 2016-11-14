@@ -24,5 +24,7 @@ public interface EbBrandService {
 
 	//删除
 	public int deleteBrand(String id);
+	
+	
  
 }

@@ -137,8 +137,8 @@ public class EbCartServiceImpl implements EbCartService {
 					//把jsonArray转换成java对象的集合
 					cartList = (List<EbCart>) JSONSerializer.toJava(ja, jc);
 					for(EbCart cart : cartList){
-						EbSku sku = skuDao.getSkuDetail(cart.getSkuId());
-						//EbSku sku = skuDao.getSkuDetailWithRedis(cart.getSkuId());
+						//EbSku sku = skuDao.getSkuDetail(cart.getSkuId());
+						EbSku sku = skuDao.getSkuDetailWithRedis(cart.getSkuId());
 						cart.setSku(sku);
 					}
 				}

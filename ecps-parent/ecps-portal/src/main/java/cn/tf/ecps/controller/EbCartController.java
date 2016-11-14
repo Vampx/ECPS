@@ -54,7 +54,8 @@ public class EbCartController {
 	public void validStock(Long skuId,Integer quantity,PrintWriter out){
 		
 		String result="yes";
-		EbSku sku = skuService.getSkuById(skuId);
+		//EbSku sku = skuService.getSkuById(skuId);
+		EbSku sku =skuService.getSkuByIdWithRedis(skuId);
 		if(sku.getStockInventory()<quantity){
 			result="no";
 		}
@@ -77,7 +78,8 @@ public class EbCartController {
 			
 			String result="yes";
 			JSONObject json=new JSONObject();
-			EbSku sku = skuService.getSkuById(skuId);
+			//EbSku sku = skuService.getSkuById(skuId);
+			EbSku sku =skuService.getSkuByIdWithRedis(skuId);
 			if(sku.getStockInventory()<quantity){
 				result="no";
 				json.accumulate("stock", sku.getStockInventory());

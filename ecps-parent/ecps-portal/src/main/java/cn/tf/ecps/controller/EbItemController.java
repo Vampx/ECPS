@@ -69,7 +69,8 @@ public class EbItemController {
 	//最小单元
 	@RequestMapping("/getSkuById.do")
 	public void getSkuById(Long skuId,PrintWriter out){
-		EbSku sku = skuService.getSkuById(skuId);
+		//EbSku sku = skuService.getSkuById(skuId);
+		EbSku sku =skuService.getSkuByIdWithRedis(skuId);
 		JSONObject json=new JSONObject();
 		json.accumulate("sku", sku);
 		String result=json.toString();

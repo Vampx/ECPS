@@ -1,14 +1,21 @@
 package cn.tf.ecps.dao.impl;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
+import redis.clients.jedis.Jedis;
+
 import cn.tf.ecps.dao.EbSkuDao;
+import cn.tf.ecps.po.EbItem;
 import cn.tf.ecps.po.EbSku;
 import cn.tf.ecps.po.EbSpecValue;
+import cn.tf.ecps.utils.ECPSUtil;
 
 
 
@@ -43,8 +50,49 @@ public class EbSkuDaoImpl extends SqlSessionDaoSupport implements EbSkuDao {
 	}
 
 	public EbSku getSkuDetailWithRedis(Long skuId) {
-		// TODO Auto-generated method stub
-		return null;
+		String host=ECPSUtil.readProp("redis_path");
+		String port=ECPSUtil.readProp("redis_port");
+		Jedis  jedis=new Jedis(host,new Integer(port));
+		
+		String skuPrice=jedis.hget("sku:"+skuId, "skuPrice");
+		String marketPrice = jedis.hget("sku:"+skuId, "marketPrice");
+		String stockInventory = jedis.hget("sku:"+skuId, "stockInventory");
+		String itemId = jedis.hget("sku:"+skuId, "itemId");
+		EbSku sku = new EbSku();
+		if(StringUtils.isNotBlank(marketPrice)&&!StringUtils.equals(marketPrice, "null")){
+			sku.setMarketPrice(new BigDecimal(marketPrice));
+		}
+		sku.setSkuPrice(new BigDecimal(skuPrice));
+		sku.setItemId(new Long(itemId));
+		sku.setSkuId(skuId);
+		sku.setStockInventory(new Integer(stockInventory));
+		
+		//获得sku对象中的商品
+		String itemName=  jedis.hget("sku:item:"+itemId, "itemName");
+		String itemNo=  jedis.hget("sku:item:"+itemId, "itemNo");
+		String imgs=  jedis.hget("sku:item:"+itemId, "imgs");
+		EbItem item = new EbItem();
+		item.setItemId(new Long(itemId));
+		item.setItemName(itemName);
+		item.setItemNo(itemNo);
+		item.setImgs(imgs);
+		
+		sku.setItem(item);
+		List<EbSpecValue> specList = new ArrayList<EbSpecValue>();
+		//获得sku的规格信息
+		List<String> array = jedis.lrange("specList", 0, -1);
+		for(String specId: array){
+			
+			String specValue = jedis.hget("sku:"+skuId+"spec:"+specId, "specValue");
+			if(StringUtils.isNotBlank(specValue)){
+				EbSpecValue spec = new EbSpecValue();
+				spec.setSpecValue(specValue);
+				spec.setSkuId(skuId);
+				specList.add(spec);
+			}
+		}
+		sku.setSpecList(specList);
+		return sku;
 	}
 
 	

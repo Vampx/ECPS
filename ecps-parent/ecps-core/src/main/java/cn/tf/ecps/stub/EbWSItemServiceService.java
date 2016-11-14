@@ -48,15 +48,15 @@ public class EbWSItemServiceService extends Service {
     }
     
     public EbWSItemServiceService(WebServiceFeature ... features) {
-        super(WSDL_LOCATION, SERVICE, features);
+        super(WSDL_LOCATION, SERVICE);
     }
 
     public EbWSItemServiceService(URL wsdlLocation, WebServiceFeature ... features) {
-        super(wsdlLocation, SERVICE, features);
+        super(wsdlLocation, SERVICE);
     }
 
     public EbWSItemServiceService(URL wsdlLocation, QName serviceName, WebServiceFeature ... features) {
-        super(wsdlLocation, serviceName, features);
+        super(wsdlLocation, serviceName);
     }    
 
 

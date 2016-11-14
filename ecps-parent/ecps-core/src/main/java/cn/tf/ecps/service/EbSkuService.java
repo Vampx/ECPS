@@ -10,4 +10,7 @@ public interface EbSkuService {
 
 	
 	public EbSku getSkuById(Long skuId);
+	
+	public EbSku getSkuByIdWithRedis(Long skuId);
+	
 }

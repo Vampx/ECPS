@@ -34,6 +34,7 @@
 		<jdbc.artifactId>ojdbc14</jdbc.artifactId>
 		<jdbc.version>10.2.0.2.0</jdbc.version>
 		<jdbc.driverClassName>oracle.jdbc.OracleDriver</jdbc.driverClassName>
+		<jedis.version>2.6.2</jedis.version>
 	</properties>
 
 	<!-- <dependencies> <dependency> <groupId>log4j</groupId> <artifactId>log4j</artifactId> 
@@ -45,6 +46,12 @@
 
 	<dependencyManagement>
 		<dependencies>
+
+			<dependency>
+				<groupId>redis.clients</groupId>
+				<artifactId>jedis</artifactId>
+				<version>${jedis.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>${jdbc.groupId}</groupId>
 				<artifactId>${jdbc.artifactId}</artifactId>
@@ -977,11 +984,8 @@
 			<!-- end CRM-LN -->
 
 			<!-- cb4j batch csv process -->
-			<!-- <dependency>
-				<groupId>io.github.benas.cb4j</groupId>
-				<artifactId>cb4j</artifactId>
-				<version>1.4.0</version>
-			</dependency> -->
+			<!-- <dependency> <groupId>io.github.benas.cb4j</groupId> <artifactId>cb4j</artifactId> 
+				<version>1.4.0</version> </dependency> -->
 		</dependencies>
 	</dependencyManagement>
 
