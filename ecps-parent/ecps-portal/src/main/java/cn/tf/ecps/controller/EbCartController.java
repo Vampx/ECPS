@@ -7,6 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,5 +69,44 @@ public class EbCartController {
 		out.write("success");
 	}
 	
+	
+	
+	//返回详细库存数量
+	@RequestMapping("/validStockDetail.do")
+	public void validStockDetail(Long skuId,Integer quantity,PrintWriter out){
+			
+			String result="yes";
+			JSONObject json=new JSONObject();
+			EbSku sku = skuService.getSkuById(skuId);
+			if(sku.getStockInventory()<quantity){
+				result="no";
+				json.accumulate("stock", sku.getStockInventory());
+			}
+			json.accumulate("flag", result);
+			out.write(json.toString());
+	}
+	
+	
+	@RequestMapping("/updateCartNum.do")
+	public String updateCartNum(Long skuId,Integer quantity,HttpServletRequest  request,HttpServletResponse response){
+		cartService.updateCart(skuId, quantity, request, response);
+		
+		return "redirect:listCart.do";
+	}
+	
+	//删除购物车
+	
+	@RequestMapping("/deleteCart.do")
+	public String deleteCart(Long skuId,HttpServletRequest  request,HttpServletResponse response){
+		cartService.delCart(skuId, request, response);
+		return "redirect:listCart.do";
+	}
+	
+	//清空购物车
+	@RequestMapping("/clearCart.do")
+	public String clearCart(HttpServletRequest  request,HttpServletResponse response){
+		cartService.clearCart(request, response);
+		return "redirect:listCart.do";
+	}
 
 }

@@ -184,7 +184,7 @@ function addCart(){
 		}
 	})
 	var quantity = $("#quantity").val();
-	alert(skuId + "    "+quantity);
+
 	//校验库存
 	var result = validStock(skuId, quantity);
 	if(result == "yes"){

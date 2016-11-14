@@ -50,6 +50,59 @@ $(function(){
 function trueBuy(){
 	window.location.href = "./confirmProductCase.jsp";
 }
+
+//改变数量
+function changeQuantity(skuId,quantity){
+	if(quantity == 0){
+		if(confirm("确认要删除该购物车数据吗？")){
+			window.location.href = "${path}/cart/deleteCart.do?skuId="+skuId;
+		}
+	}else{
+		var jsonObj = validStockDetail(skuId, quantity);
+		if(jsonObj.flag == "no"){
+			alert("当前库存不足"+quantity+"个,实际库存只有"+jsonObj.stock);
+			//如果出现库存不足，就把购物车数据的库存修改成最低库存
+			updateCartNum(skuId, jsonObj.stock);
+		}else{
+			updateCartNum(skuId, quantity);
+		}	
+	}
+
+}
+//返回库存数量
+function validStockDetail(skuId, quantity){
+	var result = null;
+	$.ajax({
+		url:"${path}/cart/validStockDetail.do",
+		type:"post",
+		dataType:"text",
+		async:false,
+		data:{
+			skuId:skuId,
+			quantity:quantity
+		},
+		success:function(responseText){
+			result = $.parseJSON(responseText);
+		},
+		error:function(){
+			alert("系统错误");
+		}
+	});
+	
+	return result;
+
+}
+
+//修改购物车
+function updateCartNum(skuId, quantity){
+	window.location.href="${path}/cart/updateCartNum.do?skuId="+skuId+"&quantity="+quantity;
+
+}
+//清空购物车
+function clearCart(){
+	window.location.href="${path}/cart/clearCart.do";
+}
+
 </script>
 </head>
 <body>
@@ -161,7 +214,7 @@ function trueBuy(){
 						<input type="text" class="txts" size="1" name="" value="${cart.quantity }" onblur="changeQuantity(${cart.skuId},this.value)""/>
 						<a href="javascript:void(0);" title="加" class="inb arr" onclick="changeQuantity(${cart.skuId},${cart.quantity +1 })">+</a></td>
 					<td>￥${cart.sku.skuPrice*cart.quantity }</td>
-					<td class="blue"><a href="javascript:void(0);" title="删除">删除</a><br /><a href="javascript:void(0);" title="收藏">收藏</a></td>
+					<td class="blue"><a href="${path}/cart/deleteCart.do?skuId=${cart.skuId}" title="删除">删除</a><br /><a href="javascript:void(0);" title="收藏">收藏</a></td>
 				</tr>    
 				</c:forEach>
 				    
