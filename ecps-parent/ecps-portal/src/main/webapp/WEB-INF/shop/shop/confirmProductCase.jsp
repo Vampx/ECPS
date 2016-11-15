@@ -1,34 +1,24 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@include file="../taglibs.jsp"%>
 <%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
-			+ request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
+<%@ include file="../taglibs.jsp"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10" />
-<meta http-equiv="pragma" content="no-cache">
-<meta http-equiv="cache-control" content="no-cache">
-<meta http-equiv="expires" content="0">
-<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-<meta http-equiv="description" content="This is my page">
+<meta charset="utf-8">
 <meta name="author" content="http://www.asiainfo-linkage.com/" />
-<meta name="copyright"
-	content="asiainfo-linkage.com 版权所有，未经授权禁止链接、复制或建立镜像。" />
-<meta name="description" content="中国移动通信 name.com" />
-<meta name="keywords" content="中国移动通信 name.com" />
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=1.0" />
+<meta name="copyright" content="asiainfo-linkage.com 版权所有，未经授权禁止链接、复制或建立镜像。" />
+<meta name="description" content="中国移动通信 name.com"/>
+<meta name="keywords" content="中国移动通信 name.com"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=1.0"/>
 <meta name="apple-mobile-web-app-capable" content="yes" />
-
-
-<title>手机商城_移动商城_中国移动通信</title>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10" />
+<title>填写核对订单信息_我的购物车_移动商城_中国移动通信</title>
 <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-<link rel="search" type="application/opensearchdescription+xml"
-	href="../opensearch.xml" title="移动购物" />
+<link rel="search" type="application/opensearchdescription+xml" href="../opensearch.xml" title="移动购物" />
 <link rel="stylesheet" href="${path }/res/css/style.css" />
 <script src="${path }/res/js/jquery.js"></script>
 <script src="${path }/res/js/com.js"></script>
@@ -67,7 +57,9 @@ $(function(){
 	$("#adrList input").click(function(){
 		var val = $(this).val();
 		if(val == 'add'){
-			$('#addAddress').fadeIn('slow');
+			$('#addAddress').show(500);
+		}else{
+			$('#addAddress').hide(500);
 		}
 	});
 

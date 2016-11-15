@@ -3,7 +3,7 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
+<%@ include file="../taglibs.jsp"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -19,9 +19,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 <link rel="search" type="application/opensearchdescription+xml" href="../opensearch.xml" title="移动购物" />
-<link rel="stylesheet" href="../../res/css/style.css" />
-<script src="../../res/js/jquery.js"></script>
-<script src="../../res/js/com.js"></script>
+<link rel="stylesheet" href="${path }/res/css/style.css" />
+<script src="${path }/res/js/jquery.js"></script>
+<script src="${path }/res/js/com.js"></script>
+<script type="text/javascript">var path = "${path}";</script>
+<script src="${path }/res/js/getUser.js"></script>
 <script type="text/javascript">
 $(function(){
 
@@ -84,48 +86,7 @@ $(function(){
 	<li class="dev"><a href="#" title="在线客服">在线客服</a></li>
 	<li class="dev"><a href="#" title="关于中国移动">关于中国移动</a></li>
 	<li class="dev after"><a href="#" title="English">English</a></li>
-	<!--
-		<li class="dev"><a href="#" title="购物车2件" class="icon_car">购物车<var>2</var>件</a></li>
-		<li class="dev"><a href="javascript:void(0)" id="addFavorite">加入收藏夹</a></li>
-		<li class="dev"><a href="javascript:void(0)" id="setHome">设为首页</a></li>
 
-		<li class="sit"><a href="javascript:void(0);" title="网站群链接" class="sel">网站群链接<cite class="inb"></cite></a>
-		<ul class="ul bx_bottom" style="display:none">
-		<li><a href="http://www.ah.10086.cn" title="安徽公司">安徽公司</a></li>
-		<li><a href="http://www.bj.10086.cn" title="北京公司">北京公司</a></li>
-		<li><a href="http://www.cq.10086.cn" title="重庆公司">重庆公司</a></li>
-		<li><a href="http://www.fj.10086.cn" title="福建公司">福建公司</a></li>
-		<li><a href="http://www.gs.10086.cn" title="甘肃公司">甘肃公司</a></li>
-		<li><a href="http://www.gd.10086.cn" title="广东公司">广东公司</a></li>
-		<li><a href="http://www.gx.10086.cn" title="广西公司">广西公司</a></li>
-		<li><a href="http://www.gz.10086.cn" title="贵州公司">贵州公司</a></li>
-		<li><a href="http://www.hi.10086.cn" title="海南公司">海南公司</a></li>
-		<li><a href="http://www.he.10086.cn" title="河北公司">河北公司</a></li>
-		<li><a href="http://www.ha.10086.cn" title="河南公司">河南公司</a></li>
-		<li><a href="http://www.hl.10086.cn" title="黑龙江公司">黑龙江公司</a></li>
-		<li><a href="http://www.hb.10086.cn" title="湖北公司">湖北公司</a></li>
-		<li><a href="http://www.hn.10086.cn" title="湖南公司">湖南公司</a></li>
-		<li><a href="http://www.js.10086.cn" title="江苏公司">江苏公司</a></li>
-		<li><a href="http://www.jx.10086.cn" title="江西公司">江西公司</a></li>
-		<li><a href="http://www.jl.10086.cn" title="吉林公司">吉林公司</a></li>
-		<li><a href="http://www.ln.10086.cn" title="辽宁公司">辽宁公司</a></li>
-		<li><a href="http://www.nm.10086.cn" title="内蒙古公司">内蒙古公司</a></li>
-		<li><a href="http://www.nx.10086.cn" title="宁夏公司">宁夏公司</a></li>
-		<li><a href="http://www.qh.10086.cn" title="青海公司">青海公司</a></li>
-		<li><a href="http://www.sd.10086.cn" title="山东公司">山东公司</a></li>
-		<li><a href="http://www.sn.10086.cn" title="陕西公司">陕西公司</a></li>
-		<li><a href="http://www.sx.10086.cn" title="山西公司">山西公司</a></li>
-		<li><a href="http://www.sh.10086.cn" title="上海公司">上海公司</a></li>
-		<li><a href="http://www.sc.10086.cn" title="四川公司">四川公司</a></li>
-		<li><a href="http://www.tj.10086.cn" title="天津公司">天津公司</a></li>
-		<li><a href="http://www.xj.10086.cn" title="新疆公司">新疆公司</a></li>
-		<li><a href="http://www.xz.10086.cn" title="西藏公司">西藏公司</a></li>
-		<li><a href="http://www.yn.10086.cn" title="云南公司">云南公司</a></li>
-		<li><a href="http://www.zj.10086.cn" title="浙江公司">浙江公司</a></li>
-		<li class="clr"><a href="http://www.chinamobileltd.com" title="chinamobileltd">chinamobileltd</a></li>
-		<li class="clr"><a href="http://www.cmdi.10086.cn" title="中国移动设计院">中国移动设计院</a></li>
-		<li class="clr"><a href="http://labs.10086.cn" title="中国移动研究院">中国移动研究院</a></li>
-		</ul>-->
 	</li>
 	</ul>
 </div></div>
@@ -151,27 +112,34 @@ $(function(){
 	<div class="confirm">
 		<div class="tl"></div><div class="tr"></div>
 		<div class="ofc">
+			<c:choose>
+				<c:when test="${tip == 'stock_error' }">
+					<p class="okMsg">对不起您要买的商品已经被抢光！</p>
+				</c:when>
+				<c:otherwise>
+						<p class="okMsg">您的订单已成功提交，完成支付后，我们将立即发货！</p>
+		
+					<table cellspacing="0" summary="" class="tab tab5">
+					<tr>
+					<th>您的订单号</th>
+					<td><var class="blue"><b>${order.orderNum }</b></var></td>
+					<th>应付现金</th>
+					<td><var class="red"><b>￥${order.orderSum }</b></var>&nbsp;元</td>
+					<th>支付方式</th>
+					<td>在线支付</td>
+					</tr>
+					<tr>
+					<th>配送方式</th>
+					<td>快递</td>
+					<th>预计到货时间</th>
+					<td>2012年12月8日</td>
+					<th></th>
+					<td></td>
+					</tr>
+					</table>
+				</c:otherwise>
+			</c:choose>
 			
-			<p class="okMsg">您的订单已成功提交，完成支付后，我们将立即发货！</p>
-
-			<table cellspacing="0" summary="" class="tab tab5">
-			<tr>
-			<th>您的订单号</th>
-			<td><var class="blue"><b>84733607</b></var></td>
-			<th>应付现金</th>
-			<td><var class="red"><b>￥3599.00</b></var>&nbsp;元</td>
-			<th>支付方式</th>
-			<td>在线支付</td>
-			</tr>
-			<tr>
-			<th>配送方式</th>
-			<td>快递</td>
-			<th>预计到货时间</th>
-			<td>2012年12月8日</td>
-			<th></th>
-			<td></td>
-			</tr>
-			</table>
 
 			<dl class="distr">
 			<dd>

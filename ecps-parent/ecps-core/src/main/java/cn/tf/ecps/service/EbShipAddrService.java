@@ -17,5 +17,6 @@ public interface EbShipAddrService {
 	
 	public List<EbShipAddrBean>  selectAddrByUserIdWithRedis(Long userId);
 
-
+	public EbShipAddr selectAddrByIdWithRedis(Long shipAddrId);
+	
 }

@@ -1,23 +1,37 @@
 package cn.tf.ecps.controller;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
+import cn.tf.ecps.exception.EbStockException;
 import cn.tf.ecps.po.EbCart;
+import cn.tf.ecps.po.EbOrder;
+import cn.tf.ecps.po.EbOrderDetail;
+import cn.tf.ecps.po.EbShipAddr;
 import cn.tf.ecps.po.EbShipAddrBean;
+import cn.tf.ecps.po.EbSpecValue;
 import cn.tf.ecps.po.TsPtlUser;
 import cn.tf.ecps.service.EbCartService;
+import cn.tf.ecps.service.EbOrderService;
 import cn.tf.ecps.service.EbShipAddrService;
+
 
 
 @Controller
@@ -28,7 +42,8 @@ public class EbOrderController {
 	private EbShipAddrService addrService;
 	@Autowired
 	private EbCartService cartService;
-	
+	@Autowired
+	private EbOrderService orderService;
 	
 	
 	@RequestMapping("/toSubmitOrder.do")
@@ -53,11 +68,58 @@ public class EbOrderController {
 		model.addAttribute("itemNum", itemNum);
 		model.addAttribute("totalPrice", totalPrice);
 		
-		
 		return "shop/confirmProductCase";
 	}
 	
-	
+	//提交订单
+	@RequestMapping("/submitOrder.do")
+	public String submitOrder(Model model,String address,EbOrder  order,HttpSession session,HttpServletRequest request,HttpServletResponse response) throws IllegalAccessException, InvocationTargetException{
+		TsPtlUser user = (TsPtlUser) session.getAttribute("user");
+		order.setPtlUserId(user.getPtlUserId());
+		order.setUsername(user.getUsername());
+		//订单号使用时间戳
+		order.setOrderNum(new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()));
+		//如果address不等于add说明address传递过来的是shipAddrId
+		if(!StringUtils.equals(address, "add")){
+			//根据地址id在redis 中查询收货地址对象
+			EbShipAddr addr = addrService.selectAddrByIdWithRedis(new Long(address));
+			BeanUtils.copyProperties(order, addr);
+		}
+		
+		//订单明细数据组装
+		List<EbCart> cartList = cartService.selectCart(request, response);
+		List<EbOrderDetail> detailList = new ArrayList<EbOrderDetail>();
+		for(EbCart cart: cartList){
+			EbOrderDetail detail = new EbOrderDetail();
+			detail.setItemId(cart.getSku().getItem().getItemId());
+			detail.setItemNo(cart.getSku().getItem().getItemNo());
+			detail.setItemName(cart.getSku().getItem().getItemName());
+			detail.setSkuId(cart.getSkuId());
+			//组装商品规格信息
+			String skuSpec = "";
+			List<EbSpecValue> specList = cart.getSku().getSpecList();
+			for(EbSpecValue spec: specList){
+				skuSpec = skuSpec + spec.getSpecValue()+",";
+			}
+			skuSpec = skuSpec.substring(0, skuSpec.length() - 1);
+			detail.setSkuSpec(skuSpec);
+			detail.setSkuPrice(cart.getSku().getSkuPrice());
+			detail.setMarketPrice(cart.getSku().getMarketPrice());
+			detail.setQuantity(cart.getQuantity());
+			detailList.add(detail);
+		}
+
+		try {
+			orderService.saveOrder(order, detailList, request, response);
+			model.addAttribute("order", order);
+		} catch (Exception e) {
+			if(e instanceof EbStockException){
+				model.addAttribute("tip", "stock_error");
+			}
+		}
+		
+		return "shop/confirmProductCase2";
+	}
 	
 
 }

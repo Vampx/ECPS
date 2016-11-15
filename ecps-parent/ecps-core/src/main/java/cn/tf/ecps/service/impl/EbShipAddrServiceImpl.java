@@ -15,8 +15,6 @@ import cn.tf.ecps.dao.EbBrandDao;
 import cn.tf.ecps.dao.EbShipAddrDao;
 import cn.tf.ecps.dao.TsPtlUserDao;
 import cn.tf.ecps.po.EbBrand;
-import cn.tf.ecps.po.EbBrandExample;
-import cn.tf.ecps.po.EbBrandExample.Criteria;
 import cn.tf.ecps.po.EbShipAddr;
 import cn.tf.ecps.po.EbShipAddrBean;
 import cn.tf.ecps.po.TsPtlUser;
@@ -103,6 +101,36 @@ public class EbShipAddrServiceImpl implements EbShipAddrService {
 		}
 		
 		return addrBeanList;
+	}
+
+
+	public EbShipAddr selectAddrByIdWithRedis(Long shipAddrId) {
+		
+		String host = ECPSUtil.readProp("redis_path");
+		String port = ECPSUtil.readProp("redis_port");
+		Jedis je = new Jedis(host, new Integer(port));
+		String shipName = je.hget("ship_addr:"+shipAddrId, "shipName");
+		String province = je.hget("ship_addr:"+shipAddrId, "province");
+		String city = je.hget("ship_addr:"+shipAddrId, "city");
+		String district = je.hget("ship_addr:"+shipAddrId, "district");
+		String addr = je.hget("ship_addr:"+shipAddrId, "addr");
+		String zipCode = je.hget("ship_addr:"+shipAddrId, "zipCode");
+		String phone = je.hget("ship_addr:"+shipAddrId, "phone");
+		String defaultAddr = je.hget("ship_addr:"+shipAddrId, "defaultAddr");
+		
+		EbShipAddrBean esa = new EbShipAddrBean();
+		esa.setShipAddrId(new Long(shipAddrId));
+		esa.setShipName(shipName);
+		esa.setProvince(province);
+		esa.setCity(city);
+		esa.setDistrict(district);
+		esa.setAddr(addr);
+		esa.setZipCode(zipCode);
+		esa.setPhone(phone);
+		esa.setDefaultAddr(new Short(defaultAddr));
+		
+		return esa;
+		
 	}
 	
 	

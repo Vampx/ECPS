@@ -14,8 +14,6 @@ import cn.tf.ecps.dao.EbShipAddrDao;
 import cn.tf.ecps.dao.TsPtlUserDao;
 import cn.tf.ecps.po.EbArea;
 import cn.tf.ecps.po.EbBrand;
-import cn.tf.ecps.po.EbBrandExample;
-import cn.tf.ecps.po.EbBrandExample.Criteria;
 import cn.tf.ecps.po.EbShipAddrBean;
 import cn.tf.ecps.po.TsPtlUser;
 import cn.tf.ecps.service.EbAreaService;

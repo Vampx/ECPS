@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 import cn.tf.ecps.dao.EbBrandDao;
 import cn.tf.ecps.dao.TsPtlUserDao;
 import cn.tf.ecps.po.EbBrand;
-import cn.tf.ecps.po.EbBrandExample;
-import cn.tf.ecps.po.EbBrandExample.Criteria;
 import cn.tf.ecps.po.TsPtlUser;
 import cn.tf.ecps.service.EbBrandService;
 import cn.tf.ecps.service.TsPtlUserService;

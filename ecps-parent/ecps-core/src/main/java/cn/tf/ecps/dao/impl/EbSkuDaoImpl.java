@@ -3,6 +3,7 @@ package cn.tf.ecps.dao.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
@@ -95,6 +96,16 @@ public class EbSkuDaoImpl extends SqlSessionDaoSupport implements EbSkuDao {
 		return sku;
 	}
 
-	
-	
+	public int updateStock(Map<String, Object> map) {
+		return this.getSqlSession().update(ns+"updateStock", map);
+	}
+
+	public void updateRedisStock(Long skuId, Integer quantity) {
+		String host=ECPSUtil.readProp("redis_path");
+		String port=ECPSUtil.readProp("redis_port");
+		Jedis  jedis=new Jedis(host,new Integer(port));
+		jedis.hset("sku:"+skuId, "stockInventory", new Integer(jedis.hget("sku:"+skuId,"stockInventory")) - quantity+"");
+	}
+
 }
+

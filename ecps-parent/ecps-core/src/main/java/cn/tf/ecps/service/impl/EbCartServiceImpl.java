@@ -25,8 +25,6 @@ import cn.tf.ecps.dao.EbShipAddrDao;
 import cn.tf.ecps.dao.EbSkuDao;
 import cn.tf.ecps.dao.TsPtlUserDao;
 import cn.tf.ecps.po.EbBrand;
-import cn.tf.ecps.po.EbBrandExample;
-import cn.tf.ecps.po.EbBrandExample.Criteria;
 import cn.tf.ecps.po.EbCart;
 import cn.tf.ecps.po.EbShipAddr;
 import cn.tf.ecps.po.EbShipAddrBean;
