@@ -66,6 +66,7 @@ function trueBuy(){
 				if(result != "success"){
 					alert(result);
 				}else{
+				
 					window.location.href = "${path}/order/toSubmitOrder.do";
 				}
 				

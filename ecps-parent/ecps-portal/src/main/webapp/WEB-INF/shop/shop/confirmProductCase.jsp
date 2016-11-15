@@ -77,6 +77,19 @@ $(function(){
 		$("#openBankCont").fadeOut('slow');
 	});
 	
+	
+	
+	//选择省的选项的时的事件定义
+	$("#province").change(function(){
+		var parentId = $(this).val();
+		loadOption(parentId, "#mycity");
+	})
+	$("#mycity").change(function(){
+		var parentId = $(this).val();
+		loadOption(parentId, "#district");
+	})
+	
+	
 });
 
 function modify(n){
@@ -90,6 +103,48 @@ function del(e){
 function trueBuy(){
 	window.location.href = "./confirmProductCase2.jsp";
 }
+
+
+function loadOption(parentId, selectId){
+	$.ajax({
+		url:"${path}/user/loadOption.do",
+		type:"post",
+		dataType:"text",
+		async:false,
+		data:{
+			parentId:parentId
+		},
+		success:function(responseText){
+			//清空要追加的select
+			
+			if(selectId == "#mycity"){
+				//如果是选择其中一个省，加载该省下的所有的option时既要清空城市的option也要清空区县
+				$(selectId).empty();
+				$("#district").empty();
+				//把城市和区县的请选择的option给加回来
+				$(selectId).append("<option value='-1'>城市</option>");
+				$("#district").append("<option value='-1'>区县</option>");
+			}else{
+				//如果是选择城市，加载城市下的区县，只清区县下的option即可
+				$(selectId).empty();
+				$(selectId).append("<option value='-1'>区县</option>");
+			}
+			//alert(responseText);
+			//把json字符串转换成json对象
+			var jsonObj = $.parseJSON(responseText);
+			for(var i = 0; i < jsonObj.aList.length; i++){
+				var opt = $("<option value='"+jsonObj.aList[i].areaId+"'>"+jsonObj.aList[i].areaName+"</option>");
+				//追加option
+				$(selectId).append(opt);
+			}
+		},
+		error:function(){
+			alert("系统错误");
+		}
+	})
+}
+
+
 </script>
 </head>
 <body>
@@ -195,29 +250,46 @@ function trueBuy(){
 		</dl>
 		
 		<ul id="addAddress" class="uls form" style="display:none">
-		<li><label for="username">收货人姓名：</label>
-			<span class="bg_text"><input type="text" id="username" name="shipName" vld="{required:true}" maxLength="100" class="txt" /></span>
-			<span class="pos"><span class="tip okTip">&nbsp;</span></span>
-		</li>
-		<li><label for="residence">地　　址：</label><select name="province">
-			<option value="广西" selected>广西壮族自治区</option>
-			
-		</select><select name="city">
-			<option value="南宁" selected>南宁</option>
-			<option value="桂林" selected>桂林</option>
-		</select><select name="district">
-			<option value="青秀区" selected>青秀区</option>
-		</select></li>
-		<li><label for="nick">街道地址：</label>
-			<span class="bg_text"><input type="text" id="nick" name="addr" maxLength="32" vld="{required:true}" class="txt" /></span>
-			<span class="pos"><span class="tip errorTip">用户名为4-20位字母、数字或中文组成，字母区分大小写。</span></span></li>
-		<li><label for="zipCode">邮政编码：</label>
-			<span class="bg_text"><input type="text" id="zipCode" name="zipCode" maxLength="32" vld="{required:true}" class="txt" /></span>
-		</li>
-		<li><label for="telphone">联系电话：</label>
-			<span class="bg_text"><input type="text" id="telphone" name="phone" maxLength="32" vld="{required:true}" class="txt gray" value="请输入手机号码或者固定电话" /></span>
-			<span class="pos"><span class="tip warningTip">用户名为4-20位字母、数字或中文组成，字母区分大小写。</span></span>
-		</li>
+		<form id="jvForm" action="${path }/user/login/saveOrUpdateAddr.do"
+						method="post">
+						<input id="shipAddrId" name="shipAddrId" type="hidden">
+						<ul class="uls form">
+							<li id="errorName" class="errorTip" style="display:none">${error}</li>
+							<li><label for="username"><samp>*</samp>收货人姓名：</label> <span
+								class="bg_text"><input type="text" id="shipName"
+									name="shipName" vld="{required:true}" maxLength="100" /></span> <span
+								class="pos"><span class="tip okTip">&nbsp;</span></span></li>
+							<li><label for="residence"><samp>*</samp>地 址：</label> <span
+								class="word"> <select id="province" name="province">
+										<option value="-1" selected="selected">请选择省</option>
+										<c:forEach items="${aList }" var="area">
+											<option value="${area.areaId }">${area.areaName }</option>
+										</c:forEach>
+								</select> <select id="mycity" name="city">
+										<option value="-1" selected>城市</option>
+								</select> <select id="district" name="district">
+										<option value="-1" selected>县/区</option>
+								</select></span></li>
+							<li><label for="nick"><samp>*</samp>街道地址：</label> <span
+								class="bg_text"><input type="text" id="addr" name="addr"
+									maxLength="32" vld="{required:true}" /></span> <span class="pos"><span
+									class="tip errorTip">用户名为4-20位字母、数字或中文组成，字母区分大小写。</span></span></li>
+							<li><label for="zipCode"><samp>*</samp>邮政编码：</label> <span
+								class="bg_text"><input type="text" id="zipCode"
+									name="zipCode" maxLength="32" vld="{required:true}" /></span></li>
+							<li><label for="telphone"><samp>*</samp>联系电话：</label> <span
+								class="bg_text"><input type="text" id="phone"
+									name="phone" maxLength="32" vld="{required:true}" /></span> <span
+								class="pos"><span class="tip warningTip">用户名为4-20位字母、数字或中文组成，字母区分大小写。</span></span>
+							</li>
+							<!-- <li><label for="statusAddr">&nbsp;</label> <span><input
+									type="checkbox" name="defaultAddr" id="defaultAddr" value="1" />设为默认收货地址</span>
+							</li>
+							<li><label for="">&nbsp;</label><input type="submit"
+								value="保存" class="hand btn66x23" /></li> -->
+						</ul>
+					</form>
+
 		</ul>
 
 	</div>
@@ -270,7 +342,7 @@ function trueBuy(){
 			<dd class="box_d bg_gray2 ofc" style="display:none">
 				<ul class="uls form">
 				<li><label for="">发票类型：</label><input type="radio" value="1" name="payable" checked="checked" />个人&nbsp;&nbsp;<input type="radio" value="2" name="payable" />单位</li>
-				<li><label for="">发票抬头：</label><span class="bg_text"><input type="text" id="invoiceNick" name="company" maxLength="32" vld="{required:true}" class="txt" value="亚信联创科技(中国)有限公司" /></span></li>
+				<li><label for="">发票抬头：</label><span class="bg_text"><input type="text" id="invoiceNick" name="company" maxLength="32" vld="{required:true}" class="txt" value="指令汇科技" /></span></li>
 				<li><label>发票内容：</label><select name="contents"><option value="1" selected>明细</option><option value="2">办公用品</option></select></li>
 				</ul>
 			</dd>

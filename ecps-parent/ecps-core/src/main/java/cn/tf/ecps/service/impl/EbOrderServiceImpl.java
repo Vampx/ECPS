@@ -35,23 +35,26 @@ public class EbOrderServiceImpl implements EbOrderService {
 	
 	@Autowired
 	private EbOrderDao orderDao;
+	
 	@Autowired
 	private EbOrderDetailDao detailDao;
+	
 	@Autowired
 	private EbSkuDao skuDao;
+
 	@Autowired
 	private EbCartService cartService;
-
+	
 	public void saveOrder(EbOrder order, List<EbOrderDetail> detailList,
 			HttpServletRequest request, HttpServletResponse response) {
 		Map<String,Object> map = new HashMap<String,Object>();
+		//保存订单并且返回orderId
 		orderDao.saveOrder(order);
-		for (EbOrderDetail detail : detailList) {
+		for(EbOrderDetail detail: detailList){
 			detail.setOrderId(order.getOrderId());
 			detailDao.saveDetail(detail);
 			
-			/*EbSku  sku = skuDao.getSkuById(detail.getSkuId());
-			sku.setStockInventory(sku.getStockInventory()-detail.getQuantity());*/
+			
 			map.put("skuId", detail.getSkuId());
 			map.put("quantity", detail.getQuantity());
 			int flag = skuDao.updateStock(map);
@@ -62,9 +65,7 @@ public class EbOrderServiceImpl implements EbOrderService {
 			//修改redis中的数据库存
 			skuDao.updateRedisStock(detail.getSkuId(), detail.getQuantity());
 		}
-		//提交订单后清空购物车
 		cartService.clearCart(request, response);
-		
 	}
 
 }

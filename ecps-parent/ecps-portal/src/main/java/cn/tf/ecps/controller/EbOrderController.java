@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 import cn.tf.ecps.exception.EbStockException;
+import cn.tf.ecps.po.EbArea;
 import cn.tf.ecps.po.EbCart;
 import cn.tf.ecps.po.EbOrder;
 import cn.tf.ecps.po.EbOrderDetail;
@@ -28,6 +29,7 @@ import cn.tf.ecps.po.EbShipAddr;
 import cn.tf.ecps.po.EbShipAddrBean;
 import cn.tf.ecps.po.EbSpecValue;
 import cn.tf.ecps.po.TsPtlUser;
+import cn.tf.ecps.service.EbAreaService;
 import cn.tf.ecps.service.EbCartService;
 import cn.tf.ecps.service.EbOrderService;
 import cn.tf.ecps.service.EbShipAddrService;
@@ -44,7 +46,8 @@ public class EbOrderController {
 	private EbCartService cartService;
 	@Autowired
 	private EbOrderService orderService;
-	
+	@Autowired
+	private EbAreaService areaService;
 	
 	@RequestMapping("/toSubmitOrder.do")
 	public String toSubmitOrder(HttpServletRequest request,HttpServletResponse response,
@@ -68,12 +71,18 @@ public class EbOrderController {
 		model.addAttribute("itemNum", itemNum);
 		model.addAttribute("totalPrice", totalPrice);
 		
+		
+		//查询省市级联的地址
+		List<EbArea> aList = areaService.selectAreaByParentId(0l);
+		model.addAttribute("aList",aList);
+		
+		
 		return "shop/confirmProductCase";
 	}
 	
 	//提交订单
 	@RequestMapping("/submitOrder.do")
-	public String submitOrder(Model model,String address,EbOrder  order,HttpSession session,HttpServletRequest request,HttpServletResponse response) throws IllegalAccessException, InvocationTargetException{
+	public String submitOrder(Model model,String address,EbOrder order, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException, Exception{
 		TsPtlUser user = (TsPtlUser) session.getAttribute("user");
 		order.setPtlUserId(user.getPtlUserId());
 		order.setUsername(user.getUsername());
@@ -108,7 +117,7 @@ public class EbOrderController {
 			detail.setQuantity(cart.getQuantity());
 			detailList.add(detail);
 		}
-
+		
 		try {
 			orderService.saveOrder(order, detailList, request, response);
 			model.addAttribute("order", order);
@@ -120,6 +129,7 @@ public class EbOrderController {
 		
 		return "shop/confirmProductCase2";
 	}
+	
 	
 
 }

@@ -100,11 +100,14 @@ public class EbSkuDaoImpl extends SqlSessionDaoSupport implements EbSkuDao {
 		return this.getSqlSession().update(ns+"updateStock", map);
 	}
 
+	/**
+	 * 在redis中set方法时单线程，不以避免并发的问题
+	 */
 	public void updateRedisStock(Long skuId, Integer quantity) {
-		String host=ECPSUtil.readProp("redis_path");
-		String port=ECPSUtil.readProp("redis_port");
-		Jedis  jedis=new Jedis(host,new Integer(port));
-		jedis.hset("sku:"+skuId, "stockInventory", new Integer(jedis.hget("sku:"+skuId,"stockInventory")) - quantity+"");
+		String host = ECPSUtil.readProp("redis_path");
+		String port = ECPSUtil.readProp("redis_port");
+		Jedis je = new Jedis(host, new Integer(port));
+		je.hset("sku:"+skuId, "stockInventory", new Integer(je.hget("sku:"+skuId,"stockInventory")) - quantity+"");
 	}
 
 }
