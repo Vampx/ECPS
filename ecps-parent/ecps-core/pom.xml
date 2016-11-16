@@ -11,7 +11,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<activiti-version>5.14</activiti-version>
+		<activiti-version>5.13</activiti-version>
 	</properties>
 
 	<dependencies>
@@ -357,33 +357,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.jbpm.jbpm4</groupId>
-			<artifactId>jbpm-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jbpm.jbpm4</groupId>
-			<artifactId>jbpm-jpdl</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jbpm.jbpm4</groupId>
-			<artifactId>jbpm-pvm</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>juel-api</artifactId>
-					<groupId>juel</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.jbpm.jbpm4</groupId>
-			<artifactId>jbpm-log</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jbpm.jbpm4</groupId>
-			<artifactId>jbpm-db</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-analyzers</artifactId>
 			<scope>compile</scope>
@@ -658,7 +631,7 @@
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
-			<version>3.2.2</version>
+			<version>3.2.5</version>
 		</dependency>
 
 		<dependency>

@@ -36,7 +36,8 @@ public class EbBrandServiceTest {
 
 	@Autowired
 	private EbBrandService brandService;
-	
+	@Autowired
+	private FlowService flowService;
 
 /*	@Test
 	public void testSaveBrand() {
@@ -189,6 +190,12 @@ public class EbBrandServiceTest {
 		}
 	}
 		
+
+	@Test
+	public  void deployFlow(){
+		flowService.deploy();
+	}
+	
 		
 }
 	
