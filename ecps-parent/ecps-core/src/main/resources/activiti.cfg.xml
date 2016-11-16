@@ -11,11 +11,13 @@
          http://www.springframework.org/schema/aop 
          http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 	
-		
+		<!-- 
+			定义流程引擎的配置对象
+		 -->
 		<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
 			<property name="dataSource" ref="dataSource"></property>
 			<property name="transactionManager" ref="txManager"></property>
-			<property name="databaseSchemaUpdate" value="drop-creat"></property>
+			<property name="databaseSchemaUpdate" value="true"></property>
 		</bean>
 		
 		<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
@@ -25,6 +27,6 @@
 		<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService"></bean>
 		<bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService"></bean>
 		<bean id="taskService" factory-bean="processEngine" factory-method="getTaskService"></bean>
-		<bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService"></bean> 
+		<bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService"></bean>
 		
 </beans>

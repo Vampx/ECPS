@@ -32,15 +32,12 @@ public class FlowServiceImpl implements FlowService{
 	private HistoryService historyService;
 
 	
+	
+	
 	public void deploy() {
-		
 		DeploymentBuilder db = repositoryService.createDeployment();
 		db.addClasspathResource("activiti/OrderFlow.bpmn")
 		.addClasspathResource("activiti/OrderFlow.png");
-		/*db.addClasspathResource("activiti/OrderFlow.bpmn")
-		.addClasspathResource("activiti/OrderFlow.png");*/
-		/*db.addClasspathResource("cn/tf/ecps/activiti/AppayBill.bpmn")
-		.addClasspathResource("cn/tf/ecps/activiti/AppayBill.png");*/
 		db.deploy();
 	}
 
