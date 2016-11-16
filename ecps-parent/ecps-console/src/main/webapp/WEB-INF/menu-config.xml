@@ -7,7 +7,7 @@
 		
         <Menu name="MainMenu" title="首页" page="/shop/mainMenu.jsp" />
         <Menu name="ItemMgmtMenu" title="商品管理" page="/item/toIndex.do" />
-       <Menu name="OrderMgmtMenu" title="订单管理" page="/shop/order/index.jsp" />
+       <Menu name="OrderMgmtMenu" title="订单管理" page="/order/toIndex.do" />
         <Menu name="ValetOrderMgmtMenu" title="代客下单" page="/shop/valetorder/index.jsp" />
         <Menu name="EbPtlUserMgmtMenu" title="会员管理" page="/shop/ptlUser/index.jsp" />
         <Menu name="RelationShipMgmtMenu" title="合作伙伴管理" page="/shop/relational/index.jsp"  />

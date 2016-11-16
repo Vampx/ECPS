@@ -162,7 +162,7 @@ public class EbBrandServiceTest {
 	@Autowired
 	private EbShipAddrService addrService;
 	
-	@Test
+	//@Test
 	public void importAddrList(){
 		
 		String host = ECPSUtil.readProp("redis_path");

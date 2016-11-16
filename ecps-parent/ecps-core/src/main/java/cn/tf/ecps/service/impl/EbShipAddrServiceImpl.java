@@ -74,6 +74,9 @@ public class EbShipAddrServiceImpl implements EbShipAddrService {
 		for(String addrId : addrIdList){
 			String shipAddrId = je.hget("ship_addr:"+addrId, "shipAddrId");
 			String shipName = je.hget("ship_addr:"+addrId, "shipName");
+			
+			
+			
 			String province = je.hget("ship_addr:"+addrId, "province");
 			String city = je.hget("ship_addr:"+addrId, "city");
 			String district = je.hget("ship_addr:"+addrId, "district");
@@ -96,6 +99,7 @@ public class EbShipAddrServiceImpl implements EbShipAddrService {
 			esa.setProvText(provText);
 			esa.setCity(cityText);
 			esa.setDistText(distText);
+			
 			esa.setDefaultAddr(new Short(defaultAddr));
 			addrBeanList.add(esa);
 		}
@@ -110,6 +114,7 @@ public class EbShipAddrServiceImpl implements EbShipAddrService {
 		String port = ECPSUtil.readProp("redis_port");
 		Jedis je = new Jedis(host, new Integer(port));
 		String shipName = je.hget("ship_addr:"+shipAddrId, "shipName");
+		
 		String province = je.hget("ship_addr:"+shipAddrId, "province");
 		String city = je.hget("ship_addr:"+shipAddrId, "city");
 		String district = je.hget("ship_addr:"+shipAddrId, "district");
@@ -127,6 +132,7 @@ public class EbShipAddrServiceImpl implements EbShipAddrService {
 		esa.setAddr(addr);
 		esa.setZipCode(zipCode);
 		esa.setPhone(phone);
+		
 		esa.setDefaultAddr(new Short(defaultAddr));
 		
 		return esa;

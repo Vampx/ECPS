@@ -1,5 +1,7 @@
 package cn.tf.ecps.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,10 +24,12 @@ import cn.tf.ecps.po.EbBrand;
 import cn.tf.ecps.po.EbOrder;
 import cn.tf.ecps.po.EbOrderDetail;
 import cn.tf.ecps.po.EbSku;
+import cn.tf.ecps.po.TaskBean;
 import cn.tf.ecps.po.TsPtlUser;
 import cn.tf.ecps.service.EbBrandService;
 import cn.tf.ecps.service.EbCartService;
 import cn.tf.ecps.service.EbOrderService;
+import cn.tf.ecps.service.FlowService;
 import cn.tf.ecps.service.TsPtlUserService;
 import cn.tf.ecps.utils.MD5;
 
@@ -45,7 +49,12 @@ public class EbOrderServiceImpl implements EbOrderService {
 	@Autowired
 	private EbCartService cartService;
 	
-	public void saveOrder(EbOrder order, List<EbOrderDetail> detailList,
+	@Autowired
+	private FlowService flowService;
+	
+	
+	
+	public String  saveOrder(EbOrder order, List<EbOrderDetail> detailList,
 			HttpServletRequest request, HttpServletResponse response) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		//保存订单并且返回orderId
@@ -65,7 +74,46 @@ public class EbOrderServiceImpl implements EbOrderService {
 			//修改redis中的数据库存
 			skuDao.updateRedisStock(detail.getSkuId(), detail.getQuantity());
 		}
+		
+		String processInstanceId=flowService.startFlow(order.getOrderId());
 		cartService.clearCart(request, response);
+		return processInstanceId;
+	}
+
+
+
+	public void updatePay(String processInstanceId, Long orderId) {
+		EbOrder order=new EbOrder();
+		order.setOrderId(orderId);
+		order.setIsPaid((short)1);
+		orderDao.updateOrder(order);
+		flowService.compeleteTaskByPid(processInstanceId, "付款");
+		
+	}
+
+
+
+	public List<TaskBean> selectOrderPay(String assignee, Short isCall) {
+		List<TaskBean> tbList = flowService.selectTaskByAssignee(assignee);
+		List<TaskBean> tbList1 = new ArrayList<TaskBean>();
+		
+		for(TaskBean tb : tbList){
+			//获得业务键，从而查询到订单
+			String businessKey = tb.getBusinessKey();
+			EbOrder order = orderDao.getOrderById(new Long(businessKey));
+			if(isCall != null){
+				if(order.getIsCall().shortValue() == isCall.shortValue()){
+					tb.setOrder(order);
+					tbList1.add(tb);
+				}
+			}else{
+				tb.setOrder(order);
+				tbList1.add(tb);
+			}
+			
+		}
+		
+		return tbList1;
 	}
 
 }

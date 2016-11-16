@@ -1,5 +1,6 @@
 package cn.tf.ecps.controller;
 
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -94,7 +95,7 @@ public class EbOrderController {
 			EbShipAddr addr = addrService.selectAddrByIdWithRedis(new Long(address));
 			BeanUtils.copyProperties(order, addr);
 		}
-		
+		order.setPtlUserId(user.getPtlUserId());
 		//订单明细数据组装
 		List<EbCart> cartList = cartService.selectCart(request, response);
 		List<EbOrderDetail> detailList = new ArrayList<EbOrderDetail>();
@@ -119,7 +120,10 @@ public class EbOrderController {
 		}
 		
 		try {
-			orderService.saveOrder(order, detailList, request, response);
+			String processInstanceId = orderService.saveOrder(order, detailList, request, response);
+			
+			//把流程实例的id存到session中以便于支付的时候来完成任务
+			session.setAttribute("processInstanceId", processInstanceId);
 			model.addAttribute("order", order);
 		} catch (Exception e) {
 			if(e instanceof EbStockException){
@@ -129,6 +133,20 @@ public class EbOrderController {
 		
 		return "shop/confirmProductCase2";
 	}
+	
+	/**
+	 * 支付
+	 * @param session
+	 * @param orderId
+	 * @param out
+	 */
+	@RequestMapping("/pay.do")
+	public void pay(HttpSession session, Long orderId, PrintWriter out){
+		String processInstanceId = (String) session.getAttribute("processInstanceId");
+		orderService.updatePay(processInstanceId, orderId);
+		out.write("success");
+	}
+	
 	
 	
 

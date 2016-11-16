@@ -31,8 +31,25 @@ $(function(){
 		tipShow('#loginAlert');
 	});
 
-	$("#promptAlertIs,#payAlertIs").click(function(){
-		tipShow('#promptAlert');
+	$("#payAlertIs").click(function(){
+		var orderId = $("#orderId").val();
+		var option = {
+			url:"${path}/order/pay.do",
+			type:"post",
+			dataType:"text",
+			data:{
+				orderId:orderId
+			},
+			success:function(responseText){
+				if(responseText == "success"){
+					alert("支付成功");
+				}
+			},
+			error:function(){
+				alert("系统错误");
+			}
+	}
+	$.ajax(option);
 	});
 
 	$("#transitAlertIs").click(function(){
@@ -108,7 +125,7 @@ $(function(){
 </ul>
 
 <div class="w ofc case">
-
+	<input type="hidden" id="orderId" value="${order.orderId }">
 	<div class="confirm">
 		<div class="tl"></div><div class="tr"></div>
 		<div class="ofc">

@@ -7,10 +7,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import cn.tf.ecps.po.EbOrder;
 import cn.tf.ecps.po.EbOrderDetail;
+import cn.tf.ecps.po.TaskBean;
 
 public interface EbOrderService {
 
-	void saveOrder(EbOrder order, List<EbOrderDetail> detailList,
+	//保存订单
+	public String  saveOrder(EbOrder order, List<EbOrderDetail> detailList,
 			HttpServletRequest request, HttpServletResponse response);
 
+	//更新支付状态
+	public void updatePay(String processInstanceId, Long orderId);
+
+	
+	public List<TaskBean>   selectOrderPay(String assignee,Short isCall);
+	
+	
+	
 }
