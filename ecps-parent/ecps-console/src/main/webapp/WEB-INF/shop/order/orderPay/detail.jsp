@@ -32,15 +32,12 @@ $(function(){
 	$(".sub1").click(function(){
 	    tipShow('#addItemNote');
 	});
-	$("#confirmDivOk").bind("click",function(){
-		var a=$("#myForm");
-		a.append('<input type="hidden" name="r" value="'+obj.val()+'">');
-		a.submit();
-	});
-	$("input[id='addItemNoteConfirm']").click(function(){
+	
+	$("#addItemNoteConfirm").click(function(){
 		var orderId = $("#orderId").val();
-		window.location.href="${path}/order/flowOrder.do?orderId="+orderId+"&orderState=0"; 
-	});
+		window.location.href = "${path}/order/noPaidCall.do?orderId="+orderId;
+	})
+	
 });
 function getBzqd(spid) {
 	$.ajax({
@@ -77,12 +74,12 @@ function getBzqd(spid) {
 				</div>
 				<form id="myForm" action="${path}/order/orderPay/oper.do"
 					method="post">
-					<input type="hidden" id="orderId" value="${order.orderId }">
+					<input type="hidden" id="orderId" value="${tb.order.orderId }">
 
 					<div class="sch page_c">
-						<span class="l">订单号：<b class="red"><var>${order.orderNum}</var></b>&nbsp;&nbsp;&nbsp;下单时间：<var><fmt:formatDate value="${order.orderTime}"pattern="yyyy-MM-dd HH:mm:ss" /></var>&nbsp;&nbsp;&nbsp;<b class="f14 blue"><ui:orderModule var="${ebco.ebOrder.orderState}" type="15"/></b>&nbsp;&nbsp;&nbsp; 
+						<span class="l">订单号：<b class="red"><var>${tb.order.orderNum}</var></b>&nbsp;&nbsp;&nbsp;下单时间：<var><fmt:formatDate value="${tb.order.orderTime}"pattern="yyyy-MM-dd HH:mm:ss" /></var>&nbsp;&nbsp;&nbsp;<b class="f14 blue"></b>&nbsp;&nbsp;&nbsp; 
 						
-						<c:if test="${order.orderState == 1 }">
+						<c:if test="${tb.order.isCall == 0 }">
 							<input name="r" type="button" id="completeCall" class="pointer sub1 red" value="外呼完成" /> 
 						</c:if>
 						
@@ -103,7 +100,7 @@ function getBzqd(spid) {
 		<table cellspacing="0" summary="" class="tab4">
 			 <tr>
 				<th width="12%">归属地：</th>
-				<td width="21%" class="nwp">${order.areaName}</td>
+				<td width="21%" class="nwp">${tb.order.areaName}</td>
 				<th width="12%">购买类型：</th>
 				<td width="21%" class="nwp">
 					常规
@@ -117,29 +114,29 @@ function getBzqd(spid) {
 			</tr> 
 			<tr>
 				<th width="12%">下单用户：</th>
-				<td width="21%" class="nwp">${order.username}</td>
+				<td width="21%" class="nwp">${tb.order.username}</td>
 				<th width="12%">支付方式:</th>
 				<td class="nwp">
-					<c:if test="${order.payment == 1 }">在线支付</c:if>
-					<c:if test="${order.payment == 2 }">货到付款</c:if>
+					<c:if test="${tb.order.payment == 1 }">在线支付</c:if>
+					<c:if test="${tb.order.payment == 2 }">货到付款</c:if>
 				</td>
 						
 					
 			</tr>
-			<c:if test="${order.payable != 0}">
+			<c:if test="${tb.order.payable != 0}">
 				<tr>
 					<th>发票抬头：</th>
 					<td class="nwp">
-					<c:if test="${order.payable == 1 }">个人</c:if>
-					<c:if test="${order.payable == 1 }">单位</c:if>
+					<c:if test="${tb.order.payable == 1 }">个人</c:if>
+					<c:if test="${tb.order.payable == 1 }">单位</c:if>
 					
 					</td>
 					<th>单位名称：</th>
-					<td width="21%" class="nwp">${order.company}</td>
+					<td width="21%" class="nwp">${tb.order.company}</td>
 					<th width="12%">发票内容：</th>
 					<td class="nwp">
-						<c:if test="${order.contents == 1 }">个人</c:if>
-						<c:if test="${order.contents == 2 }">单位</c:if>
+						<c:if test="${tb.order.contents == 1 }">个人</c:if>
+						<c:if test="${tb.order.contents == 2 }">单位</c:if>
 					</td>
 				</tr>
 			</c:if>
@@ -147,20 +144,20 @@ function getBzqd(spid) {
 				<th>送货方式：</th>
 				<td>
 					<c:choose>
-						<c:when test="${order.deliveryMethod == 1 }">
+						<c:when test="${tb.order.deliveryMethod == 1 }">
 							快递
 						</c:when>
-						<c:when test="${order.deliveryMethod == 2 }">
+						<c:when test="${tb.order.deliveryMethod == 2 }">
 							营业厅自提
 						</c:when>
 					</c:choose>
 				<th>送货时间：</th>
 				<td>
 					<c:choose>
-						<c:when test="${order.delivery == 1 }">
+						<c:when test="${tb.order.delivery == 1 }">
 							只工作日送货(双休日，假日不用送)
 						</c:when>
-						<c:when test="${order.delivery == 2 }">
+						<c:when test="${tb.order.delivery == 2 }">
 							工作日、双休日、假日均可送货
 						</c:when>
 						<c:otherwise>
@@ -171,7 +168,7 @@ function getBzqd(spid) {
 				<th>送货前电话确认：</th>
 				<td>
 					<c:choose>
-						<c:when test="${order.isConfirm == 1 }">
+						<c:when test="${tb.order.isConfirm == 1 }">
 							是
 						</c:when>
 						<c:otherwise>
@@ -182,26 +179,26 @@ function getBzqd(spid) {
 			</tr>
 			<tr>
 				<th>收货人：</th>
-				<td class="nwp">${order.shipName}</td>
+				<td class="nwp">${tb.order.shipName}</td>
 				<th>联系方式：</th>
 				<td><var>
-					${order.phone }
+					${tb.order.phone }
 				</var></td>
 				<th>邮编：</th>
-				<td><var>${order.zipCode}</var></td>
+				<td><var>${tb.order.zipCode}</var></td>
 			</tr>
 			<tr>
 				<th>收货地址：</th>
 				<td class="nwp" colspan="5">
-				<c:if test="${ebco.ebOrder.province != ' '}">${order.province}&nbsp;</c:if>
-				<c:if test="${ebco.ebOrder.city != ' '}">${order.city}&nbsp;</c:if>
-				<c:if test="${ebco.ebOrder.district != ' '}">${order.district}&nbsp;</c:if>
-				<c:out value="${ebco.ebOrder.addr}"></c:out>
+				${tb.order.provText}&nbsp;
+				${tb.order.cityText}&nbsp;
+				${tb.order.distText}&nbsp;
+				<c:out value="${tb.order.addr}"></c:out>
 				</td>
 			</tr>
 			<tr>
 				<th>用户备注:</th>
-				<td class="nwp" colspan="5">${order.notes}</td>
+				<td class="nwp" colspan="5">${tb.order.notes}</td>
 			</tr>
 		</table>
 		
@@ -217,7 +214,7 @@ function getBzqd(spid) {
 					<th>数量</th>
 					<th>串号</th>
 				</tr>
-				<c:forEach items="${order.orderDetailList}" var="orderDetail">
+				<c:forEach items="${tb.order.detailList}" var="orderDetail">
 				<tr>
 					<td>${orderDetail.itemNo}</td>
 					<td class="nwp">${orderDetail.itemName}</td>
@@ -234,8 +231,8 @@ function getBzqd(spid) {
 	
 	<!-- 金额合计 -->
 		<div class="page_c">
-			<span class="r">商品金额合计：${order.orderSum }元&nbsp;&nbsp;&nbsp;
-					 运费：0.00元 &nbsp;&nbsp;&nbsp; 应付金额： <b class="f16 red">${order.orderSum }元</b>
+			<span class="r">商品金额合计：${tb.order.orderSum }元&nbsp;&nbsp;&nbsp;
+					 运费：0.00元 &nbsp;&nbsp;&nbsp; 应付金额： <b class="f16 red">${tb.order.orderSum }元</b>
 			</span>
 		</div>
 							
@@ -245,11 +242,11 @@ function getBzqd(spid) {
 	<table cellspacing="0" summary="" class="tab3">
 		<tr><th width="12%">支付流水号：</th><td>${epr.payRecordNum}</td></tr>
 		<tr><th width="12%">支付方式：</th><td>
-			<c:if test="${order.payment == 1 }">在线支付</c:if>
-			<c:if test="${order.payment == 2 }">货到付款</c:if>
+			<c:if test="${tb.order.payment == 1 }">在线支付</c:if>
+			<c:if test="${tb.order.payment == 2 }">货到付款</c:if>
 		</td></tr>
 		<tr><th width="12%">支付平台：</th><td>${epr.poName}</td></tr>
-		<tr><th width="12%">支付金额：</th><td><fmt:formatNumber value="${ebco.ebOrder.orderSum/100}" pattern="#0.00"/>元</td></tr>
+		<tr><th width="12%">支付金额：</th><td><fmt:formatNumber value="${tb.order.orderSum}" pattern="#0.00"/>元</td></tr>
 		<tr><th width="12%">支付状态：</th><td>
 		
 		<c:if test="${order.isPaid == 0 }">未付</c:if>

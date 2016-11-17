@@ -198,56 +198,9 @@ $(function(){
 		<div class="fl"></div><div class="fr"></div>
 	</div>
 
-	<div class="confirm mt">
-		<div class="tl"></div><div class="tr"></div>
-		<div class="ofc">
-			
-			<p class="okMsg"><span class="inb">您已支付成功，无需再次进行！</span><a href="#" title="继续购物" class="inb btn136x36b">继续购物</a></p>
-
-			<dl class="dl_msg">
-			<dt>提示：</dt>
-			<dd>1、您的订单状态为“上门提货”时，表示商品已送至营业厅，可以来营业厅提货。</dd>
-			<dd>2、显示“上门提货”后货物将为您保留3天，3天未取货物将做退库处理。</dd>
-			<dd class="mt inb_a"><a href="#" title="查看订单状态" class="blue">查看订单状态&gt;&gt;</a><a href="#" title="查看购物帮助" class="blue">查看购物帮助&gt;&gt;</a><a href="#" title="继续购物" class="blue">继续购物&gt;&gt;</a></dd>
-			</dl>
-
-		</div>
-		<div class="fl"></div><div class="fr"></div>
 	</div>
 
-	<div class="confirm mt">
-		<div class="tl"></div><div class="tr"></div>
-		<div class="ofc">
-			
-			<p class="okMsg">您已支付成功，我们会尽快安排发货！<a href="#" title="继续购物" class="inb btn136x36b">继续购物</a></p>
-
-			<table cellspacing="0" summary="" class="tab tab5">
-			<tr>
-			<th>您的订单号</th>
-			<td><var class="blue"><b>84733607</b></var></td>
-			<th>应付现金</th>
-			<td><var class="red"><b>￥3599.00</b></var>&nbsp;元</td>
-			<th>支付方式</th>
-			<td>在线支付</td>
-			</tr>
-			<tr>
-			<th>配送方式</th>
-			<td>快递</td>
-			<th>预计到货时间</th>
-			<td>2012年12月8日</td>
-			<th></th>
-			<td></td>
-			</tr>
-			</table>
-
-			<dl class="dl_msg">
-			<dt>提示：</dt>
-			<dd>1、您的订单状态为“上门提货”时，表示商品已送至营业厅，可以来营业厅提货。</dd>
-			<dd>2、显示“上门提货”后货物将为您保留3天，3天未取货物将做退库处理。</dd>
-			<dd class="mt inb_a"><a href="#" title="查看订单状态" class="blue">查看订单状态&gt;&gt;</a><a href="#" title="查看购物帮助" class="blue">查看购物帮助&gt;&gt;</a><a href="#" title="继续购物" class="blue">继续购物&gt;&gt;</a></dd>
-			</dl>
-
-		</div>
+	
 		<div class="fl"></div><div class="fr"></div>
 	</div>
 

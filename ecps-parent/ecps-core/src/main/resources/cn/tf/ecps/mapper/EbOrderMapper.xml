@@ -702,4 +702,79 @@
       ORDER_EXT5 = #{orderExt5,jdbcType=VARCHAR}
     where ORDER_ID = #{orderId,jdbcType=DECIMAL}
   </update>
+  
+  
+  
+  <resultMap type="cn.tf.ecps.po.EbOrder" id="selectOrderAndDetailByIdRM" extends="BaseResultMap">
+  	<result column="prov_text" property="provText"/>
+  	<result column="city_text" property="cityText"/>
+  	<result column="dist_text" property="distText"/>
+  	<collection property="detailList" ofType="cn.tf.ecps.po.EbOrderDetail">
+  		<id column="ORDER_DETAIL_ID" jdbcType="DECIMAL" property="orderDetailId" />
+	    <result column="ORDER_ID" jdbcType="DECIMAL" property="orderId" />
+	    <result column="ITEM_ID" jdbcType="DECIMAL" property="itemId" />
+	    <result column="ITEM_NAME" jdbcType="VARCHAR" property="itemName" />
+	    <result column="ITEM_NO" jdbcType="VARCHAR" property="itemNo" />
+	    <result column="SKU_ID" jdbcType="DECIMAL" property="skuId" />
+	    <result column="SKU" jdbcType="VARCHAR" property="sku" />
+	    <result column="SKU_IMG" jdbcType="VARCHAR" property="skuImg" />
+	    <result column="SKU_NAME" jdbcType="VARCHAR" property="skuName" />
+	    <result column="SKU_CAT_TYPE" jdbcType="DECIMAL" property="skuCatType" />
+	    <result column="SKU_SPEC" jdbcType="VARCHAR" property="skuSpec" />
+	    <result column="MARKET_PRICE" jdbcType="DECIMAL" property="marketPrice" />
+	    <result column="SKU_DISCOUNT" jdbcType="DECIMAL" property="skuDiscount" />
+	    <result column="SKU_PRICE" jdbcType="DECIMAL" property="skuPrice" />
+	    <result column="OFFER_GROUP_ID" jdbcType="DECIMAL" property="offerGroupId" />
+	    <result column="OFFER_GROUP_NAME" jdbcType="VARCHAR" property="offerGroupName" />
+	    <result column="OFFER_TYPE" jdbcType="DECIMAL" property="offerType" />
+	    <result column="SHORT_NAME" jdbcType="VARCHAR" property="shortName" />
+	    <result column="OFFER_ID" jdbcType="DECIMAL" property="offerId" />
+	    <result column="OFFER_NAME" jdbcType="VARCHAR" property="offerName" />
+	    <result column="OFFER_NO" jdbcType="VARCHAR" property="offerNo" />
+	    <result column="SHORT_NAME2" jdbcType="VARCHAR" property="shortName2" />
+	    <result column="OFFER_TERM" jdbcType="DECIMAL" property="offerTerm" />
+	    <result column="COMMIT_MONTHLY" jdbcType="DECIMAL" property="commitMonthly" />
+	    <result column="PREPAID" jdbcType="DECIMAL" property="prepaid" />
+	    <result column="PERIOD" jdbcType="DECIMAL" property="period" />
+	    <result column="REFUND_MONTHLY" jdbcType="DECIMAL" property="refundMonthly" />
+	    <result column="REFUND_1ST_MONTH" jdbcType="DECIMAL" property="refund1stMonth" />
+	    <result column="REFUND_LAST_MONTH" jdbcType="DECIMAL" property="refundLastMonth" />
+	    <result column="ORDER_DETAIL_TYPE" jdbcType="DECIMAL" property="orderDetailType" />
+	    <result column="MERCHANT_ID" jdbcType="DECIMAL" property="merchantId" />
+	    <result column="QUANTITY" jdbcType="DECIMAL" property="quantity" />
+	    <result column="PRICE" jdbcType="DECIMAL" property="price" />
+	    <result column="SERIESCODE" jdbcType="VARCHAR" property="seriescode" />
+	    <result column="OFFER_GROUP_NO" jdbcType="VARCHAR" property="offerGroupNo" />
+	    <result column="PROMO_TYPE" jdbcType="DECIMAL" property="promoType" />
+	    <result column="COND_ID" jdbcType="VARCHAR" property="condId" />
+	    <result column="PRODUCT_ID" jdbcType="VARCHAR" property="productId" />
+	    <result column="PAYMENT_PRICE" jdbcType="DECIMAL" property="paymentPrice" />
+	    <result column="PURCHASE_PRICE" jdbcType="DECIMAL" property="purchasePrice" />
+	    <result column="SIMCARD_SUIT_ID" jdbcType="DECIMAL" property="simcardSuitId" />
+	    <result column="SIMCARD_PACKAGE_ID" jdbcType="VARCHAR" property="simcardPackageId" />
+  	</collection>
+  </resultMap>
+  
+  
+  <select id="selectOrderAndDetailById" parameterType="long" resultMap="selectOrderAndDetailByIdRM">
+  	select eo.*,
+       ed.*,
+       e.area_name  prov_text,
+       e1.area_name city_text,
+       e2.area_name dist_text
+  from eb_order eo, eb_order_detail ed, eb_area e, eb_area e1, eb_area e2
+ where eo.order_id = ed.order_id
+   and eo.province = e.area_id
+   and eo.city = e1.area_id
+   and eo.district = e2.area_id
+   and eo.order_id = #{orderId}
+  </select>
+  
+  
+  
+  
+  
+  
+  
+  
 </mapper>

@@ -35,6 +35,7 @@
 		<jdbc.version>10.2.0.2.0</jdbc.version>
 		<jdbc.driverClassName>oracle.jdbc.OracleDriver</jdbc.driverClassName>
 		<jedis.version>2.6.2</jedis.version>
+		<mysql.connector>5.1.29</mysql.connector>
 	</properties>
 
 	<!-- <dependencies> <dependency> <groupId>log4j</groupId> <artifactId>log4j</artifactId> 
@@ -46,6 +47,11 @@
 
 	<dependencyManagement>
 		<dependencies>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.connector}</version>
+		</dependency>
 
 			<dependency>
 				<groupId>redis.clients</groupId>

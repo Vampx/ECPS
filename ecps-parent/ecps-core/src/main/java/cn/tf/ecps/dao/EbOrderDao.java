@@ -10,4 +10,6 @@ public interface EbOrderDao {
 
 	public EbOrder getOrderById(Long orderId);
 
+	public EbOrder selectOrderAndDetailById(Long orderId);
+
 }

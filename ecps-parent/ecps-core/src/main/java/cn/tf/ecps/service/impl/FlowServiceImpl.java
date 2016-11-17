@@ -9,6 +9,9 @@ import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti.engine.impl.pvm.PvmTransition;
+import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.repository.DeploymentBuilder;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
@@ -75,7 +78,40 @@ public class FlowServiceImpl implements FlowService{
 				}
 				return tbList;
 	}
-	
+
+	public TaskBean selectTaskBeanByTId(String taskId) {
+		TaskBean tb = new TaskBean();
+		Task task = taskService.createTaskQuery().processDefinitionKey("OrderFlow").taskId(taskId).singleResult();
+		List<String> outcomes = this.getOutcomes(task);
+		tb.setTask(task);
+		tb.setOutcome(outcomes);
+		return tb;
+	}
+
+	public List<String> getOutcomes(Task task){
+		List<String> outcomes = new ArrayList<String>();
+		//获得流程定义对象的子类
+		ProcessDefinitionEntity pde = (ProcessDefinitionEntity) repositoryService.getProcessDefinition(task.getProcessDefinitionId());
+		//获得当前任务对应的流程实例
+		ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
+		ActivityImpl ai = pde.findActivity(pi.getActivityId());
+		//获得往外走的路线对象集合
+		List<PvmTransition> ptList  = ai.getOutgoingTransitions();
+		for(PvmTransition pt : ptList){
+			//获得向外的线的名字
+			String outcome = (String) pt.getProperty("name");
+			outcomes.add(outcome);
+		}
+		return outcomes;
+	}
+
+	public void completeTaskByTid(String taskId, String outcome) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("outcome", outcome);
+		//根据流程实例的Id来查询当前的任务
+		taskService.complete(taskId, map);
+		
+	}
 	
 
 }

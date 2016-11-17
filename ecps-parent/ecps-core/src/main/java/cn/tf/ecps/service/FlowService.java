@@ -15,6 +15,7 @@ public interface FlowService {
 
 	public List<TaskBean>   selectTaskByAssignee(String assignee);
 	
+	public TaskBean selectTaskBeanByTId(String taskId);
 	
-	
+	public void completeTaskByTid(String taskId, String outcome);
 }

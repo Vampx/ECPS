@@ -21,6 +21,12 @@ public interface EbOrderService {
 	
 	public List<TaskBean>   selectOrderPay(String assignee,Short isCall);
 	
-	
+	public TaskBean  selectTaskOrderBeanById(Long orderId,String taskId);
+
+	public void noPaidCall(Long orderId);
+
+	public void completeTask(Long orderId, String taskId, String outcome);
+
+	public List<TaskBean> selectOrderCall(String assignee);
 	
 }

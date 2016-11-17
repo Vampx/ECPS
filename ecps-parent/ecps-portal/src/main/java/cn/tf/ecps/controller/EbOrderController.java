@@ -85,7 +85,7 @@ public class EbOrderController {
 	@RequestMapping("/submitOrder.do")
 	public String submitOrder(Model model,String address,EbOrder order, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException, Exception{
 		TsPtlUser user = (TsPtlUser) session.getAttribute("user");
-		order.setPtlUserId(user.getPtlUserId());
+		
 		order.setUsername(user.getUsername());
 		//订单号使用时间戳
 		order.setOrderNum(new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()));

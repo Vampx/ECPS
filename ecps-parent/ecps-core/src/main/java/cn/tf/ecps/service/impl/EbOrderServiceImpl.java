@@ -75,9 +75,9 @@ public class EbOrderServiceImpl implements EbOrderService {
 			skuDao.updateRedisStock(detail.getSkuId(), detail.getQuantity());
 		}
 		
-		String processInstanceId=flowService.startFlow(order.getOrderId());
+		//String processInstanceId=flowService.startFlow(order.getOrderId());
 		cartService.clearCart(request, response);
-		return processInstanceId;
+		return null /*processInstanceId*/;
 	}
 
 
@@ -87,7 +87,7 @@ public class EbOrderServiceImpl implements EbOrderService {
 		order.setOrderId(orderId);
 		order.setIsPaid((short)1);
 		orderDao.updateOrder(order);
-		flowService.compeleteTaskByPid(processInstanceId, "付款");
+		//flowService.compeleteTaskByPid(processInstanceId, "付款");
 		
 	}
 
@@ -115,5 +115,47 @@ public class EbOrderServiceImpl implements EbOrderService {
 		
 		return tbList1;
 	}
+
+
+
+	public TaskBean selectTaskOrderBeanById(Long orderId, String taskId) {
+		EbOrder order = orderDao.selectOrderAndDetailById(orderId);
+		TaskBean tb = flowService.selectTaskBeanByTId(taskId);
+		tb.setOrder(order);
+		return tb;
+	}
+	
+	
+	public void noPaidCall(Long orderId) {
+		EbOrder order = new EbOrder();
+		order.setOrderId(orderId);
+		order.setIsCall((short)1);
+		orderDao.updateOrder(order);
+	}
+
+	public List<TaskBean> selectOrderCall(String assignee) {
+		List<TaskBean> tbList = flowService.selectTaskByAssignee(assignee);
+		
+		for(TaskBean tb : tbList){
+			//获得业务键，从而查询到订单
+			String businessKey = tb.getBusinessKey();
+			EbOrder order = orderDao.getOrderById(new Long(businessKey));
+			tb.setOrder(order);
+		}
+		
+		return tbList;
+		
+	}
+
+	public void completeTask(Long orderId, String taskId, String outcome) {
+		EbOrder order = new EbOrder();
+		order.setOrderId(orderId);
+		order.setUpdateTime(new Date());
+		orderDao.updateOrder(order);
+		flowService.completeTaskByTid(taskId, outcome);
+	}
+	
+
+
 
 }
