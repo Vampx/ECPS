@@ -198,14 +198,15 @@ public class EbUserController {
 		}
 		TsPtlUser user=(TsPtlUser) session.getAttribute("user");
 		addr.setPtlUserId(user.getPtlUserId());
-		addrService.saveOrUpdateAddr(addr);
+		addrService.saveOrUpdateAddr(addr,user);
 		//重定向时，同一个controller中有两个方法有共同的一段路径，就不需要指定，例如这里/login就可以省略
 		return "redirect:toAddr.do";
 	}
 	
 		//删除
 	@RequestMapping("/login/deleteAddr.do")
-	public String deleteAddr(String id){	
+	public String deleteAddr(Long id){
+
 		int result=addrService.deleteAddr(id);
 		if(result>0){
 			return "redirect:toAddr.do";

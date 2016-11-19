@@ -6,18 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)//指定juit的spring运行器
+/*@RunWith(SpringJUnit4ClassRunner.class)//指定juit的spring运行器
 @ContextConfiguration(locations={"classpath:beans.xml"})//指定spring的文件
-public class TestFlow {
+*/public class TestFlow {
 	
-	@Autowired
+/*	@Autowired
 	private FlowService flowService;
 	
 	@Test
 	public  void deployFlow(){
 		flowService.deploy();
 		
-	}
+	}*/
 	
 	/*org.apache.ibatis.exceptions.PersistenceException: 
 		### Error updating database.  Cause: java.sql.SQLException: ORA-01461: 仅能绑定要插入 LONG 列的 LONG 值

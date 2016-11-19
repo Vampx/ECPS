@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.tf.ecps.po.EbShipAddr;
 import cn.tf.ecps.po.EbShipAddrBean;
+import cn.tf.ecps.po.TsPtlUser;
 
 public interface EbShipAddrService {
 	
@@ -11,9 +12,9 @@ public interface EbShipAddrService {
 
 	public EbShipAddr selectAddrById(Long shipAddrId);
 	
-	public void saveOrUpdateAddr(EbShipAddr addr);
+	public void saveOrUpdateAddr(EbShipAddr addr, TsPtlUser user);
 
-	public int  deleteAddr(String id);
+	public int  deleteAddr(Long shipAddrId);
 	
 	public List<EbShipAddrBean>  selectAddrByUserIdWithRedis(Long userId);
 

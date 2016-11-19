@@ -48,7 +48,7 @@ public class EbShipAddrDaoImpl extends SqlSessionDaoSupport implements EbShipAdd
 	}
 
 
-	public int  deleteAddr(String id) {
+	public int  deleteAddr(Long id) {
 		return this.getSqlSession().delete(ns+"deleteByPrimaryKey",id);	
 		
 	}

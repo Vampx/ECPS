@@ -75,6 +75,9 @@ public class ItemController {
 		String result = null;
 		try {
 			result = itemService.publishItem(itemId,wsPass);
+			
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -30,7 +30,7 @@ public class EbShipAddrServiceImpl implements EbShipAddrService {
 	
 	@Autowired
 	private EbShipAddrDao shipAddrDao;
-
+	
 	
 	public List<EbShipAddrBean> selectAddrByUserId(Long userId) {
 		return shipAddrDao.selectAddrByUserId(userId);
@@ -42,16 +42,61 @@ public class EbShipAddrServiceImpl implements EbShipAddrService {
 	}
 
 
-	public void saveOrUpdateAddr(EbShipAddr addr) {
+	public void saveOrUpdateAddr(EbShipAddr addr,TsPtlUser user) {
 		//修改默认收货地址,把默认变为非默认
 		shipAddrDao.updateDefaultAddr(addr.getPtlUserId());
+		
+		String host = ECPSUtil.readProp("redis_path");
+		String port = ECPSUtil.readProp("redis_port");
+		Jedis je = new Jedis(host, new Integer(port));
 		
 		if(addr.getShipAddrId()==null){
 			//说明是新增
 			shipAddrDao.saveAddr(addr);
+			//把地址信息添加到redis缓存中
+			
+			List<EbShipAddrBean> addrList = selectAddrByUserId(user.getPtlUserId());
+			for (EbShipAddrBean ebShipAddrBean : addrList) {
+				//把用户id存进去
+				je.lpush("ptl_user:"+user.getPtlUserId()+":addrList", ebShipAddrBean.getShipAddrId()+"");
+				//把地址信息存储在hset中
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(),"shipAddrId",ebShipAddrBean.getShipAddrId()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "shipName", ebShipAddrBean.getShipName()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "province", ebShipAddrBean.getProvince()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "city", ebShipAddrBean.getCity()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "district", ebShipAddrBean.getDistrict()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "addr", ebShipAddrBean.getAddr()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "zipCode", ebShipAddrBean.getZipCode()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "phone", ebShipAddrBean.getPhone()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "defaultAddr", ebShipAddrBean.getDefaultAddr()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "provText", ebShipAddrBean.getProvText()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "cityText", ebShipAddrBean.getCityText()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "distText", ebShipAddrBean.getDistText()+"");
+			}
+			
+			
 		}else{
 			//说明是修改
 			shipAddrDao.updateAddr(addr);
+			
+			List<EbShipAddrBean> addrList = selectAddrByUserId(user.getPtlUserId());
+			for (EbShipAddrBean ebShipAddrBean : addrList) {
+				//把用户id存进去
+				je.lpush("ptl_user:"+user.getPtlUserId()+":addrList", ebShipAddrBean.getShipAddrId()+"");
+				//把地址信息存储在hset中
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(),"shipAddrId",ebShipAddrBean.getShipAddrId()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "shipName", ebShipAddrBean.getShipName()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "province", ebShipAddrBean.getProvince()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "city", ebShipAddrBean.getCity()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "district", ebShipAddrBean.getDistrict()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "addr", ebShipAddrBean.getAddr()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "zipCode", ebShipAddrBean.getZipCode()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "phone", ebShipAddrBean.getPhone()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "defaultAddr", ebShipAddrBean.getDefaultAddr()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "provText", ebShipAddrBean.getProvText()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "cityText", ebShipAddrBean.getCityText()+"");
+				je.hset("ship_addr:"+ebShipAddrBean.getShipAddrId(), "distText", ebShipAddrBean.getDistText()+"");
+			}
 		}
 		
 		
@@ -59,7 +104,14 @@ public class EbShipAddrServiceImpl implements EbShipAddrService {
 	}
 
 
-	public int deleteAddr(String id) {
+	public int deleteAddr(Long id) {
+		String host = ECPSUtil.readProp("redis_path");
+		String port = ECPSUtil.readProp("redis_port");
+		Jedis je = new Jedis(host, new Integer(port));
+		
+		//删除redis缓存的地址信息
+		je.del("ship_addr:"+id);
+		
 		return shipAddrDao.deleteAddr(id);
 		
 	}
