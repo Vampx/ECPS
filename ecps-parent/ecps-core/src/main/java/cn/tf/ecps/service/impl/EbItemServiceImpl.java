@@ -64,12 +64,12 @@ public class EbItemServiceImpl implements EbItemService {
 		return page;
 	}
 
-	public int deleteGoods(String id) {
+	public int deleteGoods(Long id) {
 
 		return itemDao.deleteGoods(id);
 	}
 
-	public EbItem selectItemByNo(String id) {
+	public EbItem selectItemByNo(Long id) {
 
 		return itemDao.selectItemByNo(id);
 	}

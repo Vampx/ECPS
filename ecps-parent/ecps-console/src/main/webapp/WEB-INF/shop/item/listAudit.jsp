@@ -145,13 +145,14 @@ function isPass(itemId, auditStatus){
 
     <h2 class="h2_ch"><span id="tabs" class="l">
         <a id="label4" href="${path}/item/listAudit.do?showStatus=1"   title="全部实体商品" class="nor">全部</a>
-        <a id="label1" href="${path}/item/listAudit.do?auditStatus=0&showStatus=1" title="待审核实体商品" class="nor">待审核</a>
-        <a id="label2" href="${path}/item/listAudit.do?auditStatus=2&showStatus=1"  title="审核不通过实体商品" class="nor">审核不通过</a>
-        <a id="label3" href="${path}/item/listAudit.do?auditStatus=1&showStatus=1"   title="已审核实体商品" class="nor">已审核</a>
+        <a id="label1" href="${path}/item/listAudit.do?showStatus=1&auditStatus=0" title="待审核实体商品" class="nor">待审核</a>
+        <a id="label2" href="${path}/item/listAudit.do?showStatus=1&auditStatus=2"  title="审核不通过实体商品" class="nor">审核不通过</a>
+        <a id="label3" href="${path}/item/listAudit.do?showStatus=1&auditStatus=1"   title="已审核实体商品" class="nor">已审核</a>
     </span></h2>
-<form id="form1" name="form1" action="${path}/item/listItem.do" method="post">
-  	<input type="hidden" id="auditStatus" name="auditStatus" value="${qc.auditStatus }">
-    <div class="sch">
+<form id="form1" name="form1" action="${path}/item/listAudit.do" method="post">
+    		<input type="hidden" id="showStatus" name="showStatus" value="${qc.showStatus }">
+   
+    	<div class="sch">
         <input type="hidden" id="userSearch" name="userSearch" />
         <p>搜索：
         <select id="brandId" name="brandId">
@@ -227,7 +228,7 @@ function isPass(itemId, auditStatus){
                 </td>
                
 				<td>
-							<a href="${path}/shop/item/viewItem.jsp" title="查看">查看</a>
+							<a href="${path}/item/viewItem.do?id=${item.itemNo }" title="查看">查看</a>
 					  	
 					  		<c:if test="${item.auditStatus == 0 }">
 					  			<a href="#" onclick="isPass(${item.itemId}, 1)">通过</a>

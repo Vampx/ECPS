@@ -11,9 +11,9 @@ public interface EbItemDao {
 	
 	public Integer selectItemByConditionCount(QueryCondition qc);
 
-	public int deleteGoods(String id);
+	public int deleteGoods(Long id);
 
-	public EbItem selectItemByNo(String id);
+	public EbItem selectItemByNo(Long id);
 	
 	public void saveItem(EbItem item);
 	

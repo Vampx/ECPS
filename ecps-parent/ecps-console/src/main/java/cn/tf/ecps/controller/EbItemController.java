@@ -106,7 +106,7 @@ public class EbItemController {
 
 	// 删除商品
 	@RequestMapping("/deleteGoods.do")
-	public String deleteGoods(String id) {
+	public String deleteGoods(Long id) {
 		int i = itemService.deleteGoods(id);
 		
 		if (i > 0) {
@@ -132,13 +132,22 @@ public class EbItemController {
 	//查看商品
 	
 	@RequestMapping("/viewItem.do")
-	public String toviewItem(String id,Model model) {
-		System.out.println(id);
+	public String toviewItem(Long id,Model model) {
 		EbItem  ebItem= itemService.selectItemByNo(id);
-		System.out.println(ebItem);
 		model.addAttribute("ebItem",ebItem);
 		return "item/viewItem";
 	}
+	//编辑商品
+	
+		@RequestMapping("/editItem.do")
+	public String toEditItem(Long id,Model model) {
+		EbItem  ebItem= itemService.selectItemByNo(id);
+		model.addAttribute("ebItem",ebItem);
+		return "item/editItem";
+	}
+	
+	
+	
 	//到添加商品的页面
 	@RequestMapping("/toAddItem.do")
 	public String toAddItem(Model model) {

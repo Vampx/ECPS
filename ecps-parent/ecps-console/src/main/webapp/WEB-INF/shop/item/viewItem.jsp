@@ -262,8 +262,8 @@ function delPic(imgsIndex) {
 
 <div class="frameR"><div class="content">
 
-<div class="loc icon"><samp class="t12"></samp>当前位置：商品管理&nbsp;&raquo;&nbsp;<a href="<c:url value="/${path}/ecps/console/item/listEntity.do?showStatus=1"/>" title="商品录入/上下架">商品录入/上下架</a>&nbsp;&raquo;&nbsp;<span class="gray">查看商品</span>
-    <a href="<c:url value="/${path}/ecps/console/item/listEntity.do?showStatus=1"/>" title="返回商品录入/上下架" class="inb btn120x20">返回商品录入/上下架</a>
+<div class="loc icon"><samp class="t12"></samp>当前位置：商品管理&nbsp;&raquo;&nbsp;<a href="<c:url value="/item/listItem.do?auditStatus=1"/>" title="商品录入/上下架">商品录入/上下架</a>&nbsp;&raquo;&nbsp;<span class="gray">查看商品</span>
+    <a href="<c:url value="/item/listItem.do?auditStatus=1"/>" title="返回商品录入/上下架" class="inb btn120x20">返回商品录入/上下架</a>
 </div>
 <form action="${path}/item/updateItem.do" name="myForm" id="myForm" method="post">
 <h2 class="h2_ch"><span id="tabs" class="l">
@@ -539,7 +539,7 @@ ${ebItem.pageDesc}
 <div class="loc">&nbsp;</div>
 
 <div class="edit set"><h2>操作记录</h2></div>
-<iframe src="<c:url value='/shop/consolelog/top10.jsp?entityId=${ebItem.itemId}&tableName=EB_ITEM'/>" width="100%" height="400" marginwidth="0" marginheight="0" frameBorder="no" framespacing="0" allowtransparency="true" scrolling="auto"></iframe>
-
+<%-- <iframe src="<c:url value='/shop/consolelog/top10.jsp?entityId=${ebItem.itemId}&tableName=EB_ITEM'/>" width="100%" height="400" marginwidth="0" marginheight="0" frameBorder="no" framespacing="0" allowtransparency="true" scrolling="auto"></iframe>
+ --%>
 </div></div>
 </body>

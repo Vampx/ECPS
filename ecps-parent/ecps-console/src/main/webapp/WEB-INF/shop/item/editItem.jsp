@@ -978,7 +978,7 @@ function setGiftShowType(id) {
 <div class="loc">&nbsp;</div>
 
 <div class="edit set"><h2>操作记录</h2></div>
-<iframe src="<c:url value='/${system }/consolelog/top10.do?entityId=${ebItem.itemId}&tableName=EB_ITEM&isCard=n'/>" width="100%" height="400" marginwidth="0" marginheight="0" frameBorder="no" framespacing="0" allowtransparency="true" scrolling="auto"></iframe>
-
+<%-- <iframe src="<c:url value='/${system }/consolelog/top10.do?entityId=${ebItem.itemId}&tableName=EB_ITEM&isCard=n'/>" width="100%" height="400" marginwidth="0" marginheight="0" frameBorder="no" framespacing="0" allowtransparency="true" scrolling="auto"></iframe>
+ --%>
 </div></div>
 </body>

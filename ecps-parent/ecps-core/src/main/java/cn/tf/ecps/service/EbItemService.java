@@ -18,10 +18,10 @@ public interface EbItemService {
 	public Page selectItemByCondition(QueryCondition qc);
 
 	//删除商品
-	public int deleteGoods(String id);
+	public int deleteGoods(Long id);
 
 	//通过itm_no查询
-	public EbItem selectItemByNo(String id);
+	public EbItem selectItemByNo(Long id);
 	//保存商品信息
 	public void saveItem(EbItem item,EbItemClob  itemClob,
 			List<EbParaValue> paraList,List<EbSku> skuList);

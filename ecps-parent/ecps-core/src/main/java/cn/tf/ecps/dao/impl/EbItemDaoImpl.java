@@ -23,11 +23,11 @@ public class EbItemDaoImpl extends SqlSessionDaoSupport implements EbItemDao {
 		return this.getSqlSession().selectOne(ns+"selectItemByConditionCount", qc);
 	}
 
-	public int deleteGoods(String id) {
+	public int deleteGoods(Long id) {
 		return this.getSqlSession().delete(ns+"deleteByItemNO", id);
 	}
 
-	public EbItem selectItemByNo(String id) {
+	public EbItem selectItemByNo(Long id) {
 		return this.getSqlSession().selectOne(ns+"selectByNO", id);
 	}
 	public void saveItem(EbItem item) {

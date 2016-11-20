@@ -253,7 +253,7 @@ function isShow(itemId, showStatus){
 				<td>
 							<a href="${path}/item/viewItem.do?id=${item.itemNo }" title="查看">查看</a>
 					  		<c:if test="${item.showStatus == 1 }">
-						  		<a href="/ecps-console/ecps/console/item/editItem.do?type=1&itemId=2384">编辑</a>
+						  		<a href="${path}/item/editItem.do?id=${item.itemNo }">编辑</a>
 						  		<a href="javascript:void(0);" onclick="singleDel('${item.itemNo }')">删除</a>
 					  			<a href="javascript:void(0);" onclick="isShow(${item.itemId}, 0)">上架</a>
 					  		</c:if>
