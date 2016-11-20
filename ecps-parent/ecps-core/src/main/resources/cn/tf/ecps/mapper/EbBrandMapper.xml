@@ -120,4 +120,12 @@
   <select id="validBrandName" parameterType="string" resultMap="BaseResultMap">
   	select * from eb_brand t where t.brand_name = #{brandName}
   </select>
+  
+  <select id="selectByNO" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from EB_BRAND
+    where BRAND_ID = #{id,jdbcType=DECIMAL}
+  </select>
+  
 </mapper>

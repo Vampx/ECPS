@@ -91,28 +91,23 @@ $(function(){
 });
 
 function submitUpload(){
-	
-	var opt = {
-		//重新指定form的action的值
-		url:"${path}/upload/uploadPic.do",
-		type:"post",
-		dateType:"text",
-		data:{
-			fileName:"imgsFile"
-		},
+	var option = {
+		url:"${path}/upload/uploadPic.do",//如果不写url就是默认使用要提交的表单中的url，如果有url就是使用该url
+		dataType:"text",
 		success:function(responseText){
-			var obj = $.parseJSON(responseText);
-			$("#imgsImgSrc").attr("src",obj.fullPath);
-			$("#imgs").val(obj.fileName);
-			
+			//把json格式字符串转换成json对象
+			var jsonObj = $.parseJSON(responseText);
+			$("#imgsImgSrc").attr("src", jsonObj.realPath);
+			$("#imgs").val(jsonObj.relativePath);
+			$("#lastPath").val(jsonObj.realPath);
 		},
 		error:function(){
 			alert("系统错误");
 		}
 		
 	};
-	$("#form111").ajaxSubmit(opt);
-	
+	//ajax方式提交表单，页面不会跳转（由jQuery-form提供）
+	$("#form111").ajaxSubmit(option);
 }
 </script>
 </head>
@@ -125,16 +120,16 @@ function submitUpload(){
 
 	<c:url value="/${system}/item/brand/listBrand.do" var="backurl"/>
 	
-	<div class="loc icon"><samp class="t12"></samp>当前位置：商品管理&nbsp;&raquo;&nbsp;<a href="<c:url value="/${system }/item/brand/listBrand.do"/>" title="品牌管理">品牌管理</a>&nbsp;&raquo;&nbsp;<span class="gray">编辑品牌</span>
-    <a href="<c:url value="/${system }/item/brand/listBrand.do"/>" title="返回品牌管理" class="inb btn80x20">返回品牌管理</a>
+	<div class="loc icon"><samp class="t12"></samp>当前位置：商品管理&nbsp;&raquo;&nbsp;<a href="<c:url value="/item/selectBrandAll.do"/>" title="品牌管理">品牌管理</a>&nbsp;&raquo;&nbsp;<span class="gray">编辑品牌</span>
+    <a href="<c:url value="/item/selectBrandAll.do"/>" title="返回品牌管理" class="inb btn80x20">返回品牌管理</a>
     </div>
-	<form id="form111" name="form111" action="${path }/brand/updateBrand.do" method="post" enctype="multipart/form-data">
+	<form id="form111" name="form111" action="${path}/item/updateBrand.do" method="post" enctype="multipart/form-data">
 		<div class="edit set">
 			<input type="hidden" name="brandId" value="${brand.brandId }">
 			<p><label><samp>*</samp>品牌名称：</label><input type="text" readonly="readonly" value="${brand.brandName }" id="brandName" name="brandName" class="text state" reg2="^[a-zA-Z0-9\u4e00-\u9fa5]{1,20}$" tip="必须是中英文或数字字符，长度1-20"/>
 				<span></span>
 			</p>
-            <p><label class="alg_t"><samp>*</samp>品牌LOGO：</label><img id='imgsImgSrc' src="${upload }${brand.imgs}" height="100" width="100" />
+            <p><label class="alg_t"><samp>*</samp>品牌LOGO：</label><img id='imgsImgSrc' src="${FILE_PATH }${brand.imgs}" height="100" width="100" />
             </p>
              <p><label></label><input type='file' size='27' id='imgsFile' name='imgsFile' class="file" onchange='submitUpload()' /><span id="submitImgTip" class="pos">请上传图片宽为120px，高为50px，大小不超过100K。</span>
                 <input type='hidden' id='imgs' name='imgs' value="${brand.imgs }" reg2="^.+$" tip="亲！您忘记上传图片了。" />

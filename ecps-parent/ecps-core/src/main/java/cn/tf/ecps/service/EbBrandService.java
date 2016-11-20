@@ -23,7 +23,12 @@ public interface EbBrandService {
 	public List<EbBrand> validBrandName(String brandName);
 
 	//删除
-	public int deleteBrand(String id);
+	public int deleteBrand(Long id);
+
+	//编辑品牌
+	public EbBrand selectBrandByNo(Long id);
+
+	public int updateBrand(EbBrand brand);
 	
 	
  

@@ -47,8 +47,8 @@
 				
 				<td>${brand.brandSort }</td>
 				<td>
-					<a href="${path }/shop/item/editbrand.jsp?brandId=3185">编辑</a>
-                       <a href="javascript:void(0)" onclick="singleDel(${brand.brandId })">删除</a>
+					<a href="${path}/item/editBrand.do?id=${brand.brandId }">编辑</a>
+                    <a href="javascript:void(0)" onclick="singleDel(${brand.brandId })">删除</a>
 				</td>
 			</tr>
 			</c:forEach>

@@ -31,8 +31,17 @@ public class EbBrandServiceImpl implements EbBrandService {
 	}
 
 	//删除
-	public int deleteBrand(String id) {
+	public int deleteBrand(Long id) {
 		return brandDao.deleteBrand(id);
+		
+	}
+
+	public EbBrand selectBrandByNo(Long id) {
+		return brandDao.selectBrandByNo(id);
+	}
+
+	public int updateBrand(EbBrand brand) {
+		return brandDao.updateBrand(brand);
 		
 	}   
 

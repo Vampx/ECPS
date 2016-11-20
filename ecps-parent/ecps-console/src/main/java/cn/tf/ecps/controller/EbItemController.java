@@ -88,6 +88,7 @@ public class EbItemController {
 
 	}
 
+	//添加品牌
 	@RequestMapping("/addBrand.do")
 	public String addBrand(EbBrand brand) {
 		brandService.saveBrand(brand);
@@ -96,13 +97,28 @@ public class EbItemController {
 
 	// 删除品牌
 	@RequestMapping("/delete.do")
-	public String delete(String id) {
+	public String delete(Long id) {
 		int i = brandService.deleteBrand(id);
 		if (i > 0) {
 			return "redirect:selectBrandAll.do";
 		}
 		return null;
 	}
+	
+	//跳到编辑品牌
+	@RequestMapping("/editBrand.do")
+	public String toEditBrand(Long id,Model model) {
+		EbBrand  brand= brandService.selectBrandByNo(id);
+		model.addAttribute("brand",brand);
+		return "item/editbrand";
+	}
+	//保存编辑
+	@RequestMapping("/updateBrand.do")
+	public String updateBrand(EbBrand brand) {
+		brandService.updateBrand(brand);
+		return "redirect:selectBrandAll.do";
+	}
+	
 
 	// 删除商品
 	@RequestMapping("/deleteGoods.do")
@@ -139,7 +155,7 @@ public class EbItemController {
 	}
 	//编辑商品
 	
-		@RequestMapping("/editItem.do")
+	@RequestMapping("/editItem.do")
 	public String toEditItem(Long id,Model model) {
 		EbItem  ebItem= itemService.selectItemByNo(id);
 		model.addAttribute("ebItem",ebItem);

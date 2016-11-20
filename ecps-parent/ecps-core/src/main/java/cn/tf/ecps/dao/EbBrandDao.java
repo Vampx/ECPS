@@ -16,5 +16,9 @@ public interface EbBrandDao {
 
 	public List<EbBrand> validBrandName(String brandName);
 
-	public int deleteBrand(String id);
+	public int deleteBrand(Long id);
+
+	public EbBrand selectBrandByNo(Long id);
+
+	public int updateBrand(EbBrand brand);
 }

@@ -2,5 +2,5 @@
 <%@ include file="taglibs.jsp" %>
 
 <div class="footer">
-    <a href="#" target="_blank">help</a> 2011 <a href="亚信联创" target="_blank">亚信联创</a>
+    <a href="#" target="_blank">help</a> 2016 <a href="www.tianfang1314.cn" target="_blank">指令汇科技</a>
 </div>

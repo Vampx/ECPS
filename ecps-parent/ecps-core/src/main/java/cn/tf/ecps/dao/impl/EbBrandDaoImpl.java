@@ -26,9 +26,17 @@ public class EbBrandDaoImpl extends SqlSessionDaoSupport implements EbBrandDao {
 		return this.getSqlSession().selectList(ns+"validBrandName", brandName);
 	}
 
-	public int deleteBrand(String id) {
+	public int deleteBrand(Long id) {
 		
 		return this.getSqlSession().delete(ns+"deleteByPrimaryKey", id);
+	}
+
+	public EbBrand selectBrandByNo(Long id) {
+		return this.getSqlSession().selectOne(ns+"selectByNO", id); 
+	}
+
+	public int updateBrand(EbBrand brand) {
+		return this.getSqlSession().update(ns+"updateByPrimaryKey",brand);
 	}
 
 }

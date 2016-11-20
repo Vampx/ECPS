@@ -779,7 +779,7 @@ function setGiftShowType(id) {
 </div>
 
 <div id="tab_2" class="edit" style="display: none">
-<textarea name="itemDesc" id="itemDesc">${ebItem.itemDesc}</textarea>
+<textarea name="itemDesc" id="pageDesc">${ebItem.pageDesc}</textarea>
 <script type="text/javascript">   
 	var ${"itemDesc"} = new FCKeditor('itemDesc');
 	${"itemDesc"}.BasePath = '${path}/res/plugins/fckeditor/';
@@ -933,7 +933,7 @@ function setGiftShowType(id) {
 </div>
 
 <div id="tab_5" class="edit" style="display: none">
-<textarea name="packingList" id="packingList">${ebItem.packingList}</textarea>
+<textarea name="paraList" id="packingList">${ebItem.paraList}</textarea>
 <script type="text/javascript">   
 	var ${"packingList"} = new FCKeditor('packingList');
 	${"packingList"}.BasePath = '${path }/res/plugins/fckeditor/';
