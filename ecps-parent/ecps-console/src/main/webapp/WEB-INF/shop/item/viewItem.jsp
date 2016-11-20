@@ -4,9 +4,9 @@
 <title>审核商品_实体商品_商品管理</title>
 <meta name="heading" content="<fmt:message key='mainMenu.heading'/>"/>
 <meta name="menu" content="ItemMgmtMenu"/>
-<script type="text/javascript" src="<c:url value='/${path}/ecps/console/res/plugins/fckeditor/fckeditor.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/${path}/ecps/console/res/js/jquery.form.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/${path}/ecps/console/res/js/uploads.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/ecps/console/res/plugins/fckeditor/fckeditor.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/ecps/console/res/js/jquery.form.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/ecps/console/res/js/uploads.js'/>"></script>
 <script language="javascript" type="text/javascript">
 
 function swapNode(node1,node2)
@@ -281,16 +281,16 @@ function delPic(imgsIndex) {
 	<p><label><samp>*</samp>商品分类：</label><select disabled="true"><option>${ebCat.catName}<option></select>
         <input type="hidden" id="catId" name="catId" value="${ebCat.catId}" class="txt" />
 	</p>
-	<p><label><samp>*</samp>商品品牌：</label><select  id="brandId" name="brandId" disabled="true">
-    <c:forEach items="${blist}" var="b">
-    <option<c:if test="${b.brandId == ebItem.brandId}"> selected</c:if> value="${b.brandId}">${b.brandName}</option>
-    </c:forEach>
-	</select></p>
-	<p><label><samp>*</samp>运营范围:</label>
+	<p><label><samp>*</samp>商品品牌：</label>
+	<select  id="brandId" name="brandId" disabled="true">
+    	<option   value="${brand.brandId}">${brand.brandName}</option>
+	</select>
+	</p>
+	<%-- <p><label><samp>*</samp>运营范围:</label>
 		<c:forEach items="${businessScopeList}" var="businessScope">
 			<input name="businessScope" type="checkbox"  value="${businessScope.businessScopeId}"/><c:out value="${businessScope.businessScopeName}"></c:out>&nbsp;&nbsp;
 		</c:forEach>
-	</p>
+	</p> --%>
 	<p><label>赠品信息:</label>
 		<c:if test="${phone!=''}">
 			<c:if test="${phone=='0'}">
@@ -323,8 +323,8 @@ function delPic(imgsIndex) {
 		<c:if test="${ebItem.tagImg==1 }">无</c:if>
 		<c:if test="${ebItem.tagImg==2 }">
 			<span style="position:relative;display:block;width:225px;height:290px;margin:-26px 0 0 200px">
-				<img src="${base }/res/imgs/p225x290.jpg" width="225" height="290" />
-				<img id="upshow" src="${rsImgUrlInternal}${itemTagImg.tagImgUrl }" onerror="this.src='${base}/res/imgs/deflaut.jpg'"  style="position:absolute;top:5px;right:5px" />
+				<img src="${path }/${system }/res/imgs/p225x290.jpg" width="225" height="290" />
+				<img id="upshow" src="${FILE_PATH }${ebItem.imgs}" onerror="this.src='${pase}/${system }/res/imgs/deflaut.jpg'"  style="position:absolute;top:5px;right:5px" />
 			</span>
 		</c:if>
 	</p>
@@ -335,7 +335,7 @@ function delPic(imgsIndex) {
     <a name="uploadImgs" id="uploadImgs"></a>
     <p><label><samp>*</samp>上传商品图片(90x150尺寸):</label><span id="uploadImgTip1" class="orange">注:该尺寸图片必须为90x150。</span></p>
     <p><label></label>
-		<img id='imgSize1ImgSrc' src='${rsImgUrlInternal}${ebItem.imgSize1}' onerror="this.src='${base}/res/imgs/deflaut.jpg'" height="100" width="100" />
+		<img id='imgSize1ImgSrc' src='${FILE_PATH }${ebItem.imgs}'  height="100" width="100" />
 		<input type='hidden' id='imgSize1Action' name='imgSize1Action' value='${path}/uploads/upload_pic.do' />
         <input type='hidden' id='imgSize1' name='imgSize1' value='${ebItem.imgSize1}' reg="^.+$" tip="亲！您忘记上传图片了。" />
 	</p>
@@ -351,7 +351,7 @@ function delPic(imgsIndex) {
             <c:forEach items='${imageList}' var="item" varStatus="count">
                 <tr id="imgsTr${count.index}" >
                     <td>
-                        <span class="pic"><img id="imgs${count.index}Img" name="imgs${count.index}Img" src="${item.filePath}" onerror="this.src='${path}/res/imgs/deflaut.jpg'" width="100" height="100" /></span>
+                        <span class="pic"><img id="imgs${count.index}Img" name="imgs${count.index}Img" src="${FILE_PATH }${ebItem.imgs}" onerror="this.src='${pase}/${system }/res/imgs/deflaut.jpg'" width="100" height="100" /></span>
 <!--                        <input type="file" id="imgs${count.index}File" name="imgs${count.index}File" class="file" onchange="submitUploads('${count.index}')" />-->
                         <input type="hidden" id="imgsFilePath${count.index}" name="imgsFilePath${count.index}" value="${item.filePath}" />
                         <input type="hidden" id="imgsFileDesc${count.index}" name="imgsFileDesc${count.index}" value="${item.fileDesc}" />
@@ -393,7 +393,24 @@ ${ebItem.pageDesc}
 </div>
 
 <div id="tab_3" class="edit set" style="display: none">
-    <c:if test="${fn:length(list1) == 0}">
+				<table cellspacing="0" summary="" class="tab tab7">
+				<thead>
+				<tr>
+				<th colspan="2">基本参数</th>
+				</tr>     
+				</thead>
+				<tbody>
+				<c:forEach items="${item.paraList }" var="para">
+					<tr>
+					<th width="15%" class="alg_r">${para.featureName }</th>
+					<td>${para.paraValue }</td>
+					</tr>
+				</c:forEach>
+				        
+				
+				</tbody>
+				</table>
+    <%-- <c:if test="${fn:length(list1) == 0}">
     <p><label></label>无属性</p>
     </c:if>
     <c:forEach items="${list1}" var="f" varStatus="status">
@@ -429,7 +446,7 @@ ${ebItem.pageDesc}
             <input type="text" class="text state paraValue" value="${e}" disabled/>
         </c:if>
         </p>
-    </c:forEach>
+    </c:forEach> --%>
 </div>
 
 <div id="tab_4" style="display: none">
@@ -529,8 +546,8 @@ ${ebItem.pageDesc}
         <input type="hidden" name="oldAuditStatus" id="oldAuditStatus" value="${ebItem.auditStatus }" >
     </p>
     <p><label>&nbsp;</label><input 
-        type="button" value="确认审核" class="hand btn83x23 sub1" />&nbsp;&nbsp; <input 
-        type="button" value="审核不通过"  class="hand btn83x23b sub1" /></p>
+        type="button" value="确认审核" class="hand btn83x23 sub1" />&nbsp;&nbsp; 
+        <input   type="button" value="审核不通过"  class="hand btn83x23b sub1" /></p>
     </div>
 
 </div> --%>

@@ -43,6 +43,10 @@ public class EbBrandServiceImpl implements EbBrandService {
 	public int updateBrand(EbBrand brand) {
 		return brandDao.updateBrand(brand);
 		
+	}
+
+	public EbBrand selectItemByNo(Long id) {
+		return brandDao.selectBrandByNo(id);
 	}   
 
 	

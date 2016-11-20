@@ -124,7 +124,6 @@ public class EbItemController {
 	@RequestMapping("/deleteGoods.do")
 	public String deleteGoods(Long id) {
 		int i = itemService.deleteGoods(id);
-		
 		if (i > 0) {
 			return "redirect:listItem.do";
 		}
@@ -148,17 +147,36 @@ public class EbItemController {
 	//查看商品
 	
 	@RequestMapping("/viewItem.do")
-	public String toviewItem(Long id,Model model) {
+	public String toviewItem(Long id,Long brandId,Long itemId,Model model) {
 		EbItem  ebItem= itemService.selectItemByNo(id);
 		model.addAttribute("ebItem",ebItem);
+		
+		//查询商品品牌
+		EbBrand  brand=brandService.selectItemByNo(brandId);	
+		model.addAttribute("brand",brand);
+		
+		//基本参数
+		EbItem item = itemService.selectItemDetailById(itemId);
+		//System.out.println(item.getParaList());
+		model.addAttribute("item",item);
+		
 		return "item/viewItem";
 	}
 	//编辑商品
 	
 	@RequestMapping("/editItem.do")
-	public String toEditItem(Long id,Model model) {
+	public String toEditItem(Long id,Long itemId,Model model) {
 		EbItem  ebItem= itemService.selectItemByNo(id);
 		model.addAttribute("ebItem",ebItem);
+		
+		//查询商品品牌
+		List<EbBrand> bList = brandService.selectBrandAll();	
+		model.addAttribute("bList",bList);
+		
+		//基本参数
+		EbItem item = itemService.selectItemDetailById(itemId);
+		model.addAttribute("item",item);
+		
 		return "item/editItem";
 	}
 	

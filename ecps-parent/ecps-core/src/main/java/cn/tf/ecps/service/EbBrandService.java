@@ -29,6 +29,9 @@ public interface EbBrandService {
 	public EbBrand selectBrandByNo(Long id);
 
 	public int updateBrand(EbBrand brand);
+
+	//根据id查询商品品牌
+	public EbBrand selectItemByNo(Long id);
 	
 	
  

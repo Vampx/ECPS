@@ -14,6 +14,5 @@
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <c:set var="FILE_PATH"  value="http://localhost:8080/ecps-file"></c:set>
 <c:set var="system" value="/ecps/console"/>
-<c:set var="PmsServerPath" value="http://10.1.248.131:8080/pmsV4/pms/main.do"/>
 <c:set var="datePattern"><fmt:message key="date.format"/></c:set>
   

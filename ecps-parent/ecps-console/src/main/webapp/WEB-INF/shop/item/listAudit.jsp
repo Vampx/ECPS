@@ -228,14 +228,14 @@ function isPass(itemId, auditStatus){
                 </td>
                
 				<td>
-							<a href="${path}/item/viewItem.do?id=${item.itemNo }" title="查看">查看</a>
+							<a href="${path}/item/viewItem.do?id=${item.itemNo }&brandId=${item.brandId }&itemId=${item.itemId}" title="查看">查看</a>
 					  	
 					  		<c:if test="${item.auditStatus == 0 }">
 					  			<a href="#" onclick="isPass(${item.itemId}, 1)">通过</a>
 					  			<a href="#" onclick="isPass(${item.itemId}, 2)">不通过</a>
 					  		</c:if>
 					  		<c:if test="${item.auditStatus == 2 }">
-					  			<a href="" >编辑</a>
+					  			<a href="${path}/item/editItem.do?id=${item.itemNo }" >编辑</a>
 					  		</c:if>
 					  		
 					  		

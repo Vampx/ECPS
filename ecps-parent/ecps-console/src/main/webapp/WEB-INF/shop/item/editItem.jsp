@@ -586,6 +586,25 @@ function setGiftShowType(id) {
 	}
 }
 
+function submitUpload(){
+	var option = {
+		url:"${path}/upload/uploadPic.do",//如果不写url就是默认使用要提交的表单中的url，如果有url就是使用该url
+		dataType:"text",
+		success:function(responseText){
+			//把json格式字符串转换成json对象
+			var jsonObj = $.parseJSON(responseText);
+			$("#imgsImgSrc").attr("src", jsonObj.realPath);
+			$("#imgs").val(jsonObj.relativePath);
+			$("#lastPath").val(jsonObj.realPath);
+		},
+		error:function(){
+			alert("系统错误");
+		}
+	};
+	//ajax方式提交表单，页面不会跳转（由jQuery-form提供）
+	$("#myForm").ajaxSubmit(option);
+}
+
 </script>
 </head>
 <body id="main">
@@ -596,8 +615,8 @@ function setGiftShowType(id) {
 
 <div class="frameR"><div class="content">
 
-<div class="loc icon"><samp class="t12"></samp><fmt:message key='menu.current.loc'/>:<fmt:message key='ItemMgmtMenu.title' />&nbsp;&raquo;&nbsp;<a href="<c:url value="/${system }/item/listEntity.do"/>" title="实体商品">实体商品</a>&nbsp;&raquo;&nbsp;<span class="gray">编辑商品</span>
-    <a href="<c:url value="/${system }/item/listEntity.do"/>" title="返回实体商品" class="inb btn80x20">返回实体商品</a>
+<div class="loc icon"><samp class="t12"></samp>当前位置：商品管理&raquo;&nbsp;<a href="<c:url value="/item/listAudit.do"/>" title="实体商品">商品审核</a>&nbsp;&raquo;&nbsp;<span class="gray">编辑商品</span>
+    <a href="<c:url value="/item/listAudit.do"/>" title="返回实体商品" class="inb btn80x20">返回商品审核</a>
 </div>
 <form action="${path}/item/editSaveItem.do?" name="myForm" id="myForm" method="post">
 <h2 class="h2_ch"><span id="tabs" class="l">
@@ -614,21 +633,17 @@ function setGiftShowType(id) {
 	</p>
     <p><label><samp>*</samp>商品名称:</label><input type="text" reg1="^^(.{1,100})$" desc="100以内任意字符" id="itemName" name="itemName" class="text state" value="${ebItem.itemName}" escapeXml="false" />
 	</p>
-	<p><label><samp>*</samp>商品分类:</label>${ebCat.catName}
+	<%-- <p><label><samp>*</samp>商品分类:</label>${ebCat.catName}
         <input type="hidden" id="catId" name="catId" value="${ebCat.catId}" class="txt" />
-	</p>
+	</p> --%>
 	<p><label>商品品牌:</label>
 	<select  id="brandId" name="brandId" >
 	<option<c:if test="${ebItem.brandId==-1}"> selected</c:if> value="-1">请选择商品品牌</option>
-    <c:forEach items="${blist}" var="b">
+    <c:forEach items="${bList}" var="b">
     <option<c:if test="${b.brandId == ebItem.brandId}"> selected</c:if> value="${b.brandId}">${b.brandName}</option>
     </c:forEach>
 	</select></p>
-	<p><label><samp>*</samp>运营范围:</label>
-		<c:forEach items="${businessScopeList}" var="businessScope">
-			<input name="businessScope" type="checkbox"  value="${businessScope.businessScopeId}"/><c:out value="${businessScope.businessScopeName}"></c:out>&nbsp;&nbsp;
-		</c:forEach>
-	</p>
+	
 	<p><label>赠品信息:</label>
 		<c:if test="${phone!=''}">
 			<c:if test="${phone=='0'}">
@@ -685,8 +700,8 @@ function setGiftShowType(id) {
 	
 		<div class="addTagPic">
 			<div>
-				<img src="${base }/res/imgs/p225x290.jpg" />
-				<img id="upshow" src="${rsImgUrlInternal}${itemTagImg.tagImgUrl }" onerror="this.src='${base}/res/imgs/deflaut.jpg'" class="hotPic" />
+				<img src="${path }/res/imgs/p225x290.jpg" />
+				<img id="upshow" src="${FILE_PATH }${ebItem.imgs}" onerror="this.src='${path}/${system }/res/imgs/deflaut.jpg'" class="hotPic" />
 				<p class="alg_c orange">注:请选择小于底图的标签图。</p>
 			</div>
 			
@@ -695,7 +710,7 @@ function setGiftShowType(id) {
 					<c:set var="size" value="${fn:length(listTagImg)}"/>
 					<c:forEach items="${listTagImg }" var="tagImg" varStatus="index">
 						 <span>
-						 	<input type="radio" <c:if test="${ebItem.tagImgID == tagImg.tagImgID}"> checked</c:if> name="tagImgID" value="${tagImg.tagImgID }"/> <img src="${rsImgUrlInternal}${tagImg.tagImgUrl }" onerror="this.src='${base}/res/imgs/deflaut.jpg'" /><a href="javascript:void(0);" d="${tagImg.tagImgID }" class="inb btn60x20">删除</a>  						 	
+						 	<input type="radio" <c:if test="${ebItem.tagImgID == tagImg.tagImgID}"> checked</c:if> name="tagImgID" value="${tagImg.tagImgID }"/> <img src="${rsImgUrlInternal}${tagImg.tagImgUrl }" onerror="this.src='${path}/${sysytem }/res/imgs/deflaut.jpg'" /><a href="javascript:void(0);" d="${tagImg.tagImgID }" class="inb btn60x20">删除</a>  						 	
 						 </span>
 					</c:forEach> 										
 				</dt>
@@ -717,11 +732,11 @@ function setGiftShowType(id) {
     
     <p><label><samp>*</samp>上传商品图片(90x150尺寸):</label><span id="uploadImgTip1" class="orange">注:该尺寸图片必须为90x150。</span></p>
     <p><label></label>
-		<img id='imgSize1ImgSrc' src='${rsImgUrlInternal}${ebItem.imgSize1}' onerror="this.src='${base}/res/imgs/deflaut.jpg'" height="100" width="100" />
-		<input type='file' id='imgSize1File' name='imgSize1File' class="file" onchange='submitImgSize1Upload("imgSize1")' /><span class="pos" id="imgSize1FileSpan">请上传图片的大小不超过3MB</span>
-		<input type='hidden' id='imgSize1Action' name='imgSize1Action' value='${path}/uploads/upload_pic.do' />
-        <input type='hidden' id='imgSize1' name='imgSize1' value='${ebItem.imgSize1}' reg="^.+$" tip="亲！您忘记上传图片了。" />
-	</p>
+    	<img id='imgsImgSrc' src="${FILE_PATH }${ebItem.imgs}" height="100" width="100" />
+      </p>
+             <p><label></label><input type='file' size='27' id='imgsFile' name='imgsFile' class="file" onchange='submitUpload()' /><span id="submitImgTip" class="pos">请上传图片宽为120px，高为50px，大小不超过100K。</span>
+                <input type='hidden' id='imgs' name='imgs' value="${brand.imgs }" reg2="^.+$" tip="亲！您忘记上传图片了。" />
+			</p> 
     
 	<p><label><samp>*</samp>上传商品图片(正方形尺寸):</label><span id="uploadImgTip" class="orange">注:建议上传800*800大小的图片，否则可能会影响前台缩略图显示效果(第一张上传图为默认图)。</span></p>
 
@@ -737,7 +752,7 @@ function setGiftShowType(id) {
                     <td>
                         <span class="pic">
                       <%--<c:if test="${count.index=='0'}"><samp class="is" title="默认图片"></samp></c:if>--%>
-                        <img id="imgs${count.index}Img" name="imgs${count.index}Img" src="${rsImgUrlInternal}${item.fileRelativePath}" onerror="this.src='${path}/res/imgs/deflaut.jpg'" width="100" height="100" /></span>
+                        <img id="imgs${count.index}Img" name="imgs${count.index}Img" src="${FILE_PATH }${ebItem.imgs}" onerror="this.src='${path}/${system }/res/imgs/deflaut.jpg'" width="100" height="100" /></span>
                         <input type="file" id="imgs${count.index}File" name="imgs${count.index}File" class="file" onchange="submitUploads('${count.index}')" />
                         <input type="hidden" id="imgsFilePath${count.index}" name="imgsFilePath${count.index}" value="${item.filePath}" />
                         <input type="hidden" id="imgsFileRelativePath${count.index}" name="imgsFileRelativePath${count.index}" value="${item.fileRelativePath}" />
@@ -762,8 +777,8 @@ function setGiftShowType(id) {
                     <input type='hidden' id='imgs' name='imgs' value='' />
                     <input type="hidden" id="imgsCount" name="imgsCount" value="${fn:length(imageList)}"/>
                     <input type="hidden" id="imgsIndex" name="imgsIndex" value="${fn:length(imageList)}"/>
-                    <input type='hidden' id='imgsUploadAction' name='imgsUploadAction' value='${path}/uploads/upload_pics.do' />
-                    <input type='hidden' id='imgsDeleteAction' name='imgsDeleteAction' value='${path}/uploads/upload_delete.do' />
+                    <input type='hidden' id='imgsUploadAction' name='imgsUploadAction' value='${path}/upload/uploadPic.do' />
+                    <input type='hidden' id='imgsDeleteAction' name='imgsDeleteAction' value='${path}/upload/upload_delete.do' />
                     <input type='hidden' id='imgsBlank' name='imgsBlank' value='<c:url value='/${system }/images/logo266x64.png'/>' />
                 </td>
             </tr>
@@ -782,8 +797,8 @@ function setGiftShowType(id) {
 <textarea name="itemDesc" id="pageDesc">${ebItem.pageDesc}</textarea>
 <script type="text/javascript">   
 	var ${"itemDesc"} = new FCKeditor('itemDesc');
-	${"itemDesc"}.BasePath = '${path}/res/plugins/fckeditor/';
-	${"itemDesc"}.Config["CustomConfigurationsPath"] = "${path}/res/plugins/fckeditor/myconfig.js";
+	${"itemDesc"}.BasePath = '${path}/ecps/console/res/plugins/fckeditor/';
+	${"itemDesc"}.Config["CustomConfigurationsPath"] = '${path}/ecps/console/res/plugins/fckeditor/myconfig.js';
 	${"itemDesc"}.Config["LinkBrowser"] = false;
 	${"itemDesc"}.Config["ImageBrowser"] = false;
 	${"itemDesc"}.Config["FlashBrowser"] = false;
@@ -793,7 +808,7 @@ function setGiftShowType(id) {
 	${"itemDesc"}.Config["FlashUpload"] = true;
 	${"itemDesc"}.Config["MediaUpload"] = true;
 	${"itemDesc"}.Config["LinkUploadURL"] = "${path}/uploads/fckUpload.do";
-	${"itemDesc"}.Config["ImageUploadURL"] = "${path}/uploads/fckUpload.do?typeStr=Image";
+	${"itemDesc"}.Config["ImageUploadURL"] = "${path}/upload/uploadForFck.do";
 	${"itemDesc"}.Config["FlashUploadURL"] = "${path}/uploads/fckUpload.do?typeStr=Flash";
 	${"itemDesc"}.Config["MediaUploadURL"] = "${path}/uploads/fckUpload.do?typeStr=Media";
 	${"itemDesc"}.ToolbarSet = "My";
@@ -936,8 +951,8 @@ function setGiftShowType(id) {
 <textarea name="paraList" id="packingList">${ebItem.paraList}</textarea>
 <script type="text/javascript">   
 	var ${"packingList"} = new FCKeditor('packingList');
-	${"packingList"}.BasePath = '${path }/res/plugins/fckeditor/';
-	${"packingList"}.Config["CustomConfigurationsPath"] = "${path }/res/plugins/fckeditor/myconfig.js";
+	${"packingList"}.BasePath = '${path}/ecps/console/res/plugins/fckeditor/';
+	${"packingList"}.Config["CustomConfigurationsPath"] = '${path}/ecps/console/res/plugins/fckeditor/myconfig.js;
 	${"packingList"}.Config["LinkBrowser"] = false;
 	${"packingList"}.Config["ImageBrowser"] = false;
 	${"packingList"}.Config["FlashBrowser"] = false;
@@ -947,7 +962,7 @@ function setGiftShowType(id) {
 	${"packingList"}.Config["FlashUpload"] = true;
 	${"packingList"}.Config["MediaUpload"] = true;
 	${"packingList"}.Config["LinkUploadURL"] = "${path}/uploads/fckUpload.do";
-	${"packingList"}.Config["ImageUploadURL"] = "${path}/uploads/fckUpload.do?typeStr=Image";
+	${"packingList"}.Config["ImageUploadURL"] = "${path}/upload/uploadForFck.do";
 	${"packingList"}.Config["FlashUploadURL"] = "${path}/uploads/fckUpload.do?typeStr=Flash";
 	${"packingList"}.Config["MediaUploadURL"] = "${path}/uploads/fckUpload.do?typeStr=Media";
 	${"packingList"}.ToolbarSet = "My";
