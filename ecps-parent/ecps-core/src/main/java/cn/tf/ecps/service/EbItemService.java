@@ -37,5 +37,8 @@ public interface EbItemService {
 	
 	//调用接口
 	public String publishItem(Long itemId,String password);
+
+	public List<EbItem> selectItemFont(String price, Long brandId,
+			String paraList, Object startNum, Object endNum);
  
 }

@@ -13,6 +13,8 @@ public interface EbFeatureDao {
 	
 	//查询筛选属性
 	public List<EbFeature>  selectIsSelectFeature();
+
+	public List<EbFeature> selectCommFeatureByItemId(Long itemId);
 	
 
 }

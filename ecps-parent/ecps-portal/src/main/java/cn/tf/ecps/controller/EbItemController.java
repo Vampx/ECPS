@@ -11,6 +11,7 @@ import org.compass.core.json.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import cn.tf.ecps.po.EbBrand;
@@ -22,6 +23,8 @@ import cn.tf.ecps.service.EbFeatureService;
 import cn.tf.ecps.service.EbItemService;
 import cn.tf.ecps.service.EbSkuService;
 import cn.tf.ecps.utils.ECPSUtil;
+import cn.tf.ecps.utils.Page;
+import cn.tf.ecps.utils.QueryCondition;
 
 @Controller
 @RequestMapping("/item")
@@ -52,9 +55,11 @@ public class EbItemController {
 
 	// 商品列表查询
 	@RequestMapping("/listItem.do")
-	public String listItem(String price, Long brandId, String paraList, Model model){
+	public String listItem(String price, Long brandId, String paraList,Model model){
+		
 		List<EbItem> itemList = itemService.selectItemFont(price, brandId, paraList);
 		model.addAttribute("itemList", itemList);
+	
 		return "phoneClassification";
 	}
 	

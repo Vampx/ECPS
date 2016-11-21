@@ -13,4 +13,6 @@ public interface EbFeatureService {
 
 		public List<EbFeature> selectIsSelectFeature();
 
+		public List<EbFeature> selectCommFeatureByItemId(Long itemId);
+
 }

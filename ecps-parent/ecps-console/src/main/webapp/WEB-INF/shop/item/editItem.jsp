@@ -335,7 +335,7 @@ $(function(){
 		
         if(s){
         	
-        	if($("#itemName").val()!="${ebItem.itemName}") {
+   /*      	if($("#itemName").val()!="${ebItem.itemName}") {
                   //重命名
 	      		var rename=true;
 	      		$.ajax({
@@ -355,7 +355,7 @@ $(function(){
 	      			}
 	                return;
       	   		}
-        	}
+        	} */
                  //敏感词
         var sensitivity=true;
        var content = FCKeditorAPI.GetInstance("itemDesc").GetXHTML(true);
@@ -631,7 +631,7 @@ function submitUpload(){
 	<p><label>商品编号:</label>${ebItem.itemNo}
 	   <input type="hidden" id="itemNo" name="itemNo" value="${ebItem.itemNo}">
 	</p>
-    <p><label><samp>*</samp>商品名称:</label><input type="text" reg1="^^(.{1,100})$" desc="100以内任意字符" id="itemName" name="itemName" class="text state" value="${ebItem.itemName}" escapeXml="false" />
+    <p><label><samp>*</samp>商品名称:</label>	<input type="text" reg1="^(.{1,100})$" desc="100以内任意字符" id="itemName" name="itemName" class="text state" value="${ebItem.itemName}"  maxlength="100"/></p>
 	</p>
 	<%-- <p><label><samp>*</samp>商品分类:</label>${ebCat.catName}
         <input type="hidden" id="catId" name="catId" value="${ebCat.catId}" class="txt" />
@@ -720,7 +720,7 @@ function submitUpload(){
 		</div>
 		
 	</div>
-	
+	<input type="hidden" id="lastPath" name="lastPath">
    	<p><label>促销语:</label><input type="text" reg1="^(.{0,100})$" desc="100以内任意字符" id="promotion" name="promotion" class="text state" value="${ebItem.promotion}" />
    	</p>
     <p><label>状态:</label>
@@ -734,7 +734,8 @@ function submitUpload(){
     <p><label></label>
     	<img id='imgsImgSrc' src="${FILE_PATH }${ebItem.imgs}" height="100" width="100" />
       </p>
-             <p><label></label><input type='file' size='27' id='imgsFile' name='imgsFile' class="file" onchange='submitUpload()' /><span id="submitImgTip" class="pos">请上传图片宽为120px，高为50px，大小不超过100K。</span>
+             <p><label></label>
+            <input type='file' id='imgsImgSrc1' name='imgSize1File' class="file" onchange='submitUpload()' /><span class="pos" id="imgSize1FileSpan">请上传图片的大小不超过3MB</span>
                 <input type='hidden' id='imgs' name='imgs' value="${brand.imgs }" reg2="^.+$" tip="亲！您忘记上传图片了。" />
 			</p> 
     

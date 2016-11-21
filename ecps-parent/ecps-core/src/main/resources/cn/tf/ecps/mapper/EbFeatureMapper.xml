@@ -155,4 +155,69 @@
   </select>
   
   
+   <!-- resultMap的关系是由实体类之间的关系确定的，实体类之间的关系是由表之间的关系确定 -->
+ <resultMap type="cn.tf.ecps.po.EbItem" id="selectItemDetailByIdRM" extends="BaseResultMap">
+  	<association property="itemClob" javaType="cn.tf.ecps.po.EbItemClob">
+  		<id column="ITEM_ID" jdbcType="DECIMAL" property="itemId" />
+  		<result column="ITEM_DESC" jdbcType="CLOB" property="itemDesc" />
+    	<result column="PACKING_LIST" jdbcType="CLOB" property="packingList" />
+  	</association>
+  	<collection property="paraList" ofType="cn.tf.ecps.po.EbParaValue">
+  		<id column="PARA_ID" jdbcType="DECIMAL" property="paraId" />
+    	<result column="ITEM_ID" jdbcType="DECIMAL" property="itemId" />
+   	 	<result column="FEATURE_ID" jdbcType="DECIMAL" property="featureId" />
+    	<result column="PARA_VALUE" jdbcType="VARCHAR" property="paraValue" />
+    	<result column="FEATURE_NAME" property="featureName"/>
+  	</collection>
+  	<collection property="skuList" ofType="cn.tf.ecps.po.EbSku">
+  		<id column="SKU_ID" jdbcType="DECIMAL" property="skuId" />
+	    <result column="ITEM_ID" jdbcType="DECIMAL" property="itemId" />
+	    <result column="SKU" jdbcType="VARCHAR" property="sku" />
+	    <result column="SKU_PRICE" jdbcType="DECIMAL" property="skuPrice" />
+	    <result column="SHOW_STATUS" jdbcType="DECIMAL" property="showStatus" />
+	    <result column="STOCK_INVENTORY" jdbcType="DECIMAL" property="stockInventory" />
+	    <result column="SKU_UPPER_LIMIT" jdbcType="DECIMAL" property="skuUpperLimit" />
+	    <result column="LOCATION" jdbcType="VARCHAR" property="location" />
+	    <result column="SKU_IMG" jdbcType="VARCHAR" property="skuImg" />
+	    <result column="SKU_SORT" jdbcType="DECIMAL" property="skuSort" />
+	    <result column="SKU_NAME" jdbcType="VARCHAR" property="skuName" />
+	    <result column="MARKET_PRICE" jdbcType="DECIMAL" property="marketPrice" />
+	    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+	    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+	    <result column="CREATE_USER_ID" jdbcType="DECIMAL" property="createUserId" />
+	    <result column="UPDATE_USER_ID" jdbcType="DECIMAL" property="updateUserId" />
+	    <result column="ORIGINAL_SKU_ID" jdbcType="DECIMAL" property="originalSkuId" />
+	    <result column="LAST_STATUS" jdbcType="DECIMAL" property="lastStatus" />
+	    <result column="MERCHANT_ID" jdbcType="DECIMAL" property="merchantId" />
+	    <result column="SKU_TYPE" jdbcType="DECIMAL" property="skuType" />
+	    <result column="SALES" jdbcType="DECIMAL" property="sales" />
+	    <result column="RES_CODE" jdbcType="VARCHAR" property="resCode" />
+	    <result column="PACK_ID" jdbcType="DECIMAL" property="packId" />
+	    <collection property="specList" ofType="cn.tf.ecps.po.EbSpecValue">
+	    	<id column="SPEC_ID" jdbcType="DECIMAL" property="specId" />
+		    <result column="SKU_ID" jdbcType="DECIMAL" property="skuId" />
+		    <result column="FEATURE_ID" jdbcType="DECIMAL" property="featureId" />
+		    <result column="SPEC_VALUE" jdbcType="VARCHAR" property="specValue" />
+	    </collection>
+  	</collection>
+  </resultMap>
+  
+  
+  <select id="selectCommFeatureByItemId" parameterType="long" resultMap="selectItemDetailByIdRM">
+  	select *
+  from eb_item       ei,
+       eb_para_value ep,
+       eb_feature    ef,
+       eb_sku        es,
+       eb_item_clob  ec,
+       eb_spec_value ev
+ where ei.item_id = ep.item_id
+   and ep.feature_id = ef.feature_id
+   and ei.item_id = es.item_id
+   and ei.item_id = ec.item_id
+   and es.sku_id = ev.sku_id(+)
+   and ei.item_id = #{itemId}
+  </select>
+  
+  
 </mapper>

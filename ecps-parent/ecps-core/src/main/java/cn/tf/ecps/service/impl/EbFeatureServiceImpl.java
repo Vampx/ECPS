@@ -35,4 +35,8 @@ public class EbFeatureServiceImpl implements EbFeatureService {
 		return featureDao.selectIsSelectFeature();
 	}
 
+	public List<EbFeature> selectCommFeatureByItemId(Long itemId) {
+		return featureDao.selectCommFeatureByItemId(itemId);
+	}
+
 }

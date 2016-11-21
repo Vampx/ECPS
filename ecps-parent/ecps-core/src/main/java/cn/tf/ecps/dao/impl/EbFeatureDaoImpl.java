@@ -29,6 +29,10 @@ public class EbFeatureDaoImpl extends SqlSessionDaoSupport implements EbFeatureD
 	public List<EbFeature> selectIsSelectFeature() {
 		return this.getSqlSession().selectList(ns+"selectIsSelectFeature");
 	}
+
+	public List<EbFeature> selectCommFeatureByItemId(Long itemId) {
+		return this.getSqlSession().selectList(ns+"selectCommFeatureByItemId",itemId);
+	}
 	
 	
 }

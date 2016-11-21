@@ -156,4 +156,23 @@ public class EbItemServiceImpl implements EbItemService {
 		return service.publishItem(itemId, password);
 	}
 
+	public List<EbItem> selectItemFont(String price, Long brandId,
+			String paraList, Object startNum, Object endNum) {
+		Map<String, Object> map=new HashMap<String,Object>();
+		if(StringUtils.isNotBlank(price)){
+			String[] prices=price.split("-");
+			map.put("minPrice", prices[0]);
+			map.put("maxPrice", prices[1]);
+		}
+		map.put("brandId", brandId);
+		if(StringUtils.isNotBlank(paraList)){
+			String[] paraArr=paraList.split(",");
+			map.put("paraList", paraArr);
+		}
+		map.put("startNum", startNum);
+		map.put("endNum", endNum);
+		return itemDao.listItem(map);
+		
+	}
+
 }

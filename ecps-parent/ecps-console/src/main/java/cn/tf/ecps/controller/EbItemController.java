@@ -174,8 +174,10 @@ public class EbItemController {
 		model.addAttribute("bList",bList);
 		
 		//基本参数
-		EbItem item = itemService.selectItemDetailById(itemId);
-		model.addAttribute("item",item);
+		List<EbFeature> commlist = featureService.selectCommFeature();
+		model.addAttribute("list1",commlist);
+		/*List<EbFeature> commlist = featureService.selectCommFeatureByItemId(itemId);
+		model.addAttribute("list1",commlist);*/
 		
 		return "item/editItem";
 	}
