@@ -6,7 +6,7 @@
 create table eb_area(
        area_id  NUMBER(11) not null,
        parent_id  NUMBER(11) not null,
-       area_name  varchar2(1000),
+       area_name  varchar2(1000),非常八点半呢 
        area_level NUMBER(1)
 )
 create sequence seqareaid  start with 1000;     
